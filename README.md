@@ -1,9 +1,19 @@
 # CSE 4392 — Academic AI Advisor
 
-Team Assignment 2: an Academic AI Advisor built on **LangChain**, with a Streamlit
-chat UI, a SQL database (SQLite) for structural data, a vector database (Chroma)
-for unstructured data, and a deterministic **Degree Planner** engine that
+Team Assignment 2: an Academic AI Advisor built on **LangChain**, with a SQL
+database (SQLite) for structural data, a vector database (Chroma) for
+unstructured data, and a deterministic **Degree Planner** engine that
 generates and verifies multi-year degree plans.
+
+**UI is Talha's choice** (web, desktop, or CLI — all allowed by the spec). The
+only contract a UI must satisfy is:
+
+```python
+orchestrator.handle_message(student_id: str, message: str,
+                            history: list[dict]) -> str
+```
+
+`cli.py` is a stdlib reference client that exercises that contract today.
 
 See `PLAN.md` for the full architecture, work split, and timeline.
 
@@ -23,8 +33,8 @@ ollama pull nomic-embed-text  # local embedding model
 uv run python -m advisor.db        # creates + seeds advisor.db (SQLite)
 uv run python -m advisor.ingest    # embeds catalog + degree docs into .chroma/
 
-# 4. Run the app
-uv run streamlit run app.py
+# 4. Run the reference CLI
+uv run python cli.py
 ```
 
 ## Repo layout
@@ -49,7 +59,7 @@ advisor/            the package
     schedule.json   fabricated sections, next 3 terms                    [Person A]
     degree_reqs/    narrative degree-requirement docs (-> Chroma + SQL)  [Person A]
     catalog/        cse_undergrad_courses.pdf + course-desc.jsonl        [have]
-app.py              Streamlit chat UI                                    [Person E]
+cli.py              stdlib reference client (UI contract example)        [Talha owns the real UI]
 logs/traces.jsonl   execution trace log (deliverable)
 deliverables/       PPT, screenshots, zip staging                        [Person E]
 tests/              pytest
@@ -62,11 +72,14 @@ tests/              pytest
 - **Degree-plan JSON shape** — `DegreePlan.to_dict()` in `planner.py`; UI and the
   compare module consume this shape.
 - **Trace record shape** — `tracing.py` `trace()` fields; Person E renders the log.
+- **UI contract** — `orchestrator.handle_message(student_id, message, history) -> str`.
+  Talha picks the UI stack; `cli.py` shows the intended call pattern.
 
 ## Status of modules
 
 Implemented now (scaffold): `paths`, `config` (backend switch), `db` (schema init
-+ seed loading), `tracing`, `memory` (SQLite-backed chat history), `app.py` UI shell.
++ seed loading), `tracing`, `memory` (SQLite-backed chat history), `cli.py`
+reference client.
 
 Stubbed with `NotImplementedError` + docstrings (contracts are final, bodies are
 TODOs for the owner): `planner`, `compare`, `router`, `chains`, `tools`,

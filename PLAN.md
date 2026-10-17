@@ -8,7 +8,7 @@ multi-year degree plans and answers exact + semantic advising queries.
 
 | Decision | Choice | Why |
 |---|---|---|
-| UI | **Streamlit web chat** | Fastest demoable UI, pure Python, native chat/message state, great screenshots for the PPT |
+| UI | **Talha's choice** (web/desktop/CLI — all spec-legal) | Talha owns task 5; the scaffold ships a stdlib `cli.py` reference client. The only contract: `orchestrator.handle_message(student_id, message, history) -> str` |
 | LLM backend | **Pluggable: Ollama (default) + OpenAI API** | Ollama is installed locally (qwen3:4b, llama3.2:3b, nomic-embed-text) — free, offline. OpenAI via `OPENAI_API_KEY` for better quality when available. LangChain makes both interchangeable behind one interface |
 | Framework | **LangChain** (required by spec) + Chroma + SQLite | Spec requires LangChain; Chroma is a local vector DB (no account needed); SQLite is the SQL DBMS |
 | Python env | **uv** (single `pyproject.toml`) | Matches existing repo tooling (`RAG/app.py` uses uv) |
@@ -19,7 +19,7 @@ multi-year degree plans and answers exact + semantic advising queries.
 
 ```
                           ┌──────────────────────────────┐
-   Student ──chat──▶      │  Streamlit UI (chat + state) │
+   Student ──chat──▶      │  UI (Talha's choice)         │
                           └──────────────┬───────────────┘
                                          │
                           ┌──────────────▼───────────────┐
@@ -61,12 +61,12 @@ Chroma DBMS, Trace Logger, pluggable LLM adapter (Ollama | OpenAI).
 
 | Spec req | Implementation | Demo line in presentation |
 |---|---|---|
-| 1. UI | Streamlit app (`app.py`) | Show the running app |
+| 1. UI | Talha's chosen front-end over `handle_message` | Show the running app |
 | 2. Multi-year degree plan per career interest | Degree Planner: topo-sort prereq DAG, fill semesters ≤ credit cap, optional summer | "I'm a sophomore interested in cybersecurity — build my plan" |
 | 3. Exact + semantic queries | Intent router → SQL chain vs RAG chain | "Prereqs for CSE 3310?" (exact) then "Which courses cover machine learning?" (semantic) |
 | 4. Six verification checks before recommending | Verification Engine in planner; each recommendation returns check results | "Can I take CSE 4344 next semester?" → per-check pass/fail table |
 | 5. Change plan / switch major + comparison | Advising Dialog (multi-turn needs-assessment) → regenerate plan → `compare_plans` diff | "What if I switch to Software Engineering?" → new plan + side-by-side diff |
-| 6. Conversation state | LangChain message history in Streamlit session + persisted chat history | "What about only 3 classes next semester instead?" |
+| 6. Conversation state | Session message list passed to `handle_message` + persisted chat history | "What about only 3 classes next semester instead?" |
 | 7. Structural + nonstructural DBs | SQLite (records/courses/schedule/enrollment) + Chroma (catalog, degree reqs, chat history) | Show the two stores in the diagram |
 | 8. Multiple DBMS types | SQLite + Chroma (spec names SQL + Chroma/Pinecone explicitly) | One bullet on slide |
 
@@ -87,7 +87,8 @@ Chroma DBMS, Trace Logger, pluggable LLM adapter (Ollama | OpenAI).
 ```
 Assignments/Team Assignment 2/advisor/
   pyproject.toml            # uv project: langchain, langchain-ollama, langchain-openai,
-                            # langchain-chroma, chromadb, streamlit, pypdf, sqlalchemy
+                            # langchain-chroma, chromadb, pypdf, sqlalchemy
+                            # (UI deps added by Talha when he picks a stack)
   advisor/
     config.py               # LLM backend switch: ollama | openai (env or sidebar)
     db.py                   # SQLite access (SQLAlchemy)
@@ -100,7 +101,8 @@ Assignments/Team Assignment 2/advisor/
     ingest.py               # Chroma ingest (reuses RAG/app.py loader)
     tracing.py              # execution-trace logger → logs/traces.jsonl
     seed/                   # schema.sql, degree_reqs/*.md, schedule.json, students.json
-  app.py                    # Streamlit UI
+  cli.py                    # stdlib reference client; Talha adds the real UI
+                            # on top of orchestrator.handle_message()
   logs/traces.jsonl
   deliverables/             # PPT, screenshots, zip staging
 ```
@@ -113,7 +115,7 @@ Assignments/Team Assignment 2/advisor/
 | **B — Planner** | Degree Planner: prereq DAG topo-sort, semester packing, 6-check verifier, plan diff | `planner.py`, `compare.py`, unit tests |
 | **C — RAG** | Chroma ingest (catalog + degree docs + policies), retriever chain, embedding config for both backends | `ingest.py`, RAG chain |
 | **D — Agent** | LangChain orchestrator: intent router, tools, memory, advising dialog, LLM backend abstraction | `router.py`, `tools.py`, `chains.py`, `config.py` |
-| **E — UI/Deliverables** | Streamlit UI, trace logger, demo script, screenshots, PPT, zip packaging | `app.py`, `tracing.py`, `deliverables/` |
+| **E — UI/Deliverables (Talha)** | UI (his choice of stack) over `handle_message`, trace logger, demo script, screenshots, PPT, zip packaging | UI files, `tracing.py`, `deliverables/` |
 
 Integration contract (freeze early, everyone codes against it): the data schema,
 the tool signatures in `tools.py`, and the JSON shape of a degree plan.
@@ -122,7 +124,7 @@ the tool signatures in `tools.py`, and the JSON shape of a degree plan.
 
 | Day | Milestone |
 |---|---|
-| Sat 10/17–Sun 10/18 | Kickoff: agree on this plan + schema + tool signatures. Scaffold repo. A starts schema/seed, C ports `RAG/app.py` ingest to Chroma, D stubs orchestrator, E stubs Streamlit shell |
+| Sat 10/17–Sun 10/18 | Kickoff: agree on this plan + schema + tool signatures. Scaffold is pushed to `main`. A starts schema/seed, C ports `RAG/app.py` ingest to Chroma, D stubs orchestrator, Talha picks the UI stack |
 | Mon 10/19–Tue 10/20 | **Core loop works**: exact query → SQL answer; semantic query → RAG answer; "generate my plan" → valid multi-year plan in UI |
 | Wed 10/21 | Plan modification, add/drop, major-switch dialog + plan comparison; all 6 verification checks firing |
 | Thu 10/22 | Demo script end-to-end, memory follow-ups working, trace logging verified; **feature freeze** |

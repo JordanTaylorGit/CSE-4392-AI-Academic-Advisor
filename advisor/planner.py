@@ -4,7 +4,7 @@ DETERMINISTIC — no LLM calls in this module. The planner topologically orders
 the prerequisite DAG over the student's remaining requirement slots and packs
 courses into semesters subject to credit caps and schedule feasibility.
 
-The degree-plan JSON contract (consumed by app.py, compare.py, tools.py):
+The degree-plan JSON contract (consumed by the UI, compare.py, tools.py):
 
     DegreePlan.to_dict() == {
         "student_id": str,
