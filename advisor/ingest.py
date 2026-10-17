@@ -1,4 +1,4 @@
-"""Chroma ingest pipeline (Person C).
+"""Chroma ingest pipeline (Miguel).
 
 Embeds the nonstructural data into .chroma/:
   - course catalog chunks   <- seed/catalog/cse_undergrad_courses.pdf
@@ -56,12 +56,12 @@ def load_degree_req_docs(dir_path: Path = DEGREE_REQS_DIR) -> list[dict]:
 def ingest() -> None:
     """Embed everything into the Chroma collection.
 
-    TODO (Person C): upsert all chunks + docs into get_vectorstore()
+    TODO (Miguel): upsert all chunks + docs into get_vectorstore()
     (ids=doc['id'], documents=doc['text'], metadatas={'source': ...}).
     Also embed course-desc.jsonl rows, and (optionally, spec req 7) upsert
     summarized advising/chat history.
     """
-    raise NotImplementedError("TODO Person C: implement ingest")
+    raise NotImplementedError("TODO Miguel: implement ingest")
 
 
 if __name__ == "__main__":

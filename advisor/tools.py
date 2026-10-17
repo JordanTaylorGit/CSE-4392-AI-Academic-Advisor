@@ -1,4 +1,4 @@
-"""LangChain tool surface (Person D) — FROZEN CONTRACT.
+"""LangChain tool surface (Kyle) — FROZEN CONTRACT.
 
 These signatures are what the orchestrator (and any agent executor) calls.
 Owners implement the bodies; signatures and docstrings may only change with
@@ -14,7 +14,7 @@ from . import chains, compare, db, planner
 def get_student_record(student_id: str) -> dict:
     """Look up a student's profile: program, completed courses, current
     enrollments. Exact-match SQL query."""
-    raise NotImplementedError("TODO Person D/Jordan")
+    raise NotImplementedError("TODO Kyle/Jordan")
 
 
 @tool
@@ -63,7 +63,7 @@ def switch_major(student_id: str, new_program_id: str) -> dict:
 def search_advising_docs(query: str, k: int = 5) -> list[dict]:
     """Semantic search over the Chroma store (catalog descriptions, degree
     requirements, policies). Returns [{'id', 'text', 'score'}]."""
-    raise NotImplementedError("TODO Person C")
+    raise NotImplementedError("TODO Miguel")
 
 
 ALL_TOOLS = [

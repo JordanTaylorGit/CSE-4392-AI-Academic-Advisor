@@ -41,17 +41,17 @@ uv run python cli.py
 
 ```
 advisor/            the package
-  config.py         LLM/embeddings backend switch (ollama | openai)      [Person D]
+  config.py         LLM/embeddings backend switch (ollama | openai)      [Kyle]
   paths.py          repo-relative paths                                  [shared]
   db.py             SQLite engine, schema init, seed loaders             [Jordan]
   planner.py        Degree Planner + 6-check Verification Engine         [Person B]
   compare.py        plan diff (old plan vs new plan)                     [Person B]
-  router.py         LLM intent classifier                                [Person D]
-  chains.py         RAG chain + SQL tool chain                           [Person C/D]
-  tools.py          LangChain tool signatures (CONTRACT — frozen)        [Person D]
-  memory.py         conversation state + persisted chat history          [Person D]
-  orchestrator.py   handle_message(): router -> handlers, tracing        [Person D]
-  ingest.py         Chroma ingest pipeline (catalog, degree docs)        [Person C]
+  router.py         LLM intent classifier                                [Kyle]
+  chains.py         RAG chain + SQL tool chain                           [Miguel/Kyle]
+  tools.py          LangChain tool signatures (CONTRACT — frozen)        [Kyle]
+  memory.py         conversation state + persisted chat history          [Kyle]
+  orchestrator.py   handle_message(): router -> handlers, tracing        [Kyle]
+  ingest.py         Chroma ingest pipeline (catalog, degree docs)        [Miguel]
   tracing.py        execution-trace logger -> logs/traces.jsonl          [Person E]
   seed/
     schema.sql      DB schema (CONTRACT — frozen)                        [Jordan]

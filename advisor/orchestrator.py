@@ -1,4 +1,4 @@
-"""Orchestrator (Person D): the LangChain glue.
+"""Orchestrator (Kyle): the LangChain glue.
 
 handle_message() is the single entry point the UI calls per chat turn:
   1. persist + trace the user message (memory, tracing)
@@ -21,7 +21,7 @@ def handle_message(student_id: str, message: str, history: list[dict] | None = N
     try:
         intent = router.route(message, history)
     except NotImplementedError:
-        reply = ("Router isn't implemented yet (Person D). Once `route()` works, "
+        reply = ("Router isn't implemented yet (Kyle). Once `route()` works, "
                  "this message will be dispatched to a handler.")
         return _finish(student_id, reply, intent="unrouted")
 
@@ -40,12 +40,12 @@ def _dispatch(student_id: str, message: str, intent: router.Intent, history) -> 
     if intent == router.Intent.SEMANTIC_QUERY:
         return chains.answer_semantic(message, student_id)
     if intent == router.Intent.GENERATE_PLAN:
-        raise NotImplementedError("TODO Person D: call tools.generate_degree_plan and format the plan")
+        raise NotImplementedError("TODO Kyle: call tools.generate_degree_plan and format the plan")
     if intent == router.Intent.MODIFY_PLAN:
-        raise NotImplementedError("TODO Person D: parse add/drop/load change -> tools.modify_plan")
+        raise NotImplementedError("TODO Kyle: parse add/drop/load change -> tools.modify_plan")
     if intent == router.Intent.SWITCH_MAJOR:
-        raise NotImplementedError("TODO Person D: multi-turn advising dialog -> tools.switch_major + diff")
-    raise NotImplementedError("TODO Person D: OTHER fallback — general advising answer via chat model")
+        raise NotImplementedError("TODO Kyle: multi-turn advising dialog -> tools.switch_major + diff")
+    raise NotImplementedError("TODO Kyle: OTHER fallback — general advising answer via chat model")
 
 
 def _finish(student_id: str, reply: str, intent: str) -> str:

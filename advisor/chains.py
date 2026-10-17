@@ -1,4 +1,4 @@
-"""RAG chain + SQL tool chain (Persons C/D).
+"""RAG chain + SQL tool chain (Miguel/Kyle).
 
 - answer_semantic: retrieval over Chroma (catalog chunks, degree-req docs,
   policies) grounded answer generation.
@@ -32,10 +32,10 @@ def answer_semantic(query: str, student_id: str | None = None, k: int = 5) -> st
     'retrieval' with doc ids + scores), then answer with the chat model using
     ONLY retrieved context; say "I don't know" when context is insufficient.
 
-    TODO (Person C): implement. Reuse the retrieval pattern from the course's
+    TODO (Miguel): implement. Reuse the retrieval pattern from the course's
     RAG prototype (same embeddings, same chunk format).
     """
-    raise NotImplementedError("TODO Person C: implement answer_semantic")
+    raise NotImplementedError("TODO Miguel: implement answer_semantic")
 
 
 def answer_exact(query: str, student_id: str | None = None) -> str:
@@ -46,6 +46,6 @@ def answer_exact(query: str, student_id: str | None = None) -> str:
     Extract the course id / term with a tiny LLM call or regex, hit db.query,
     format the answer. Log 'tool_call' traces.
 
-    TODO (Person D): implement.
+    TODO (Kyle): implement.
     """
-    raise NotImplementedError("TODO Person D: implement answer_exact")
+    raise NotImplementedError("TODO Kyle: implement answer_exact")

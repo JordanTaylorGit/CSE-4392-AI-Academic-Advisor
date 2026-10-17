@@ -1,4 +1,4 @@
-"""Intent router (Person D).
+"""Intent router (Kyle).
 
 Classifies each student message into exactly one Intent, which the orchestrator
 maps to a handler. Deliberately a narrow LLM classification task — small local
@@ -26,6 +26,6 @@ def route(message: str, history: list[dict] | None = None) -> Intent:
     still route to MODIFY_PLAN). Parse the single-token response back to Intent;
     unparseable answers => Intent.OTHER.
 
-    TODO (Person D): implement.
+    TODO (Kyle): implement.
     """
-    raise NotImplementedError("TODO Person D: implement route")
+    raise NotImplementedError("TODO Kyle: implement route")

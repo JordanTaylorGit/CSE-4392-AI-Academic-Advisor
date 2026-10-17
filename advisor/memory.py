@@ -3,7 +3,7 @@
 Short-term: the UI keeps the live message list for display and passes it back
 into handle_message() each turn.
 Long-term: every turn is appended to the chat_history table (spec req 7 —
-advising/chat history is one of the required nonstructural stores; Person C
+advising/chat history is one of the required nonstructural stores; Miguel
 may also embed it into Chroma for "what did we discuss last week" recall).
 """
 
