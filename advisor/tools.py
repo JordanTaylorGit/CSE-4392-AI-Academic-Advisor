@@ -14,7 +14,18 @@ from . import chains, compare, db, planner
 def get_student_record(student_id: str) -> dict:
     """Look up a student's profile: program, completed courses, current
     enrollments. Exact-match SQL query."""
-    raise NotImplementedError("TODO Kyle/Jordan")
+    rows = db.query("SELECT * FROM students WHERE student_id = :s", {"s": student_id})
+    if not rows:
+        return {"error": f"unknown student_id '{student_id}'"}
+    student = rows[0]
+    student["completed_courses"] = db.query(
+        "SELECT course_id, term, grade FROM completed_courses"
+        " WHERE student_id = :s ORDER BY term", {"s": student_id})
+    student["enrollments"] = [
+        r["section_id"] for r in db.query(
+            "SELECT section_id FROM enrollments WHERE student_id = :s", {"s": student_id})
+    ]
+    return student
 
 
 @tool
