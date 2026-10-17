@@ -112,7 +112,7 @@ Assignments/Team Assignment 2/advisor/
 | Person | Workstream | Delivers |
 |---|---|---|
 | **A — Data (Jordan)** | SQLite schema + seed; prereq parser; author 2 degree-req docs; fabricate schedule + students | `schema.sql`, `seed/`, parser script |
-| **B — Planner** | Degree Planner: prereq DAG topo-sort, semester packing, 6-check verifier, plan diff | `planner.py`, `compare.py`, unit tests |
+| **B — Planner (Loc)** | Degree Planner: prereq DAG topo-sort, semester packing, 6-check verifier, plan diff | `planner.py`, `compare.py`, unit tests |
 | **C — RAG (Miguel)** | Chroma ingest (catalog + degree docs + policies), retriever chain, embedding config for both backends | `ingest.py`, RAG chain |
 | **D — Agent (Kyle)** | LangChain orchestrator: intent router, tools, memory, advising dialog, LLM backend abstraction | `router.py`, `tools.py`, `chains.py`, `config.py` |
 | **E — UI/Deliverables (Talha)** | UI (his choice of stack) over `handle_message`, trace logger, demo script, screenshots, PPT, zip packaging | UI files, `tracing.py`, `deliverables/` |

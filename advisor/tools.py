@@ -34,14 +34,14 @@ def generate_degree_plan(student_id: str, include_summer: bool = False) -> dict:
     """Generate a multi-year degree plan for the student. Returns
     DegreePlan.to_dict(). All six verification checks are applied inside the
     planner before any course is recommended."""
-    raise NotImplementedError("TODO Person B")
+    raise NotImplementedError("TODO Loc")
 
 
 @tool
 def verify_course_eligibility(student_id: str, course_id: str, term: str) -> list[dict]:
     """Run the six recommendation checks for a course in a term and return
     per-check pass/fail details."""
-    raise NotImplementedError("TODO Person B")
+    raise NotImplementedError("TODO Loc")
 
 
 @tool
@@ -49,14 +49,14 @@ def modify_plan(student_id: str, add: list[str] | None = None, drop: list[str] |
                 term: str | None = None, courses_per_semester: int | None = None) -> dict:
     """Modify the student's current plan: add/drop courses, or regenerate with
     a different semester course load. Returns the updated plan dict."""
-    raise NotImplementedError("TODO Person B")
+    raise NotImplementedError("TODO Loc")
 
 
 @tool
 def switch_major(student_id: str, new_program_id: str) -> dict:
     """Switch the student's program, generate the new plan, and return
     {new_plan, diff} where diff comes from compare.diff_plans."""
-    raise NotImplementedError("TODO Person B")
+    raise NotImplementedError("TODO Loc")
 
 
 @tool

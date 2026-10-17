@@ -1,4 +1,4 @@
-"""Plan comparison (Person B) — spec req 5(c): comparing a new plan to the
+"""Plan comparison (Loc) — spec req 5(c): comparing a new plan to the
 existing plan (e.g. after a major switch or plan edit)."""
 
 from .planner import DegreePlan
@@ -16,6 +16,6 @@ def diff_plans(old: DegreePlan, new: DegreePlan) -> dict:
           "summary": str,                # human-readable paragraph for the UI
         }
 
-    TODO (Person B): implement.
+    TODO (Loc): implement.
     """
-    raise NotImplementedError("TODO Person B: implement diff_plans")
+    raise NotImplementedError("TODO Loc: implement diff_plans")

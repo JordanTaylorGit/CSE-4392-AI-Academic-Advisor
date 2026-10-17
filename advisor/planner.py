@@ -1,4 +1,4 @@
-"""Degree Planner + Verification Engine (Person B).
+"""Degree Planner + Verification Engine (Loc).
 
 DETERMINISTIC — no LLM calls in this module. The planner topologically orders
 the prerequisite DAG over the student's remaining requirement slots and packs
@@ -111,9 +111,9 @@ def generate_plan(
          program total-credit cap. Honor courses_per_semester / include_summer.
       5. Record warnings for anything that couldn't be placed.
 
-    TODO (Person B): implement.
+    TODO (Loc): implement.
     """
-    raise NotImplementedError("TODO Person B: implement generate_plan")
+    raise NotImplementedError("TODO Loc: implement generate_plan")
 
 
 def verify_course(student_id: str, course_id: str, term: str, plan: DegreePlan | None = None) -> list[CheckResult]:
@@ -121,23 +121,23 @@ def verify_course(student_id: str, course_id: str, term: str, plan: DegreePlan |
     `course_id` for `term`. Returns one CheckResult per check in CHECK_NAMES
     order — the UI renders these as a pass/fail table.
 
-    TODO (Person B): implement.
+    TODO (Loc): implement.
     """
-    raise NotImplementedError("TODO Person B: implement verify_course")
+    raise NotImplementedError("TODO Loc: implement verify_course")
 
 
 def add_course(plan: DegreePlan, course_id: str, term: str) -> DegreePlan:
     """Return a new plan with `course_id` added to `term` (spec req 3 add-class).
     Must re-run the six checks; failures land in plan.warnings.
 
-    TODO (Person B): implement.
+    TODO (Loc): implement.
     """
-    raise NotImplementedError("TODO Person B: implement add_course")
+    raise NotImplementedError("TODO Loc: implement add_course")
 
 
 def drop_course(plan: DegreePlan, course_id: str, term: str) -> DegreePlan:
     """Return a new plan with `course_id` removed from `term`.
 
-    TODO (Person B): implement.
+    TODO (Loc): implement.
     """
-    raise NotImplementedError("TODO Person B: implement drop_course")
+    raise NotImplementedError("TODO Loc: implement drop_course")
