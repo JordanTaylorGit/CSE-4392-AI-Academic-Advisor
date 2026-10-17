@@ -1,0 +1,15 @@
+[
+  { "course_id": "MATH 1426", "dept": "MATH", "number": "1426", "title": "CALCULUS I", "credits": 4, "description": "Limits, continuity, differentiation, applications of the derivative, integration." },
+  { "course_id": "MATH 2425", "dept": "MATH", "number": "2425", "title": "CALCULUS II", "credits": 4, "description": "Applications of integration, techniques of integration, parametric equations, polar coordinates, sequences and series." },
+  { "course_id": "MATH 2326", "dept": "MATH", "number": "2326", "title": "CALCULUS III", "credits": 3, "description": "Vectors, partial differentiation, multiple integrals, vector calculus." },
+  { "course_id": "MATH 3318", "dept": "MATH", "number": "3318", "title": "DIFFERENTIAL EQUATIONS", "credits": 3, "description": "Ordinary differential equations, Laplace transforms, systems of equations." },
+  { "course_id": "MATH 3330", "dept": "MATH", "number": "3330", "title": "MATRIX METHODS AND LINEAR ALGEBRA", "credits": 3, "description": "Matrices, determinants, linear systems, eigenvalues, vector spaces." },
+  { "course_id": "PHYS 1443", "dept": "PHYS", "number": "1443", "title": "GENERAL TECHNICAL PHYSICS I", "credits": 4, "description": "Mechanics with calculus; lab included." },
+  { "course_id": "PHYS 1444", "dept": "PHYS", "number": "1444", "title": "GENERAL TECHNICAL PHYSICS II", "credits": 4, "description": "Electricity, magnetism, waves; lab included." },
+  { "course_id": "ENGL 1301", "dept": "ENGL", "number": "1301", "title": "RHETORIC AND COMPOSITION I", "credits": 3, "description": "Academic writing and critical reading." },
+  { "course_id": "ENGL 1302", "dept": "ENGL", "number": "1302", "title": "RHETORIC AND COMPOSITION II", "credits": 3, "description": "Research writing and argumentation." },
+  { "course_id": "HIST 1301", "dept": "HIST", "number": "1301", "title": "HISTORY OF THE UNITED STATES I", "credits": 3, "description": "US history to 1865." },
+  { "course_id": "HIST 1302", "dept": "HIST", "number": "1302", "title": "HISTORY OF THE UNITED STATES II", "credits": 3, "description": "US history since 1865." },
+  { "course_id": "POLS 2311", "dept": "POLS", "number": "2311", "title": "GOVERNMENT OF THE UNITED STATES", "credits": 3, "description": "US constitutional and political systems." },
+  { "course_id": "POLS 2312", "dept": "POLS", "number": "2312", "title": "STATE AND LOCAL GOVERNMENT", "credits": 3, "description": "Texas and local government." }
+]

@@ -1,0 +1,28 @@
+[project]
+name = "ai-advisor"
+version = "0.1.0"
+description = "Academic AI Advisor — CSE 4392 Team Assignment 2 (LangChain + RAG + deterministic degree planner)"
+requires-python = ">=3.11"
+dependencies = [
+    "langchain>=0.3",
+    "langchain-core>=0.3",
+    "langchain-community>=0.3",
+    "langchain-ollama>=0.2",
+    "langchain-openai>=0.2",
+    "langchain-chroma>=0.1.4",
+    "chromadb>=0.5",
+    "streamlit>=1.38",
+    "sqlalchemy>=2.0",
+    "pypdf>=4",
+]
+
+[dependency-groups]
+dev = [
+    "pytest>=8",
+]
+
+[tool.uv]
+package = false
+
+[tool.pytest.ini_options]
+pythonpath = ["."]

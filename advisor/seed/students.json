@@ -1,0 +1,64 @@
+[
+  {
+    "student_id": "s_freshman",
+    "name": "Alex Freshman",
+    "program_id": "bs_cs_cyber",
+    "start_term": "F2026",
+    "max_credits_per_semester": 15,
+    "completed_courses": [],
+    "note": "New student — full 4-year plan from scratch."
+  },
+  {
+    "student_id": "s_sophomore",
+    "name": "Sam Martinez",
+    "program_id": "bs_cs_cyber",
+    "start_term": "F2025",
+    "max_credits_per_semester": 15,
+    "completed_courses": [
+      { "course_id": "CSE 1105", "term": "F2025", "grade": "A" },
+      { "course_id": "CSE 1310", "term": "F2025", "grade": "B" },
+      { "course_id": "MATH 1426", "term": "F2025", "grade": "B" },
+      { "course_id": "CSE 1320", "term": "S2026", "grade": "A" },
+      { "course_id": "CSE 1325", "term": "S2026", "grade": "A" },
+      { "course_id": "MATH 2425", "term": "S2026", "grade": "C" },
+      { "course_id": "CSE 2315", "term": "F2026", "grade": "B" }
+    ],
+    "note": "Mid-degree CS/cyber student — primary demo persona."
+  },
+  {
+    "student_id": "s_switcher",
+    "name": "Jordan Lee",
+    "program_id": "bs_se_ai",
+    "start_term": "F2025",
+    "max_credits_per_semester": 15,
+    "completed_courses": [
+      { "course_id": "CSE 1105", "term": "F2025", "grade": "A" },
+      { "course_id": "CSE 1310", "term": "F2025", "grade": "A" },
+      { "course_id": "CSE 1320", "term": "S2026", "grade": "B" },
+      { "course_id": "CSE 1325", "term": "S2026", "grade": "A" },
+      { "course_id": "MATH 1426", "term": "S2026", "grade": "B" }
+    ],
+    "note": "SE/AI student considering a switch to CS — drives the major-switch demo."
+  },
+  {
+    "student_id": "s_senior",
+    "name": "Pat Nguyen",
+    "program_id": "bs_cs_cyber",
+    "start_term": "F2023",
+    "max_credits_per_semester": 18,
+    "completed_courses": [
+      { "course_id": "CSE 1105", "term": "F2023", "grade": "A" },
+      { "course_id": "CSE 1310", "term": "F2023", "grade": "A" },
+      { "course_id": "CSE 1320", "term": "S2024", "grade": "B" },
+      { "course_id": "CSE 1325", "term": "S2024", "grade": "A" },
+      { "course_id": "CSE 2315", "term": "F2024", "grade": "A" },
+      { "course_id": "CSE 2312", "term": "F2024", "grade": "B" },
+      { "course_id": "CSE 3310", "term": "S2025", "grade": "A" },
+      { "course_id": "CSE 3315", "term": "S2025", "grade": "B" },
+      { "course_id": "CSE 3320", "term": "F2025", "grade": "A" },
+      { "course_id": "MATH 1426", "term": "F2023", "grade": "B" },
+      { "course_id": "MATH 2425", "term": "S2024", "grade": "A" }
+    ],
+    "note": "Near-grad senior — short remaining plan, edge cases for credit caps."
+  }
+]
