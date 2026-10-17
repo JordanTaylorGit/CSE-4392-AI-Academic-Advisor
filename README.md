@@ -52,7 +52,7 @@ advisor/            the package
   memory.py         conversation state + persisted chat history          [Kyle]
   orchestrator.py   handle_message(): router -> handlers, tracing        [Kyle]
   ingest.py         Chroma ingest pipeline (catalog, degree docs)        [Miguel]
-  tracing.py        execution-trace logger -> logs/traces.jsonl          [Person E]
+  tracing.py        execution-trace logger -> logs/traces.jsonl          [Talha]
   seed/
     schema.sql      DB schema (CONTRACT — frozen)                        [Jordan]
     students.json   sample student personas                              [Jordan]
@@ -61,7 +61,7 @@ advisor/            the package
     catalog/        cse_undergrad_courses.pdf + course-desc.jsonl        [have]
 cli.py              stdlib reference client (UI contract example)        [Talha owns the real UI]
 logs/traces.jsonl   execution trace log (deliverable)
-deliverables/       PPT, screenshots, zip staging                        [Person E]
+deliverables/       PPT, screenshots, zip staging                        [Talha]
 tests/              pytest
 ```
 
@@ -71,7 +71,7 @@ tests/              pytest
 - **`tools.py`** — tool function signatures the orchestrator/UI call.
 - **Degree-plan JSON shape** — `DegreePlan.to_dict()` in `planner.py`; UI and the
   compare module consume this shape.
-- **Trace record shape** — `tracing.py` `trace()` fields; Person E renders the log.
+- **Trace record shape** — `tracing.py` `trace()` fields; Talha renders the log.
 - **UI contract** — `orchestrator.handle_message(student_id, message, history) -> str`.
   Talha picks the UI stack; `cli.py` shows the intended call pattern.
 

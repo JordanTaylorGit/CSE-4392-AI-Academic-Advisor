@@ -1,7 +1,7 @@
 """Execution-trace logger -> logs/traces.jsonl (required deliverable).
 
 Every significant event — user message, routed intent, tool call, retrieval
-hits, LLM prompt/response — is appended as one JSON line. Person E owns the
+hits, LLM prompt/response — is appended as one JSON line. Talha owns the
 rendering of this log for the final zip.
 """
 
