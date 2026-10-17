@@ -43,7 +43,7 @@ uv run python cli.py
 advisor/            the package
   config.py         LLM/embeddings backend switch (ollama | openai)      [Person D]
   paths.py          repo-relative paths                                  [shared]
-  db.py             SQLite engine, schema init, seed loaders             [Person A]
+  db.py             SQLite engine, schema init, seed loaders             [Jordan]
   planner.py        Degree Planner + 6-check Verification Engine         [Person B]
   compare.py        plan diff (old plan vs new plan)                     [Person B]
   router.py         LLM intent classifier                                [Person D]
@@ -54,10 +54,10 @@ advisor/            the package
   ingest.py         Chroma ingest pipeline (catalog, degree docs)        [Person C]
   tracing.py        execution-trace logger -> logs/traces.jsonl          [Person E]
   seed/
-    schema.sql      DB schema (CONTRACT — frozen)                        [Person A]
-    students.json   sample student personas                              [Person A]
-    schedule.json   fabricated sections, next 3 terms                    [Person A]
-    degree_reqs/    narrative degree-requirement docs (-> Chroma + SQL)  [Person A]
+    schema.sql      DB schema (CONTRACT — frozen)                        [Jordan]
+    students.json   sample student personas                              [Jordan]
+    schedule.json   fabricated sections, next 3 terms                    [Jordan]
+    degree_reqs/    narrative degree-requirement docs (-> Chroma + SQL)  [Jordan]
     catalog/        cse_undergrad_courses.pdf + course-desc.jsonl        [have]
 cli.py              stdlib reference client (UI contract example)        [Talha owns the real UI]
 logs/traces.jsonl   execution trace log (deliverable)
@@ -67,7 +67,7 @@ tests/              pytest
 
 ## Integration contracts (frozen — don't change without telling the team)
 
-- **`seed/schema.sql`** — table names/columns. Person A owns; everyone else reads only.
+- **`seed/schema.sql`** — table names/columns. Jordan owns; everyone else reads only.
 - **`tools.py`** — tool function signatures the orchestrator/UI call.
 - **Degree-plan JSON shape** — `DegreePlan.to_dict()` in `planner.py`; UI and the
   compare module consume this shape.

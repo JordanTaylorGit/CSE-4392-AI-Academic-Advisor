@@ -111,7 +111,7 @@ Assignments/Team Assignment 2/advisor/
 
 | Person | Workstream | Delivers |
 |---|---|---|
-| **A — Data** | SQLite schema + seed; prereq parser; author 2 degree-req docs; fabricate schedule + students | `schema.sql`, `seed/`, parser script |
+| **A — Data (Jordan)** | SQLite schema + seed; prereq parser; author 2 degree-req docs; fabricate schedule + students | `schema.sql`, `seed/`, parser script |
 | **B — Planner** | Degree Planner: prereq DAG topo-sort, semester packing, 6-check verifier, plan diff | `planner.py`, `compare.py`, unit tests |
 | **C — RAG** | Chroma ingest (catalog + degree docs + policies), retriever chain, embedding config for both backends | `ingest.py`, RAG chain |
 | **D — Agent** | LangChain orchestrator: intent router, tools, memory, advising dialog, LLM backend abstraction | `router.py`, `tools.py`, `chains.py`, `config.py` |
@@ -155,7 +155,7 @@ the tool signatures in `tools.py`, and the JSON shape of a degree plan.
 | Risk | Mitigation |
 |---|---|
 | Small local models are unreliable tool-callers | Router architecture (narrow prompts per step); OpenAI fallback via env var for the demo if needed |
-| Degree-requirement data doesn't exist | Person A authors it day 1 — it's a fabricated-but-realistic dataset; the spec only requires the system to work, not real UTA audits |
+| Degree-requirement data doesn't exist | Jordan authors it day 1 — it's a fabricated-but-realistic dataset; the spec only requires the system to work, not real UTA audits |
 | Prereq parsing from PDF prose is messy | Parse the common "Prerequisite: X, Y" patterns; hand-curate stragglers in a table — 75 courses is small enough |
 | Scope creep | Fixed scope: 2 degree programs, ~4 students, next-3-terms schedule only |
 | Integration pain late in the week | Freeze schema + tool signatures on day 1; core loop must work by Tue |

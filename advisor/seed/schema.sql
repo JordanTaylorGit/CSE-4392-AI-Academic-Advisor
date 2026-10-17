@@ -1,4 +1,4 @@
--- AI Advisor SQLite schema (CONTRACT — Person A owns; others read only)
+-- AI Advisor SQLite schema (CONTRACT — Jordan owns; others read only)
 --
 -- Structural data: courses, prerequisites, sections (schedule), students,
 -- completed/enrolled courses, degree programs + requirement slots, saved plans,

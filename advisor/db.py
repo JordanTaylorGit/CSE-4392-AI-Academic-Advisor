@@ -1,4 +1,4 @@
-"""SQLite access layer (Person A owns the data; schema is a frozen contract).
+"""SQLite access layer (Jordan owns the data; schema is a frozen contract).
 
 Creates advisor.db from seed/schema.sql and loads seed datasets:
   - courses          <- catalog/course-desc.jsonl
@@ -6,7 +6,7 @@ Creates advisor.db from seed/schema.sql and loads seed datasets:
   - sections         <- seed/schedule.json
   - students         <- seed/students.json
 
-TODO (Person A):
+TODO (Jordan):
   - Parse prerequisite clauses out of the catalog PDF text into
     `prerequisites` (use advisor/ingest.py's course loader for the raw text).
   - Expand requirement_slots to cover BOTH programs fully (the .md docs are
@@ -70,7 +70,7 @@ def _seed(conn) -> None:
 
 
 def _seed_courses(conn) -> None:
-    # TODO(Person A): augment credits from catalog text; add non-CSE courses
+    # TODO(Jordan): augment credits from catalog text; add non-CSE courses
     # (MATH, ENGL, PHYS, ...) referenced by requirement slots.
     for line in COURSE_DESC_JSONL.read_text(encoding="utf-8").splitlines():
         if not line.strip():
@@ -88,7 +88,7 @@ def _seed_courses(conn) -> None:
 
 def _seed_extra_courses(conn) -> None:
     # Non-CSE courses referenced by seeds and requirement slots.
-    # TODO(Person A): expand as requirement_slots coverage grows.
+    # TODO(Jordan): expand as requirement_slots coverage grows.
     if not EXTRA_COURSES_JSON.exists():
         return
     for c in json.loads(EXTRA_COURSES_JSON.read_text(encoding="utf-8")):

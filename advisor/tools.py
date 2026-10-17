@@ -14,19 +14,19 @@ from . import chains, compare, db, planner
 def get_student_record(student_id: str) -> dict:
     """Look up a student's profile: program, completed courses, current
     enrollments. Exact-match SQL query."""
-    raise NotImplementedError("TODO Person D/A")
+    raise NotImplementedError("TODO Person D/Jordan")
 
 
 @tool
 def get_course_prerequisites(course_id: str) -> list[dict]:
     """Return the prerequisite groups for a course (e.g. 'CSE 3310')."""
-    raise NotImplementedError("TODO Person A")
+    raise NotImplementedError("TODO Jordan")
 
 
 @tool
 def get_class_schedule(course_id: str | None = None, term: str | None = None) -> list[dict]:
     """List scheduled sections, optionally filtered by course and/or term."""
-    raise NotImplementedError("TODO Person A")
+    raise NotImplementedError("TODO Jordan")
 
 
 @tool
