@@ -20,16 +20,21 @@ class NotReady(Exception):
     """A teammate's module is still a stub."""
 
 
-def _call(action: str, student_id: str, live, fallback, use_preview: bool, **fields):
+def _call(action: str, student_id: str, live, fallback, use_preview: bool,
+          log: bool = True, **fields):
+    """Run `live`, or `fallback` in preview mode when it isn't implemented.
+    log=False for passive reads that run on every redraw (keeps the trace readable)."""
     try:
         result, source = live(), "live"
     except NotImplementedError as e:
         if not use_preview:
-            tracing.trace("ui_action", student_id=student_id, action=action,
-                          source="not_ready", error=str(e), **fields)
+            if log:
+                tracing.trace("ui_action", student_id=student_id, action=action,
+                              source="not_ready", error=str(e), **fields)
             raise NotReady(str(e)) from e
         result, source = fallback(), "preview"
-    tracing.trace("ui_action", student_id=student_id, action=action, source=source, **fields)
+    if log:
+        tracing.trace("ui_action", student_id=student_id, action=action, source=source, **fields)
     return result, source
 
 
@@ -169,7 +174,7 @@ def requirement_progress(student_id: str, program_id: str, plan: dict | None, us
         "requirement_progress", student_id,
         live=lambda: _requirements_live(student_id, program_id, plan),
         fallback=lambda: preview.requirements(student_id, program_id, plan),
-        use_preview=use_preview, program_id=program_id,
+        use_preview=use_preview, log=False, program_id=program_id,
     )
 
 
@@ -184,11 +189,17 @@ def ask(student_id: str, prompt: str, messages: list[dict], plan: dict | None,
     placeholder answers stand in for the orchestrator.
     """
     if use_preview:
+        # The orchestrator logs live turns itself; log preview turns the same way.
+        tracing.trace("user_msg", student_id=student_id, message=prompt, source="preview")
         reply, source = preview.chat_reply(student_id, prompt, plan), "preview"
+        tracing.trace("assistant_msg", student_id=student_id, intent="preview",
+                      reply=reply["text"][:2000], cards=[c.get("type") for c in reply["cards"]],
+                      source="preview")
     else:
         raw, source = orchestrator.handle_message(student_id, prompt, messages), "live"
         reply = raw if isinstance(raw, dict) else {"text": str(raw), "cards": []}
+        if reply.get("cards"):
+            tracing.trace("ui_action", student_id=student_id, action="show_cards", source="live",
+                          cards=[c.get("type") for c in reply["cards"]])
     reply.setdefault("cards", [])
-    tracing.trace("ui_action", student_id=student_id, action="chat_reply", source=source,
-                  cards=[c.get("type") for c in reply["cards"]])
     return reply, source

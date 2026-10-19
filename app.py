@@ -14,11 +14,13 @@ The top bar selects the student (login is assumed per the spec). All backend
 calls except chat go through ui/services.py; all styling is in ui/theme.py.
 """
 
+import json
 import time
+import uuid
 
 import streamlit as st
 
-from advisor import db, planner
+from advisor import db, planner, tracing
 from ui import components as ui
 from ui import services as svc
 from ui import theme
@@ -53,6 +55,8 @@ ss.setdefault("messages", {})   # student_id -> chat messages
 ss.setdefault("plans", {})      # student_id -> current plan dict
 ss.setdefault("sources", {})    # student_id -> "live" | "preview"
 ss.setdefault("undo", {})       # student_id -> (label, previous plan) for the last add/drop
+ss.setdefault("trace_session", f"ui-{uuid.uuid4().hex[:8]}")
+tracing.set_session(ss.trace_session)  # tag this run's trace records with the session
 
 if not STUDENTS:
     ui.note("There are no students in the database. Run <code>uv run python -m advisor.db</code> "
@@ -77,8 +81,10 @@ with st.container(key="topbar"):
     with c_brand:
         ui.wordmark()
     with c_nav:
-        ss.setdefault("section", "Plan")  # no default=: "Open in Plan" also sets it from code
-        section = st.segmented_control("Section", SECTIONS, key="section",
+        sections = SECTIONS + (["Traces"] if ss.get("show_traces") else [])
+        if ss.get("section") not in sections:
+            ss["section"] = "Plan"  # no default=: "Open in Plan" also sets it from code
+        section = st.segmented_control("Section", sections, key="section",
                                        label_visibility="collapsed") or ss.get("last_section", "Plan")
         ss.last_section = section
     with c_student:
@@ -102,6 +108,8 @@ with st.container(key="topbar"):
             st.toggle("Use preview data", key="use_preview",
                       help="While the planner is still a stub, show placeholder plans so the UI "
                            "can be tested. Real results replace it automatically once implemented.")
+            st.toggle("Show execution traces", key="show_traces",
+                      help="Adds a Traces section: every chat turn and action, step by step.")
 
 use_preview = ss.get("use_preview", False)
 plan = ss.plans.get(student_id)
@@ -356,3 +364,35 @@ elif section == "Switch major":
                 set_plan(result["new"], result["source"])
                 ss.pop("switch")
                 st.rerun()
+
+elif section == "Traces":
+    with st.container(key="card_traces"):
+        st.markdown("### Execution trace")
+        st.caption("Every chat turn and action, step by step, as written to logs/traces.jsonl "
+                   "(the trace log submitted with the project).")
+        c1, c2, c3 = st.columns([1.35, 1.6, 2.2], vertical_alignment="bottom")
+        scope = c1.segmented_control("Sessions", ["This session", "All"],
+                                     default="This session", key="trace_scope") or "This session"
+        who = c2.segmented_control("Students", ["This student", "All students"],
+                                   default="All students", key="trace_who") or "All students"
+        query = c3.text_input("Search", placeholder="Search messages, intents, courses…",
+                              key="trace_query").strip().lower()
+        records = tracing.read(session=ss.trace_session if scope == "This session" else None,
+                               student_id=student_id if who == "This student" else None)
+        groups = tracing.group_turns(records)
+        if query:
+            groups = [g for g in groups
+                      if query in json.dumps(g["events"], ensure_ascii=False).lower()]
+        ui.trace_summary(groups, tracing.duration_ms)
+        shown = [r for g in groups for r in g["events"]]
+        st.download_button("Download these events (.jsonl)", width="content",
+                           data="".join(json.dumps(r, ensure_ascii=False) + "\n" for r in shown),
+                           file_name="traces.jsonl", mime="application/json",
+                           disabled=not shown)
+    if groups:
+        names = {sid: s_["name"] for sid, s_ in STUDENTS.items()}
+        ui.trace_list(groups[-100:], names, tracing.duration_ms)
+        if len(groups) > 100:
+            st.caption(f"Showing the newest 100 of {len(groups)}. Download for the full log.")
+    else:
+        st.caption("Nothing logged here yet. Use the advisor in another section, then come back.")

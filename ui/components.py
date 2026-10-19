@@ -304,3 +304,69 @@ def chat_card(card: dict) -> None:
         st.html(f'<div class="adv-chatcard">{plan_table(card["old"], "Now")}'
                 f'{plan_table(card["new"], "After switching")}</div>')
         diff_view(card["diff"])
+
+
+# ------------------------------------------------------------------- traces
+
+TRACE_HIDDEN = {"ts", "event", "session", "student_id"}
+SOURCE_LABEL = {"live": "Live", "preview": "Preview", "not_ready": "Not built"}
+
+
+def _local_time(ts: str) -> str:
+    from datetime import datetime
+    return datetime.fromisoformat(ts).astimezone().strftime("%b %d, %H:%M:%S")
+
+
+def _fields(r: dict) -> str:
+    parts = []
+    for k, v in r.items():
+        if k in TRACE_HIDDEN or v in (None, "", []):
+            continue
+        text = ", ".join(map(str, v)) if isinstance(v, list) else str(v)
+        text = text if len(text) <= 160 else text[:160] + "…"
+        parts.append(f'<span><i>{escape(k.replace("_", " "))}</i> {escape(text)}</span>')
+    return "".join(parts)
+
+
+def _source(r: dict) -> str:
+    s = r.get("source")
+    return f'<span class="adv-src {escape(s)}">{SOURCE_LABEL.get(s, escape(s))}</span>' if s else ""
+
+
+def trace_summary(groups: list[dict], duration_ms) -> None:
+    turns = [g for g in groups if g["kind"] == "turn"]
+    actions = len(groups) - len(turns)
+    events = sum(len(g["events"]) for g in groups)
+    avg = (f'{sum(duration_ms(g) for g in turns) // len(turns)} ms' if turns else "—")
+    st.html(f'<div class="adv-stats adv-trace-stats"><span><b>{len(turns)}</b> chat turns</span>'
+            f'<span><b>{actions}</b> actions</span><span><b>{events}</b> events</span>'
+            f'<span>Average turn <b>{avg}</b></span></div>')
+
+
+def trace_list(groups: list[dict], names: dict[str, str], duration_ms) -> None:
+    """Newest first: chat turns as step-by-step cards, UI actions as compact rows."""
+    items = []
+    for g in reversed(groups):
+        who = escape(names.get(g["student_id"], g["student_id"] or "unknown"))
+        when = _local_time(g["start"])
+        if g["kind"] == "turn":
+            steps = "".join(
+                f'<li><span class="adv-ev">{escape(r["event"].replace("_", " "))}</span>'
+                f'<span class="adv-kv">{_source(r)}{_fields(r)}</span></li>' for r in g["events"])
+            intent = (f'<span class="adv-src intent">{escape(str(g["intent"]).replace("_", " "))}</span>'
+                      if g["intent"] else "")
+            pending = "" if g["reply"] is not None else '<span class="adv-src not_ready">No reply logged</span>'
+            items.append(
+                f'<article class="adv-trace"><header><span class="adv-trace-kind">Chat turn</span>'
+                f'{intent}{pending}<span class="adv-trace-meta">{who} · {when} · {duration_ms(g)} ms</span>'
+                f'</header><p class="adv-trace-q">{escape(g["message"])}</p>'
+                f'<ol class="adv-trace-steps">{steps}</ol></article>')
+        else:
+            r = g["events"][0]
+            name = r.get("action") or r["event"]
+            items.append(
+                f'<article class="adv-trace action"><header><span class="adv-trace-kind">'
+                f'{escape(name.replace("_", " ").capitalize())}</span>{_source(r)}'
+                f'<span class="adv-trace-meta">{who} · {when}</span></header>'
+                f'<div class="adv-kv">{_fields(r)}</div></article>')
+    st.html(f'<div class="adv-traces">{"".join(items)}</div>')

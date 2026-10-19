@@ -289,6 +289,28 @@ ul.adv-chatcard { padding: 0 !important; overflow: hidden; }
 .adv-chatcard .adv-row { grid-template-columns: 5.6rem 1fr auto; padding: .6rem .8rem; font-size: .9rem; }
 [data-testid="stChatMessageContent"] .stButton > button { background: var(--card); min-height: 2.1rem; font-size: .88rem; }
 
+/* ---------------- execution traces ---------------- */
+.adv-trace-stats { margin: 0 0 1.25rem; }
+.adv-traces { display: flex; flex-direction: column; gap: .75rem; }
+.adv-trace { background: var(--card); border-radius: 14px; box-shadow: var(--shadow); padding: .95rem 1.1rem; }
+.adv-trace header { display: flex; flex-wrap: wrap; align-items: center; gap: .45rem .6rem; }
+.adv-trace-kind { font-weight: 600; font-size: .92rem; }
+.adv-trace-meta { margin-left: auto; color: var(--text-2); font-size: .82rem; font-variant-numeric: tabular-nums; }
+.adv-trace-q { margin: .55rem 0 .4rem; font-size: 1rem; }
+.adv-trace-steps { list-style: none; margin: .3rem 0 0 !important; padding: 0 0 0 1rem !important;
+  border-left: 2px solid var(--hairline); display: flex; flex-direction: column; gap: .45rem; }
+.adv-trace-steps li { margin: 0 !important; display: grid; grid-template-columns: 8.5rem 1fr; gap: .6rem; font-size: .86rem; }
+.adv-ev { color: var(--text-2); font-weight: 600; text-transform: capitalize; }
+.adv-kv { display: flex; flex-wrap: wrap; gap: .25rem .9rem; font-size: .86rem; line-height: 1.4; }
+.adv-kv i { font-style: normal; color: var(--text-2); margin-right: .15rem; }
+.adv-trace.action { padding: .7rem 1.1rem; }
+.adv-trace.action .adv-kv { margin-top: .35rem; }
+.adv-src { font-size: .74rem; font-weight: 600; padding: .12rem .5rem; border-radius: 980px; white-space: nowrap; }
+.adv-src.live { background: var(--green-tint); color: var(--green); }
+.adv-src.preview { background: var(--orange-tint); color: var(--orange); }
+.adv-src.not_ready { background: var(--fill); color: var(--text-2); }
+.adv-src.intent { background: var(--blue-tint); color: var(--blue-text); text-transform: capitalize; }
+
 @media (max-width: 720px) {
   .block-container { padding: 0 1rem 6rem; }
   .st-key-topbar { margin: 0 -1rem 1.75rem; padding: .5rem 1rem; }
@@ -296,6 +318,8 @@ ul.adv-chatcard { padding: 0 !important; overflow: hidden; }
   .adv-row { grid-template-columns: 1fr auto; }
   .adv-row .adv-title { grid-column: 1 / 3; grid-row: 2; }
   .adv-compare { grid-template-columns: 1fr; }
+  .adv-trace-steps li { grid-template-columns: 1fr; gap: .1rem; }
+  .adv-trace-meta { margin-left: 0; width: 100%; }
 }
 /* ---------------- motion ----------------
    Purposeful only (HIG motion.md): one load moment for the hero, and motion that
