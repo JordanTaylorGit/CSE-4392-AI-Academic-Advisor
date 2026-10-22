@@ -107,3 +107,96 @@ def test_verification_does_not_mutate_plan(catalog):
     before = deepcopy(p)
     checks("CSE 4000", plan=p)
     assert p == before
+
+
+def test_generate_plan_packs_prerequisites_before_dependents(catalog):
+    p = planner.generate_plan("s1")
+    terms = {c["course_id"]: s.term for s in p.semesters for c in s.courses}
+    assert terms["CSE 1000"] == "F2026"
+    assert planner.term_key(terms["CSE 1000"]) < planner.term_key(terms["CSE 2000"])
+    assert planner.term_key(terms["CSE 2000"]) < planner.term_key(terms["CSE 3000"])
+    assert len(terms) == 5
+    assert not p.warnings
+    assert all(s.credits <= 6 for s in p.semesters)
+    for semester in p.semesters:
+        for course in semester.courses:
+            assert all(c.passed for c in planner.verify_course("s1", course["course_id"], semester.term, p))
+    assert p.to_dict() == planner.generate_plan("s1").to_dict()
+
+
+def test_course_limit_and_optional_summer(catalog):
+    p = planner.generate_plan("s1", include_summer=True, courses_per_semester=1)
+    assert len(p.semesters) == 5
+    assert p.semesters[2].term == "SU2027"
+    assert all(len(s.courses) <= 1 for s in p.semesters)
+    assert not p.warnings
+    assert all(not s.term.startswith("SU") for s in planner.generate_plan("s1").semesters)
+    with pytest.raises(ValueError, match="positive"):
+        planner.generate_plan("s1", courses_per_semester=0)
+
+
+def test_generation_uses_transcript_to_advance_start(catalog):
+    catalog.execute("INSERT INTO completed_courses VALUES ('s1', 'CSE 1000', 'F2026', 'B')")
+    p = planner.generate_plan("s1")
+    assert p.semesters[0].term == "S2027"
+    assert "CSE 1000" not in {c["course_id"] for s in p.semesters for c in s.courses}
+
+
+def test_generation_handles_missing_requirements_schedules_and_cycles(catalog):
+    catalog.execute("INSERT INTO prerequisites VALUES ('CSE 1000', 1, 'CSE 3000', 'C')")
+    p = planner.generate_plan("s1")
+    assert p.warnings
+    assert not {"CSE 1000", "CSE 2000", "CSE 3000"} & {
+        c["course_id"] for s in p.semesters for c in s.courses}
+    catalog.execute("DELETE FROM sections")
+    p = planner.generate_plan("s1")
+    assert not p.semesters and any("schedule" in w.lower() for w in p.warnings)
+    catalog.execute("DELETE FROM requirement_slots WHERE program_id='cs'")
+    p = planner.generate_plan("s1")
+    assert not p.semesters and any("requirement" in w.lower() for w in p.warnings)
+
+
+def test_generation_preserves_fixed_enrollments(catalog):
+    catalog.execute("INSERT INTO enrollments VALUES ('s1', '4000-F2026')")
+    p = planner.generate_plan("s1")
+    assert "CSE 4000" in {c["course_id"] for c in p.semesters[0].courses}
+    assert p.semesters[0].credits <= 6
+
+
+def test_generation_can_change_program_without_mutating_student(catalog):
+    p = planner.generate_plan("s1", program_id="se")
+    assert p.program_id == "se"
+    assert p.semesters[0].courses[0]["course_id"] == "CSE 4300"
+    assert catalog.query("SELECT program_id FROM students")[0]["program_id"] == "cs"
+
+
+def test_add_rejects_invalid_courses_and_never_mutates_original(catalog):
+    p = plan_with(("F2026", ["CSE 1000"]))
+    original = deepcopy(p)
+    bad = planner.add_course(p, "CSE 2000", "F2026")
+    assert bad.semesters == p.semesters
+    assert any("prerequisites_met" in w for w in bad.warnings)
+    good = planner.add_course(p, "CSE 2000", "S2027")
+    assert len(good.semesters) == 2
+    assert not any("[verification]" in w for w in good.warnings)
+    assert p == original
+    duplicate = planner.add_course(p, "CSE 1000", "F2026")
+    assert duplicate.semesters == p.semesters
+
+
+def test_drop_rechecks_downstream_prerequisites_and_clears_stale_warnings(catalog):
+    p = plan_with(("F2026", ["CSE 1000"]), ("S2027", ["CSE 2000"]))
+    original = deepcopy(p)
+    dropped = planner.drop_course(p, "CSE 1000", "F2026")
+    assert any("CSE 2000" in w and "prerequisites_met" in w for w in dropped.warnings)
+    restored = planner.add_course(dropped, "CSE 1000", "F2026")
+    assert not any("prerequisites_met" in w for w in restored.warnings)
+    assert p == original
+
+
+def test_overlapping_elective_slots_do_not_waste_a_required_course(catalog):
+    catalog.execute("UPDATE requirement_slots SET options='[\"CSE 1000\", \"CSE 4100\"]'"
+                    " WHERE category='elective'")
+    p = planner.generate_plan("s1")
+    assert not p.warnings
+    assert p.to_dict()["total_credits_planned"] == 15

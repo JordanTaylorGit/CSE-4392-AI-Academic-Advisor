@@ -19,6 +19,7 @@ The degree-plan JSON contract (consumed by the UI, compare.py, tools.py):
 
 import json
 import re
+from copy import deepcopy
 from dataclasses import dataclass, field
 
 from . import db
@@ -103,21 +104,75 @@ def generate_plan(
     include_summer: bool = False,
     courses_per_semester: int | None = None,
 ) -> DegreePlan:
-    """Generate a multi-year degree plan for `student_id`.
+    """Pack a prerequisite-ready frontier into the available schedule horizon.
 
-    Steps (spec req 2):
-      1. Load the student's program requirement slots and completed courses.
-      2. Compute remaining required courses.
-      3. Topologically sort by prerequisites (a course is schedulable once all
-         its prereq groups are satisfied by completed/earlier-planned courses).
-      4. Pack into chronological terms, respecting each student's
-         max_credits_per_semester, offered sections (sections.term), and the
-         program total-credit cap. Honor courses_per_semester / include_summer.
-      5. Record warnings for anything that couldn't be placed.
-
-    TODO (Loc): implement.
+    A course becomes ready only after its prerequisites occur in earlier terms.
+    Alternative prerequisites/sections are considered without inventing future
+    offerings. Incomplete data or an infeasible graph returns a partial plan
+    with explicit warnings, never an unverified recommendation.
     """
-    raise NotImplementedError("TODO Loc: implement generate_plan")
+    if courses_per_semester is not None and (isinstance(courses_per_semester, bool)
+                                            or not isinstance(courses_per_semester, int)
+                                            or courses_per_semester <= 0):
+        raise ValueError("courses_per_semester must be a positive integer")
+    context = _load_context(student_id, program_id)
+    plan = DegreePlan(student_id, context.program["program_id"])
+    if not context.slots:
+        plan.warnings.append("No requirement slots are loaded for this program; seed the degree requirements first.")
+        return plan
+    start = context.student["start_term"]
+    if context.completed:
+        after_record = next_terms(max((r["term"] for r in context.completed), key=term_key), 1, include_summer)[0]
+        start = max(start, after_record, key=term_key)
+    if start.startswith("SU") and not include_summer:
+        start = next_terms(start, 1)[0]
+    available = sorted({s["term"] for s in context.sections if term_key(s["term"]) >= term_key(start)
+                        and (include_summer or not s["term"].startswith("SU"))}, key=term_key)
+    if not available:
+        plan.warnings.append("No future class schedule is loaded; no courses can be verified.")
+        return plan
+    start = max(start, available[0], key=term_key)
+    terms = [start]
+    while term_key(terms[-1]) < term_key(available[-1]):
+        terms.extend(next_terms(terms[-1], 1, include_summer))
+
+    # Prioritize prerequisite courses that unlock more of the remaining DAG.
+    children: dict[str, set[str]] = {}
+    for row in context.prerequisites:
+        children.setdefault(row["prereq_id"], set()).add(row["course_id"])
+
+    def descendants(cid: str) -> int:
+        seen, pending = {cid}, list(children.get(cid, ()))
+        while pending:
+            child = pending.pop()
+            if child not in seen:
+                seen.add(child)
+                pending.extend(children.get(child, ()))
+        return len(seen) - 1
+
+    candidates = set().union(*(slot.options for slot in context.slots)) & context.courses.keys()
+    order = sorted(candidates, key=lambda cid: (-descendants(cid), cid))
+    for term in terms:
+        semester = PlanSemester(term)
+        plan.semesters.append(semester)
+        for section in context.enrollments:
+            if section["term"] == term and section["course_id"] not in _plan_ids(plan):
+                semester.courses.append(_course_dict(context, section["course_id"]))
+        for cid in order:
+            if courses_per_semester is not None and len(semester.courses) >= courses_per_semester:
+                break
+            if cid in _plan_ids(plan) or cid in _passed(context):
+                continue
+            if all(c.passed for c in _verify(context, cid, term, plan)):
+                semester.courses.append(_course_dict(context, cid))
+        if _requirements_complete(context, _passed(context) | _plan_ids(plan)):
+            break
+    while plan.semesters and not plan.semesters[-1].courses:
+        plan.semesters.pop()
+    _audit(context, plan)
+    if not _requirements_complete(context, _passed(context) | _plan_ids(plan)):
+        plan.warnings.append(f"Schedule horizon ends at {available[-1]}; future offerings are not assumed.")
+    return plan
 
 
 def verify_course(student_id: str, course_id: str, term: str, plan: DegreePlan | None = None) -> list[CheckResult]:
@@ -134,20 +189,57 @@ def verify_course(student_id: str, course_id: str, term: str, plan: DegreePlan |
 
 
 def add_course(plan: DegreePlan, course_id: str, term: str) -> DegreePlan:
-    """Return a new plan with `course_id` added to `term` (spec req 3 add-class).
-    Must re-run the six checks; failures land in plan.warnings.
-
-    TODO (Loc): implement.
-    """
-    raise NotImplementedError("TODO Loc: implement add_course")
+    """Return an independent plan; reject additions that fail any check."""
+    result = deepcopy(plan)
+    context = _load_context(plan.student_id, plan.program_id)
+    term_key(term)
+    if course_id in _plan_ids(plan, term):
+        return result
+    failed = [c for c in _verify(context, course_id, term, plan) if not c.passed]
+    if failed:
+        result.warnings.extend(f"[verification] {course_id} {term}: {c.name}: {c.detail}" for c in failed)
+        return result
+    semester = next((s for s in result.semesters if s.term == term), None)
+    if semester is None:
+        semester = PlanSemester(term)
+        result.semesters.append(semester)
+        result.semesters.sort(key=lambda s: term_key(s.term))
+    semester.courses.append(_course_dict(context, course_id))
+    _audit(context, result)
+    return result
 
 
 def drop_course(plan: DegreePlan, course_id: str, term: str) -> DegreePlan:
-    """Return a new plan with `course_id` removed from `term`.
+    """Remove a course on a copy and flag dependents invalidated by the edit."""
+    term_key(term)
+    result = deepcopy(plan)
+    for semester in result.semesters:
+        if semester.term == term:
+            semester.courses = [c for c in semester.courses if c["course_id"] != course_id]
+    _audit(_load_context(plan.student_id, plan.program_id), result)
+    return result
 
-    TODO (Loc): implement.
-    """
-    raise NotImplementedError("TODO Loc: implement drop_course")
+
+def _course_dict(context: "_Context", cid: str) -> dict:
+    return {key: context.courses[cid][key] for key in ("course_id", "title", "credits")}
+
+
+def _requirements_complete(context: "_Context", ids: set[str]) -> bool:
+    return all(len(taken) >= slot.count for slot, taken in zip(context.slots, _allocation(context, ids)))
+
+
+def _audit(context: "_Context", plan: DegreePlan) -> None:
+    plan.warnings = [w for w in plan.warnings if not w.startswith(("[verification]", "[requirements]", "Schedule horizon"))]
+    for semester in plan.semesters:
+        for course in semester.courses:
+            for check in _verify(context, course["course_id"], semester.term, plan):
+                if not check.passed:
+                    plan.warnings.append(f"[verification] {course['course_id']} {semester.term}: {check.name}: {check.detail}")
+    allocation = _allocation(context, _passed(context) | _plan_ids(plan))
+    for slot, taken in zip(context.slots, allocation):
+        if len(taken) < slot.count:
+            options = ", ".join(sorted(slot.options - taken)) or "no approved courses loaded"
+            plan.warnings.append(f"[requirements] Unfilled {slot.label}: {options}. Check prerequisites, offerings, and credit caps.")
 
 
 @dataclass
