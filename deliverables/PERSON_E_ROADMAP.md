@@ -13,7 +13,7 @@ Due: Sun 10/25/2026. See `PLAN.md` §6–§9 for the team plan.
 - [x] Graceful "not built yet" states + preview-data switch while teammates' modules are stubs
 - [x] Apple/Stripe-style redesign, light + dark, Apple-style motion (reduced-motion safe)
 - [x] Design review vs Apple HIG, contrast fixes -> `deliverables/design_review.md`
-- [x] Commit + push branch `talha/ui-deliverables` (295d9ef). PR to main: later, when the team is ready
+- [x] Commit + push branch `talha/ui-deliverables` (e6b9489 after rebase onto main). PR to main: later, when the team is ready
 - [ ] Look at light mode on screen (only dark mode seen so far)
 - [x] Year view · requirement rings · rich cards in chat answers — built on preview data;
       backend handoff documented in `ui/README.md`
