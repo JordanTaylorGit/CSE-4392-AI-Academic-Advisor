@@ -200,3 +200,46 @@ def test_overlapping_elective_slots_do_not_waste_a_required_course(catalog):
     p = planner.generate_plan("s1")
     assert not p.warnings
     assert p.to_dict()["total_credits_planned"] == 15
+
+
+def test_elective_choice_preserves_a_later_required_prerequisite(catalog):
+    catalog.execute("UPDATE students SET max_credits_per_semester=9")
+    catalog.execute("DELETE FROM requirement_slots WHERE course_id='CSE 2000'")
+    catalog.execute("UPDATE requirement_slots SET options='[\"CSE 2000\", \"CSE 4100\"]'"
+                    " WHERE category='elective'")
+    p = planner.generate_plan("s1")
+    assert not p.warnings
+    assert {c["course_id"] for s in p.semesters for c in s.courses} == {
+        "CSE 1000", "CSE 2000", "CSE 3000", "CSE 4000"}
+
+
+def test_unknown_section_times_are_not_certified_conflict_free(catalog):
+    catalog.execute("UPDATE sections SET days='', start_time='', end_time='' WHERE course_id='CSE 1000'")
+    assert not checks()["no_schedule_conflict"].passed
+
+
+def test_duplicate_entries_in_same_semester_are_flagged(catalog):
+    p = plan_with(("F2026", ["CSE 1000", "CSE 1000"]))
+    assert not checks(plan=p)["not_already_passed"].passed
+
+
+def test_full_multiyear_chain_uses_earlier_terms_for_every_prerequisite(catalog):
+    catalog.execute("DELETE FROM requirement_slots")
+    catalog.execute("DELETE FROM prerequisites")
+    catalog.execute("DELETE FROM sections")
+    ids = ["CSE 1000", "CSE 2000", "CSE 3000", "CSE 4000", "CSE 4100", "CSE 4200", "CSE 4300"]
+    catalog.execute("UPDATE degree_programs SET total_credits=21")
+    terms = ["F2026"] + planner.next_terms("F2026", 7)
+    for i, cid in enumerate(ids):
+        catalog.execute("INSERT INTO requirement_slots (program_id, category, course_id, credits)"
+                        " VALUES ('cs', 'core', :cid, 3)", {"cid": cid})
+        if i:
+            catalog.execute("INSERT INTO prerequisites VALUES (:cid, 1, :prev, 'C')", {"cid": cid, "prev": ids[i-1]})
+        for term in terms:
+            catalog.execute("INSERT INTO sections VALUES (:sid, :cid, :term, 'MWF', '09:00', '10:00', '', 40)",
+                            {"sid": cid+term, "cid": cid, "term": term})
+    p = planner.generate_plan("s1")
+    assert len(p.semesters) == 7
+    assert p.semesters[-1].term == "F2029"
+    assert p.to_dict()["total_credits_planned"] == 21
+    assert not p.warnings

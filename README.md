@@ -21,7 +21,7 @@ See `PLAN.md` for the full architecture, work split, and timeline.
 
 ```bash
 # 1. Install deps (uses uv; https://docs.astral.sh/uv/)
-uv sync
+uv sync --python 3.13
 
 # 2. Pick an LLM backend (default: local Ollama)
 cp .env.example .env          # edit if needed
@@ -81,9 +81,66 @@ Implemented now (scaffold): `paths`, `config` (backend switch), `db` (schema ini
 + seed loading), `tracing`, `memory` (SQLite-backed chat history), `cli.py`
 reference client.
 
-Stubbed with `NotImplementedError` + docstrings (contracts are final, bodies are
-TODOs for the owner): `planner`, `compare`, `router`, `chains`, `tools`,
-`orchestrator`, `ingest`.
+Loc's planner work is implemented in `planner.py`, `compare.py`, and `plan_store.py`.
+The four planner tool bodies in `tools.py` are also implemented; their signatures and the degree-plan JSON contract are unchanged.
+`router`, the orchestrator handlers, the query/RAG tool bodies, and other teammates' stubs still need their owners' implementations.
 
-The app runs today — every query answers "not implemented yet" until the owner
-fills in their module.
+## Deterministic planner (Loc)
+
+Run the tests without Ollama, OpenAI credentials, or an embedding database:
+
+```bash
+uv sync --python 3.13
+uv run pytest -q
+```
+
+Python 3.13 is the tested runtime; the locked ONNX dependency does not currently have a Python 3.15 wheel.
+Tests use temporary SQLite databases, including a small complete catalog and a fixture matching the expanded schema on the Data branch.
+
+The planner supports these operations:
+
+- `generate_plan(student_id, program_id=None, include_summer=False, courses_per_semester=None)` orders courses by prerequisite readiness, packs semesters, and returns a `DegreePlan`.
+- `verify_course(student_id, course_id, term, plan=None)` always returns the six named checks in contract order, including detailed failure reasons.
+- `add_course` and `drop_course` return independent plans and recheck the remaining courses.
+  Invalid additions are rejected; dropping a prerequisite leaves its dependent courses visible with warnings.
+- `diff_plans(old, new)` separates additions, removals, and moves and reports semester/credit changes.
+- The LangChain tools generate and save plans, modify the latest saved plan, verify against it, and atomically save a new plan with a major change.
+  Batch additions are checked together so mutual corequisites can be added in one request.
+  Course additions/removals require an explicit term.
+
+### Planning rules and assumptions
+
+- Prerequisite groups are ANDed; alternatives within a group are ORed.
+  Recorded minimum grades are enforced.
+  Earlier planned prerequisites are conditional on passing them; they are not recorded as completed courses.
+- The expanded schema's corequisites may share a term, and professional-admission restrictions are enforced when selecting requirements.
+- A course fills at most one degree requirement.
+  Fixed, one-of, choose-N, category-hour, and free-elective slots are supported.
+  Only explicitly listed courses are treated as approved for an open category; an open-list flag does not invent approval for other courses.
+- Completed CSE courses need C or better to count toward the degree; other courses need D or better.
+  Unknown grades, pass/fail codes, and incompletes do not establish a letter-grade threshold.
+  Distinct completed retakes are retained when they appear in the expanded enrollment records.
+- Semester credit totals use catalog values and include current enrollments once.
+  Degree caps include applicable completed credits and all planned/enrolled courses, without double-counting the same course.
+- Section selection searches alternative combinations and keeps enrolled sections fixed.
+  Missing sections, unknown meeting times, and conflicting meetings fail verification.
+- Planning starts at the first available term at or after the student's start term and after the latest completed transcript term.
+  Summer is optional, and an explicit course-count limit also respects the credit cap.
+- Generation is deterministic and uses only the supplied schedule horizon.
+  Missing data, prerequisite cycles, unmet admission conditions, or infeasible loads produce partial plans with warnings.
+  It does not promise a globally optimal graduation date or project annual offerings beyond the supplied sections.
+- The legacy schema saves course assignments in `plan_semesters`; warnings are recalculated on load.
+  The expanded schema additionally saves the full JSON snapshot in `plans.plan_json`.
+
+### Integration status
+
+Main's seed loader currently creates zero requirement slots or prerequisite rows.
+It also provides only three terms of sections.
+Jordan's complete degree requirements, prerequisite data, and schedules are needed before the seeded personas can produce useful verified degree plans.
+The planner reports missing requirements explicitly instead of manufacturing degree rules.
+The original schema and Jordan's data files are unchanged by this work.
+Compatibility tests for the expanded schema do not validate or repair the Data branch's unfinished schema/seed loader.
+
+Verification includes a seven-semester prerequisite chain, all six checks, alternative sections, caps, overlapping electives, corequisite bundles, admission restrictions, passing retakes, add/drop, comparison, persistence, and major changes.
+The five planner operations were also exercised through Talha's UI service layer with preview disabled and a complete test catalog.
+Browser rendering and the unfinished conversational router were not part of that service-level integration check.
