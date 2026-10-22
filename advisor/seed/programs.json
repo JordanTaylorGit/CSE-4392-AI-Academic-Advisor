@@ -1,0 +1,12 @@
+[
+  {
+    "program_id": "bs_cs_cyber",
+    "name": "BS in Computer Science + Certificate in Cybersecurity",
+    "total_credits": 123
+  },
+  {
+    "program_id": "bs_se_ai",
+    "name": "BS in Software Engineering + Certificate in Fundamentals of Artificial Intelligence",
+    "total_credits": 127
+  }
+]

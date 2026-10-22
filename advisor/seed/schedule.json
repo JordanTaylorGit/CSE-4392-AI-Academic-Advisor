@@ -1,26 +1,1652 @@
 [
-  { "section_id": "CSE 2315-001-F2026", "course_id": "CSE 2315", "term": "F2026", "days": "MWF", "start_time": "09:00", "end_time": "09:50", "instructor": "Staff" },
-  { "section_id": "CSE 2312-001-F2026", "course_id": "CSE 2312", "term": "F2026", "days": "TR", "start_time": "11:00", "end_time": "12:20", "instructor": "Staff" },
-  { "section_id": "CSE 3302-001-F2026", "course_id": "CSE 3302", "term": "F2026", "days": "MWF", "start_time": "10:00", "end_time": "10:50", "instructor": "Staff" },
-  { "section_id": "CSE 3310-001-F2026", "course_id": "CSE 3310", "term": "F2026", "days": "MWF", "start_time": "09:00", "end_time": "09:50", "instructor": "Staff" },
-  { "section_id": "CSE 3310-002-F2026", "course_id": "CSE 3310", "term": "F2026", "days": "TR", "start_time": "14:00", "end_time": "15:20", "instructor": "Staff" },
-  { "section_id": "CSE 3315-001-F2026", "course_id": "CSE 3315", "term": "F2026", "days": "TR", "start_time": "09:30", "end_time": "10:50", "instructor": "Staff" },
-  { "section_id": "CSE 3320-001-F2026", "course_id": "CSE 3320", "term": "F2026", "days": "MWF", "start_time": "13:00", "end_time": "13:50", "instructor": "Staff" },
-  { "section_id": "MATH 2326-001-F2026", "course_id": "MATH 2326", "term": "F2026", "days": "MWF", "start_time": "11:00", "end_time": "11:50", "instructor": "Staff" },
-  { "section_id": "CSE 2315-001-S2027", "course_id": "CSE 2315", "term": "S2027", "days": "MWF", "start_time": "09:00", "end_time": "09:50", "instructor": "Staff" },
-  { "section_id": "CSE 3310-001-S2027", "course_id": "CSE 3310", "term": "S2027", "days": "MWF", "start_time": "10:00", "end_time": "10:50", "instructor": "Staff" },
-  { "section_id": "CSE 3318-001-S2027", "course_id": "CSE 3318", "term": "S2027", "days": "TR", "start_time": "11:00", "end_time": "12:20", "instructor": "Staff" },
-  { "section_id": "CSE 3320-001-S2027", "course_id": "CSE 3320", "term": "S2027", "days": "MWF", "start_time": "13:00", "end_time": "13:50", "instructor": "Staff" },
-  { "section_id": "CSE 3323-001-S2027", "course_id": "CSE 3323", "term": "S2027", "days": "TR", "start_time": "09:30", "end_time": "10:50", "instructor": "Staff" },
-  { "section_id": "CSE 3330-001-S2027", "course_id": "CSE 3330", "term": "S2027", "days": "MWF", "start_time": "12:00", "end_time": "12:50", "instructor": "Staff" },
-  { "section_id": "CSE 4380-001-S2027", "course_id": "CSE 4380", "term": "S2027", "days": "TR", "start_time": "14:00", "end_time": "15:20", "instructor": "Staff" },
-  { "section_id": "CSE 3380-001-S2027", "course_id": "CSE 3380", "term": "S2027", "days": "MWF", "start_time": "09:00", "end_time": "09:50", "instructor": "Staff" },
-  { "section_id": "CSE 4303-001-S2027", "course_id": "CSE 4303", "term": "S2027", "days": "TR", "start_time": "12:30", "end_time": "13:50", "instructor": "Staff" },
-  { "section_id": "CSE 4308-001-S2027", "course_id": "CSE 4308", "term": "S2027", "days": "MWF", "start_time": "14:00", "end_time": "14:50", "instructor": "Staff" },
-  { "section_id": "CSE 4309-001-S2027", "course_id": "CSE 4309", "term": "S2027", "days": "MWF", "start_time": "15:00", "end_time": "15:50", "instructor": "Staff" },
-  { "section_id": "CSE 4344-001-S2027", "course_id": "CSE 4344", "term": "S2027", "days": "TR", "start_time": "11:00", "end_time": "12:20", "instructor": "Staff" },
-  { "section_id": "CSE 4351-001-S2027", "course_id": "CSE 4351", "term": "S2027", "days": "MWF", "start_time": "10:00", "end_time": "10:50", "instructor": "Staff" },
-  { "section_id": "CSE 3310-001-SU2027", "course_id": "CSE 3310", "term": "SU2027", "days": "MTWR", "start_time": "10:00", "end_time": "11:30", "instructor": "Staff" },
-  { "section_id": "CSE 4344-001-SU2027", "course_id": "CSE 4344", "term": "SU2027", "days": "MTWR", "start_time": "13:00", "end_time": "14:30", "instructor": "Staff" },
-  { "section_id": "CSE 4352-001-SU2027", "course_id": "CSE 4352", "term": "SU2027", "days": "MW", "start_time": "09:00", "end_time": "11:30", "instructor": "Staff" }
+  {
+    "section_id": "CSE 1310-001-F2026",
+    "course_id": "CSE 1310",
+    "term": "F2026",
+    "days": "MWF",
+    "start_time": "08:00",
+    "end_time": "08:50",
+    "instructor": "Staff",
+    "capacity": 60
+  },
+  {
+    "section_id": "CSE 1310-002-F2026",
+    "course_id": "CSE 1310",
+    "term": "F2026",
+    "days": "MWF",
+    "start_time": "10:00",
+    "end_time": "10:50",
+    "instructor": "Staff",
+    "capacity": 45
+  },
+  {
+    "section_id": "CSE 1325-001-F2026",
+    "course_id": "CSE 1325",
+    "term": "F2026",
+    "days": "TR",
+    "start_time": "09:30",
+    "end_time": "10:50",
+    "instructor": "Staff",
+    "capacity": 40
+  },
+  {
+    "section_id": "CSE 2312-001-F2026",
+    "course_id": "CSE 2312",
+    "term": "F2026",
+    "days": "MWF",
+    "start_time": "10:00",
+    "end_time": "10:50",
+    "instructor": "Staff",
+    "capacity": 40
+  },
+  {
+    "section_id": "CSE 3310-001-F2026",
+    "course_id": "CSE 3310",
+    "term": "F2026",
+    "days": "MWF",
+    "start_time": "11:00",
+    "end_time": "11:50",
+    "instructor": "Staff",
+    "capacity": 40
+  },
+  {
+    "section_id": "CSE 3314-001-F2026",
+    "course_id": "CSE 3314",
+    "term": "F2026",
+    "days": "MWF",
+    "start_time": "12:00",
+    "end_time": "12:50",
+    "instructor": "Staff",
+    "capacity": 40
+  },
+  {
+    "section_id": "CSE 3318-001-F2026",
+    "course_id": "CSE 3318",
+    "term": "F2026",
+    "days": "MWF",
+    "start_time": "13:00",
+    "end_time": "13:50",
+    "instructor": "Staff",
+    "capacity": 60
+  },
+  {
+    "section_id": "CSE 3318-002-F2026",
+    "course_id": "CSE 3318",
+    "term": "F2026",
+    "days": "MWF",
+    "start_time": "15:00",
+    "end_time": "15:50",
+    "instructor": "Staff",
+    "capacity": 45
+  },
+  {
+    "section_id": "CSE 4316-001-F2026",
+    "course_id": "CSE 4316",
+    "term": "F2026",
+    "days": "MWF",
+    "start_time": "14:00",
+    "end_time": "14:50",
+    "instructor": "Staff",
+    "capacity": 30
+  },
+  {
+    "section_id": "CSE 4331-001-F2026",
+    "course_id": "CSE 4331",
+    "term": "F2026",
+    "days": "MWF",
+    "start_time": "09:00",
+    "end_time": "09:50",
+    "instructor": "Staff",
+    "capacity": 30
+  },
+  {
+    "section_id": "CSE 4381-001-F2026",
+    "course_id": "CSE 4381",
+    "term": "F2026",
+    "days": "MWF",
+    "start_time": "10:00",
+    "end_time": "10:50",
+    "instructor": "Staff",
+    "capacity": 30
+  },
+  {
+    "section_id": "ECON 2305-001-F2026",
+    "course_id": "ECON 2305",
+    "term": "F2026",
+    "days": "MWF",
+    "start_time": "11:00",
+    "end_time": "11:50",
+    "instructor": "Staff",
+    "capacity": 40
+  },
+  {
+    "section_id": "ENGL 1301-001-F2026",
+    "course_id": "ENGL 1301",
+    "term": "F2026",
+    "days": "MWF",
+    "start_time": "12:00",
+    "end_time": "12:50",
+    "instructor": "Staff",
+    "capacity": 60
+  },
+  {
+    "section_id": "ENGL 1301-002-F2026",
+    "course_id": "ENGL 1301",
+    "term": "F2026",
+    "days": "MWF",
+    "start_time": "14:00",
+    "end_time": "14:50",
+    "instructor": "Staff",
+    "capacity": 45
+  },
+  {
+    "section_id": "HIST 1301-001-F2026",
+    "course_id": "HIST 1301",
+    "term": "F2026",
+    "days": "MWF",
+    "start_time": "13:00",
+    "end_time": "13:50",
+    "instructor": "Staff",
+    "capacity": 60
+  },
+  {
+    "section_id": "HIST 1301-002-F2026",
+    "course_id": "HIST 1301",
+    "term": "F2026",
+    "days": "MWF",
+    "start_time": "15:00",
+    "end_time": "15:50",
+    "instructor": "Staff",
+    "capacity": 45
+  },
+  {
+    "section_id": "MATH 1426-001-F2026",
+    "course_id": "MATH 1426",
+    "term": "F2026",
+    "days": "MTWR",
+    "start_time": "09:00",
+    "end_time": "09:50",
+    "instructor": "Staff",
+    "capacity": 60
+  },
+  {
+    "section_id": "MATH 1426-002-F2026",
+    "course_id": "MATH 1426",
+    "term": "F2026",
+    "days": "MTWR",
+    "start_time": "11:00",
+    "end_time": "11:50",
+    "instructor": "Staff",
+    "capacity": 45
+  },
+  {
+    "section_id": "PHYS 1444-001-F2026",
+    "course_id": "PHYS 1444",
+    "term": "F2026",
+    "days": "MTWR",
+    "start_time": "15:00",
+    "end_time": "15:50",
+    "instructor": "Staff",
+    "capacity": 40
+  },
+  {
+    "section_id": "UNIV 1131-001-F2026",
+    "course_id": "UNIV 1131",
+    "term": "F2026",
+    "days": "F",
+    "start_time": "09:00",
+    "end_time": "09:50",
+    "instructor": "Staff",
+    "capacity": 40
+  },
+  {
+    "section_id": "BIOL 1441-001-F2026",
+    "course_id": "BIOL 1441",
+    "term": "F2026",
+    "days": "MTWR",
+    "start_time": "11:00",
+    "end_time": "11:50",
+    "instructor": "Staff",
+    "capacity": 40
+  },
+  {
+    "section_id": "CHEM 1441-001-F2026",
+    "course_id": "CHEM 1441",
+    "term": "F2026",
+    "days": "MTWR",
+    "start_time": "13:00",
+    "end_time": "13:50",
+    "instructor": "Staff",
+    "capacity": 40
+  },
+  {
+    "section_id": "CHEM 1465-001-F2026",
+    "course_id": "CHEM 1465",
+    "term": "F2026",
+    "days": "MTWR",
+    "start_time": "15:00",
+    "end_time": "15:50",
+    "instructor": "Staff",
+    "capacity": 40
+  },
+  {
+    "section_id": "COMS 2302-001-F2026",
+    "course_id": "COMS 2302",
+    "term": "F2026",
+    "days": "TR",
+    "start_time": "14:00",
+    "end_time": "15:20",
+    "instructor": "Staff",
+    "capacity": 40
+  },
+  {
+    "section_id": "CSE 1106-001-F2026",
+    "course_id": "CSE 1106",
+    "term": "F2026",
+    "days": "F",
+    "start_time": "10:00",
+    "end_time": "10:50",
+    "instructor": "Staff",
+    "capacity": 40
+  },
+  {
+    "section_id": "CSE 1320-001-F2026",
+    "course_id": "CSE 1320",
+    "term": "F2026",
+    "days": "TR",
+    "start_time": "15:30",
+    "end_time": "16:50",
+    "instructor": "Staff",
+    "capacity": 60
+  },
+  {
+    "section_id": "CSE 1320-002-F2026",
+    "course_id": "CSE 1320",
+    "term": "F2026",
+    "days": "MWF",
+    "start_time": "09:00",
+    "end_time": "09:50",
+    "instructor": "Staff",
+    "capacity": 45
+  },
+  {
+    "section_id": "CSE 2315-001-F2026",
+    "course_id": "CSE 2315",
+    "term": "F2026",
+    "days": "TR",
+    "start_time": "08:00",
+    "end_time": "09:20",
+    "instructor": "Staff",
+    "capacity": 60
+  },
+  {
+    "section_id": "CSE 2315-002-F2026",
+    "course_id": "CSE 2315",
+    "term": "F2026",
+    "days": "TR",
+    "start_time": "11:00",
+    "end_time": "12:20",
+    "instructor": "Staff",
+    "capacity": 45
+  },
+  {
+    "section_id": "CSE 3302-001-F2026",
+    "course_id": "CSE 3302",
+    "term": "F2026",
+    "days": "MWF",
+    "start_time": "09:00",
+    "end_time": "09:50",
+    "instructor": "Staff",
+    "capacity": 40
+  },
+  {
+    "section_id": "CSE 3311-001-F2026",
+    "course_id": "CSE 3311",
+    "term": "F2026",
+    "days": "TR",
+    "start_time": "11:00",
+    "end_time": "12:20",
+    "instructor": "Staff",
+    "capacity": 40
+  },
+  {
+    "section_id": "CSE 3313-001-F2026",
+    "course_id": "CSE 3313",
+    "term": "F2026",
+    "days": "TR",
+    "start_time": "12:30",
+    "end_time": "13:50",
+    "instructor": "Staff",
+    "capacity": 40
+  },
+  {
+    "section_id": "CSE 3315-001-F2026",
+    "course_id": "CSE 3315",
+    "term": "F2026",
+    "days": "TR",
+    "start_time": "14:00",
+    "end_time": "15:20",
+    "instructor": "Staff",
+    "capacity": 40
+  },
+  {
+    "section_id": "CSE 3320-001-F2026",
+    "course_id": "CSE 3320",
+    "term": "F2026",
+    "days": "MWF",
+    "start_time": "13:00",
+    "end_time": "13:50",
+    "instructor": "Staff",
+    "capacity": 40
+  },
+  {
+    "section_id": "CSE 3330-001-F2026",
+    "course_id": "CSE 3330",
+    "term": "F2026",
+    "days": "MWF",
+    "start_time": "14:00",
+    "end_time": "14:50",
+    "instructor": "Staff",
+    "capacity": 40
+  },
+  {
+    "section_id": "CSE 3380-001-F2026",
+    "course_id": "CSE 3380",
+    "term": "F2026",
+    "days": "MWF",
+    "start_time": "15:00",
+    "end_time": "15:50",
+    "instructor": "Staff",
+    "capacity": 40
+  },
+  {
+    "section_id": "CSE 4304-001-F2026",
+    "course_id": "CSE 4304",
+    "term": "F2026",
+    "days": "TR",
+    "start_time": "08:00",
+    "end_time": "09:20",
+    "instructor": "Staff",
+    "capacity": 30
+  },
+  {
+    "section_id": "CSE 4310-001-F2026",
+    "course_id": "CSE 4310",
+    "term": "F2026",
+    "days": "TR",
+    "start_time": "09:30",
+    "end_time": "10:50",
+    "instructor": "Staff",
+    "capacity": 30
+  },
+  {
+    "section_id": "CSE 4311-001-F2026",
+    "course_id": "CSE 4311",
+    "term": "F2026",
+    "days": "MWF",
+    "start_time": "12:00",
+    "end_time": "12:50",
+    "instructor": "Staff",
+    "capacity": 30
+  },
+  {
+    "section_id": "CSE 4317-001-F2026",
+    "course_id": "CSE 4317",
+    "term": "F2026",
+    "days": "MWF",
+    "start_time": "13:00",
+    "end_time": "13:50",
+    "instructor": "Staff",
+    "capacity": 30
+  },
+  {
+    "section_id": "CSE 4321-001-F2026",
+    "course_id": "CSE 4321",
+    "term": "F2026",
+    "days": "MWF",
+    "start_time": "14:00",
+    "end_time": "14:50",
+    "instructor": "Staff",
+    "capacity": 30
+  },
+  {
+    "section_id": "CSE 4322-001-F2026",
+    "course_id": "CSE 4322",
+    "term": "F2026",
+    "days": "TR",
+    "start_time": "15:30",
+    "end_time": "16:50",
+    "instructor": "Staff",
+    "capacity": 30
+  },
+  {
+    "section_id": "CSE 4323-001-F2026",
+    "course_id": "CSE 4323",
+    "term": "F2026",
+    "days": "TR",
+    "start_time": "08:00",
+    "end_time": "09:20",
+    "instructor": "Staff",
+    "capacity": 30
+  },
+  {
+    "section_id": "CSE 4344-001-F2026",
+    "course_id": "CSE 4344",
+    "term": "F2026",
+    "days": "MWF",
+    "start_time": "09:00",
+    "end_time": "09:50",
+    "instructor": "Staff",
+    "capacity": 30
+  },
+  {
+    "section_id": "CSE 4345-001-F2026",
+    "course_id": "CSE 4345",
+    "term": "F2026",
+    "days": "TR",
+    "start_time": "11:00",
+    "end_time": "12:20",
+    "instructor": "Staff",
+    "capacity": 30
+  },
+  {
+    "section_id": "CSE 4361-001-F2026",
+    "course_id": "CSE 4361",
+    "term": "F2026",
+    "days": "TR",
+    "start_time": "12:30",
+    "end_time": "13:50",
+    "instructor": "Staff",
+    "capacity": 30
+  },
+  {
+    "section_id": "CSE 4373-001-F2026",
+    "course_id": "CSE 4373",
+    "term": "F2026",
+    "days": "TR",
+    "start_time": "14:00",
+    "end_time": "15:20",
+    "instructor": "Staff",
+    "capacity": 30
+  },
+  {
+    "section_id": "CSE 4378-001-F2026",
+    "course_id": "CSE 4378",
+    "term": "F2026",
+    "days": "MWF",
+    "start_time": "13:00",
+    "end_time": "13:50",
+    "instructor": "Staff",
+    "capacity": 30
+  },
+  {
+    "section_id": "CSE 4380-001-F2026",
+    "course_id": "CSE 4380",
+    "term": "F2026",
+    "days": "MWF",
+    "start_time": "14:00",
+    "end_time": "14:50",
+    "instructor": "Staff",
+    "capacity": 30
+  },
+  {
+    "section_id": "ENGL 1375-001-F2026",
+    "course_id": "ENGL 1375",
+    "term": "F2026",
+    "days": "MWF",
+    "start_time": "09:00",
+    "end_time": "09:50",
+    "instructor": "Staff",
+    "capacity": 40
+  },
+  {
+    "section_id": "ENGR 4302-001-F2026",
+    "course_id": "ENGR 4302",
+    "term": "F2026",
+    "days": "TR",
+    "start_time": "08:00",
+    "end_time": "09:20",
+    "instructor": "Staff",
+    "capacity": 40
+  },
+  {
+    "section_id": "HIST 1302-001-F2026",
+    "course_id": "HIST 1302",
+    "term": "F2026",
+    "days": "TR",
+    "start_time": "09:30",
+    "end_time": "10:50",
+    "instructor": "Staff",
+    "capacity": 40
+  },
+  {
+    "section_id": "IE 2308-001-F2026",
+    "course_id": "IE 2308",
+    "term": "F2026",
+    "days": "TR",
+    "start_time": "11:00",
+    "end_time": "12:20",
+    "instructor": "Staff",
+    "capacity": 40
+  },
+  {
+    "section_id": "IE 3301-001-F2026",
+    "course_id": "IE 3301",
+    "term": "F2026",
+    "days": "MWF",
+    "start_time": "13:00",
+    "end_time": "13:50",
+    "instructor": "Staff",
+    "capacity": 40
+  },
+  {
+    "section_id": "LING 2371-001-F2026",
+    "course_id": "LING 2371",
+    "term": "F2026",
+    "days": "MWF",
+    "start_time": "14:00",
+    "end_time": "14:50",
+    "instructor": "Staff",
+    "capacity": 40
+  },
+  {
+    "section_id": "MATH 2326-001-F2026",
+    "course_id": "MATH 2326",
+    "term": "F2026",
+    "days": "TR",
+    "start_time": "15:30",
+    "end_time": "16:50",
+    "instructor": "Staff",
+    "capacity": 40
+  },
+  {
+    "section_id": "MATH 2425-001-F2026",
+    "course_id": "MATH 2425",
+    "term": "F2026",
+    "days": "MTWR",
+    "start_time": "09:00",
+    "end_time": "09:50",
+    "instructor": "Staff",
+    "capacity": 60
+  },
+  {
+    "section_id": "MATH 2425-002-F2026",
+    "course_id": "MATH 2425",
+    "term": "F2026",
+    "days": "MTWR",
+    "start_time": "11:00",
+    "end_time": "11:50",
+    "instructor": "Staff",
+    "capacity": 45
+  },
+  {
+    "section_id": "MATH 3313-001-F2026",
+    "course_id": "MATH 3313",
+    "term": "F2026",
+    "days": "TR",
+    "start_time": "08:00",
+    "end_time": "09:20",
+    "instructor": "Staff",
+    "capacity": 40
+  },
+  {
+    "section_id": "MATH 3330-001-F2026",
+    "course_id": "MATH 3330",
+    "term": "F2026",
+    "days": "MWF",
+    "start_time": "09:00",
+    "end_time": "09:50",
+    "instructor": "Staff",
+    "capacity": 40
+  },
+  {
+    "section_id": "PHIL 2300-001-F2026",
+    "course_id": "PHIL 2300",
+    "term": "F2026",
+    "days": "MWF",
+    "start_time": "10:00",
+    "end_time": "10:50",
+    "instructor": "Staff",
+    "capacity": 40
+  },
+  {
+    "section_id": "PHYS 1443-001-F2026",
+    "course_id": "PHYS 1443",
+    "term": "F2026",
+    "days": "MTWR",
+    "start_time": "10:00",
+    "end_time": "10:50",
+    "instructor": "Staff",
+    "capacity": 60
+  },
+  {
+    "section_id": "PHYS 1443-002-F2026",
+    "course_id": "PHYS 1443",
+    "term": "F2026",
+    "days": "MTWR",
+    "start_time": "13:00",
+    "end_time": "13:50",
+    "instructor": "Staff",
+    "capacity": 45
+  },
+  {
+    "section_id": "POLS 2311-001-F2026",
+    "course_id": "POLS 2311",
+    "term": "F2026",
+    "days": "TR",
+    "start_time": "12:30",
+    "end_time": "13:50",
+    "instructor": "Staff",
+    "capacity": 60
+  },
+  {
+    "section_id": "POLS 2311-002-F2026",
+    "course_id": "POLS 2311",
+    "term": "F2026",
+    "days": "TR",
+    "start_time": "15:30",
+    "end_time": "16:50",
+    "instructor": "Staff",
+    "capacity": 45
+  },
+  {
+    "section_id": "POLS 2312-001-F2026",
+    "course_id": "POLS 2312",
+    "term": "F2026",
+    "days": "MWF",
+    "start_time": "12:00",
+    "end_time": "12:50",
+    "instructor": "Staff",
+    "capacity": 40
+  },
+  {
+    "section_id": "BIOL 1441-001-S2027",
+    "course_id": "BIOL 1441",
+    "term": "S2027",
+    "days": "MTWR",
+    "start_time": "09:00",
+    "end_time": "09:50",
+    "instructor": "Staff",
+    "capacity": 40
+  },
+  {
+    "section_id": "CHEM 1441-001-S2027",
+    "course_id": "CHEM 1441",
+    "term": "S2027",
+    "days": "MTWR",
+    "start_time": "10:00",
+    "end_time": "10:50",
+    "instructor": "Staff",
+    "capacity": 40
+  },
+  {
+    "section_id": "COMS 2302-001-S2027",
+    "course_id": "COMS 2302",
+    "term": "S2027",
+    "days": "MWF",
+    "start_time": "08:00",
+    "end_time": "08:50",
+    "instructor": "Staff",
+    "capacity": 40
+  },
+  {
+    "section_id": "CSE 1106-001-S2027",
+    "course_id": "CSE 1106",
+    "term": "S2027",
+    "days": "F",
+    "start_time": "09:00",
+    "end_time": "09:50",
+    "instructor": "Staff",
+    "capacity": 40
+  },
+  {
+    "section_id": "CSE 1310-001-S2027",
+    "course_id": "CSE 1310",
+    "term": "S2027",
+    "days": "MWF",
+    "start_time": "09:00",
+    "end_time": "09:50",
+    "instructor": "Staff",
+    "capacity": 60
+  },
+  {
+    "section_id": "CSE 1310-002-S2027",
+    "course_id": "CSE 1310",
+    "term": "S2027",
+    "days": "MWF",
+    "start_time": "11:00",
+    "end_time": "11:50",
+    "instructor": "Staff",
+    "capacity": 45
+  },
+  {
+    "section_id": "CSE 1320-001-S2027",
+    "course_id": "CSE 1320",
+    "term": "S2027",
+    "days": "MWF",
+    "start_time": "10:00",
+    "end_time": "10:50",
+    "instructor": "Staff",
+    "capacity": 60
+  },
+  {
+    "section_id": "CSE 1320-002-S2027",
+    "course_id": "CSE 1320",
+    "term": "S2027",
+    "days": "MWF",
+    "start_time": "12:00",
+    "end_time": "12:50",
+    "instructor": "Staff",
+    "capacity": 45
+  },
+  {
+    "section_id": "CSE 1325-001-S2027",
+    "course_id": "CSE 1325",
+    "term": "S2027",
+    "days": "TR",
+    "start_time": "12:30",
+    "end_time": "13:50",
+    "instructor": "Staff",
+    "capacity": 40
+  },
+  {
+    "section_id": "CSE 2312-001-S2027",
+    "course_id": "CSE 2312",
+    "term": "S2027",
+    "days": "MWF",
+    "start_time": "12:00",
+    "end_time": "12:50",
+    "instructor": "Staff",
+    "capacity": 40
+  },
+  {
+    "section_id": "CSE 2315-001-S2027",
+    "course_id": "CSE 2315",
+    "term": "S2027",
+    "days": "TR",
+    "start_time": "15:30",
+    "end_time": "16:50",
+    "instructor": "Staff",
+    "capacity": 60
+  },
+  {
+    "section_id": "CSE 2315-002-S2027",
+    "course_id": "CSE 2315",
+    "term": "S2027",
+    "days": "MWF",
+    "start_time": "09:00",
+    "end_time": "09:50",
+    "instructor": "Staff",
+    "capacity": 45
+  },
+  {
+    "section_id": "CSE 3302-001-S2027",
+    "course_id": "CSE 3302",
+    "term": "S2027",
+    "days": "MWF",
+    "start_time": "14:00",
+    "end_time": "14:50",
+    "instructor": "Staff",
+    "capacity": 40
+  },
+  {
+    "section_id": "CSE 3310-001-S2027",
+    "course_id": "CSE 3310",
+    "term": "S2027",
+    "days": "MWF",
+    "start_time": "15:00",
+    "end_time": "15:50",
+    "instructor": "Staff",
+    "capacity": 40
+  },
+  {
+    "section_id": "CSE 3311-001-S2027",
+    "course_id": "CSE 3311",
+    "term": "S2027",
+    "days": "MWF",
+    "start_time": "10:00",
+    "end_time": "10:50",
+    "instructor": "Staff",
+    "capacity": 40
+  },
+  {
+    "section_id": "CSE 3314-001-S2027",
+    "course_id": "CSE 3314",
+    "term": "S2027",
+    "days": "TR",
+    "start_time": "09:30",
+    "end_time": "10:50",
+    "instructor": "Staff",
+    "capacity": 40
+  },
+  {
+    "section_id": "CSE 3315-001-S2027",
+    "course_id": "CSE 3315",
+    "term": "S2027",
+    "days": "MWF",
+    "start_time": "12:00",
+    "end_time": "12:50",
+    "instructor": "Staff",
+    "capacity": 40
+  },
+  {
+    "section_id": "CSE 3318-001-S2027",
+    "course_id": "CSE 3318",
+    "term": "S2027",
+    "days": "TR",
+    "start_time": "12:30",
+    "end_time": "13:50",
+    "instructor": "Staff",
+    "capacity": 60
+  },
+  {
+    "section_id": "CSE 3318-002-S2027",
+    "course_id": "CSE 3318",
+    "term": "S2027",
+    "days": "TR",
+    "start_time": "15:30",
+    "end_time": "16:50",
+    "instructor": "Staff",
+    "capacity": 45
+  },
+  {
+    "section_id": "CSE 3320-001-S2027",
+    "course_id": "CSE 3320",
+    "term": "S2027",
+    "days": "TR",
+    "start_time": "14:00",
+    "end_time": "15:20",
+    "instructor": "Staff",
+    "capacity": 40
+  },
+  {
+    "section_id": "CSE 3330-001-S2027",
+    "course_id": "CSE 3330",
+    "term": "S2027",
+    "days": "TR",
+    "start_time": "15:30",
+    "end_time": "16:50",
+    "instructor": "Staff",
+    "capacity": 40
+  },
+  {
+    "section_id": "CSE 3340-001-S2027",
+    "course_id": "CSE 3340",
+    "term": "S2027",
+    "days": "MWF",
+    "start_time": "08:00",
+    "end_time": "08:50",
+    "instructor": "Staff",
+    "capacity": 40
+  },
+  {
+    "section_id": "CSE 3380-001-S2027",
+    "course_id": "CSE 3380",
+    "term": "S2027",
+    "days": "MWF",
+    "start_time": "09:00",
+    "end_time": "09:50",
+    "instructor": "Staff",
+    "capacity": 40
+  },
+  {
+    "section_id": "CSE 4303-001-S2027",
+    "course_id": "CSE 4303",
+    "term": "S2027",
+    "days": "TR",
+    "start_time": "11:00",
+    "end_time": "12:20",
+    "instructor": "Staff",
+    "capacity": 30
+  },
+  {
+    "section_id": "CSE 4305-001-S2027",
+    "course_id": "CSE 4305",
+    "term": "S2027",
+    "days": "TR",
+    "start_time": "12:30",
+    "end_time": "13:50",
+    "instructor": "Staff",
+    "capacity": 30
+  },
+  {
+    "section_id": "CSE 4308-001-S2027",
+    "course_id": "CSE 4308",
+    "term": "S2027",
+    "days": "MWF",
+    "start_time": "12:00",
+    "end_time": "12:50",
+    "instructor": "Staff",
+    "capacity": 30
+  },
+  {
+    "section_id": "CSE 4309-001-S2027",
+    "course_id": "CSE 4309",
+    "term": "S2027",
+    "days": "TR",
+    "start_time": "15:30",
+    "end_time": "16:50",
+    "instructor": "Staff",
+    "capacity": 30
+  },
+  {
+    "section_id": "CSE 4316-001-S2027",
+    "course_id": "CSE 4316",
+    "term": "S2027",
+    "days": "MWF",
+    "start_time": "14:00",
+    "end_time": "14:50",
+    "instructor": "Staff",
+    "capacity": 30
+  },
+  {
+    "section_id": "CSE 4317-001-S2027",
+    "course_id": "CSE 4317",
+    "term": "S2027",
+    "days": "MWF",
+    "start_time": "09:00",
+    "end_time": "09:50",
+    "instructor": "Staff",
+    "capacity": 30
+  },
+  {
+    "section_id": "CSE 4321-001-S2027",
+    "course_id": "CSE 4321",
+    "term": "S2027",
+    "days": "MWF",
+    "start_time": "10:00",
+    "end_time": "10:50",
+    "instructor": "Staff",
+    "capacity": 30
+  },
+  {
+    "section_id": "CSE 4322-001-S2027",
+    "course_id": "CSE 4322",
+    "term": "S2027",
+    "days": "TR",
+    "start_time": "09:30",
+    "end_time": "10:50",
+    "instructor": "Staff",
+    "capacity": 30
+  },
+  {
+    "section_id": "CSE 4333-001-S2027",
+    "course_id": "CSE 4333",
+    "term": "S2027",
+    "days": "MWF",
+    "start_time": "12:00",
+    "end_time": "12:50",
+    "instructor": "Staff",
+    "capacity": 30
+  },
+  {
+    "section_id": "CSE 4334-001-S2027",
+    "course_id": "CSE 4334",
+    "term": "S2027",
+    "days": "TR",
+    "start_time": "12:30",
+    "end_time": "13:50",
+    "instructor": "Staff",
+    "capacity": 30
+  },
+  {
+    "section_id": "CSE 4344-001-S2027",
+    "course_id": "CSE 4344",
+    "term": "S2027",
+    "days": "TR",
+    "start_time": "14:00",
+    "end_time": "15:20",
+    "instructor": "Staff",
+    "capacity": 30
+  },
+  {
+    "section_id": "CSE 4351-001-S2027",
+    "course_id": "CSE 4351",
+    "term": "S2027",
+    "days": "MWF",
+    "start_time": "15:00",
+    "end_time": "15:50",
+    "instructor": "Staff",
+    "capacity": 30
+  },
+  {
+    "section_id": "CSE 4360-001-S2027",
+    "course_id": "CSE 4360",
+    "term": "S2027",
+    "days": "MWF",
+    "start_time": "08:00",
+    "end_time": "08:50",
+    "instructor": "Staff",
+    "capacity": 30
+  },
+  {
+    "section_id": "CSE 4361-001-S2027",
+    "course_id": "CSE 4361",
+    "term": "S2027",
+    "days": "TR",
+    "start_time": "09:30",
+    "end_time": "10:50",
+    "instructor": "Staff",
+    "capacity": 30
+  },
+  {
+    "section_id": "CSE 4376-001-S2027",
+    "course_id": "CSE 4376",
+    "term": "S2027",
+    "days": "MWF",
+    "start_time": "10:00",
+    "end_time": "10:50",
+    "instructor": "Staff",
+    "capacity": 30
+  },
+  {
+    "section_id": "CSE 4379-001-S2027",
+    "course_id": "CSE 4379",
+    "term": "S2027",
+    "days": "TR",
+    "start_time": "12:30",
+    "end_time": "13:50",
+    "instructor": "Staff",
+    "capacity": 30
+  },
+  {
+    "section_id": "CSE 4380-001-S2027",
+    "course_id": "CSE 4380",
+    "term": "S2027",
+    "days": "MWF",
+    "start_time": "12:00",
+    "end_time": "12:50",
+    "instructor": "Staff",
+    "capacity": 30
+  },
+  {
+    "section_id": "CSE 4381-001-S2027",
+    "course_id": "CSE 4381",
+    "term": "S2027",
+    "days": "TR",
+    "start_time": "15:30",
+    "end_time": "16:50",
+    "instructor": "Staff",
+    "capacity": 30
+  },
+  {
+    "section_id": "CSE 4382-001-S2027",
+    "course_id": "CSE 4382",
+    "term": "S2027",
+    "days": "MWF",
+    "start_time": "14:00",
+    "end_time": "14:50",
+    "instructor": "Staff",
+    "capacity": 30
+  },
+  {
+    "section_id": "ECON 2305-001-S2027",
+    "course_id": "ECON 2305",
+    "term": "S2027",
+    "days": "MWF",
+    "start_time": "09:00",
+    "end_time": "09:50",
+    "instructor": "Staff",
+    "capacity": 40
+  },
+  {
+    "section_id": "ENGL 1301-001-S2027",
+    "course_id": "ENGL 1301",
+    "term": "S2027",
+    "days": "MWF",
+    "start_time": "10:00",
+    "end_time": "10:50",
+    "instructor": "Staff",
+    "capacity": 60
+  },
+  {
+    "section_id": "ENGL 1301-002-S2027",
+    "course_id": "ENGL 1301",
+    "term": "S2027",
+    "days": "MWF",
+    "start_time": "12:00",
+    "end_time": "12:50",
+    "instructor": "Staff",
+    "capacity": 45
+  },
+  {
+    "section_id": "ENGL 1375-001-S2027",
+    "course_id": "ENGL 1375",
+    "term": "S2027",
+    "days": "MWF",
+    "start_time": "11:00",
+    "end_time": "11:50",
+    "instructor": "Staff",
+    "capacity": 40
+  },
+  {
+    "section_id": "HIST 1301-001-S2027",
+    "course_id": "HIST 1301",
+    "term": "S2027",
+    "days": "MWF",
+    "start_time": "12:00",
+    "end_time": "12:50",
+    "instructor": "Staff",
+    "capacity": 60
+  },
+  {
+    "section_id": "HIST 1301-002-S2027",
+    "course_id": "HIST 1301",
+    "term": "S2027",
+    "days": "MWF",
+    "start_time": "14:00",
+    "end_time": "14:50",
+    "instructor": "Staff",
+    "capacity": 45
+  },
+  {
+    "section_id": "HIST 1302-001-S2027",
+    "course_id": "HIST 1302",
+    "term": "S2027",
+    "days": "TR",
+    "start_time": "12:30",
+    "end_time": "13:50",
+    "instructor": "Staff",
+    "capacity": 40
+  },
+  {
+    "section_id": "IE 2308-001-S2027",
+    "course_id": "IE 2308",
+    "term": "S2027",
+    "days": "TR",
+    "start_time": "14:00",
+    "end_time": "15:20",
+    "instructor": "Staff",
+    "capacity": 40
+  },
+  {
+    "section_id": "IE 3301-001-S2027",
+    "course_id": "IE 3301",
+    "term": "S2027",
+    "days": "MWF",
+    "start_time": "15:00",
+    "end_time": "15:50",
+    "instructor": "Staff",
+    "capacity": 40
+  },
+  {
+    "section_id": "IE 3315-001-S2027",
+    "course_id": "IE 3315",
+    "term": "S2027",
+    "days": "TR",
+    "start_time": "08:00",
+    "end_time": "09:20",
+    "instructor": "Staff",
+    "capacity": 40
+  },
+  {
+    "section_id": "MATH 1426-001-S2027",
+    "course_id": "MATH 1426",
+    "term": "S2027",
+    "days": "MTWR",
+    "start_time": "11:00",
+    "end_time": "11:50",
+    "instructor": "Staff",
+    "capacity": 60
+  },
+  {
+    "section_id": "MATH 1426-002-S2027",
+    "course_id": "MATH 1426",
+    "term": "S2027",
+    "days": "MTWR",
+    "start_time": "15:00",
+    "end_time": "15:50",
+    "instructor": "Staff",
+    "capacity": 45
+  },
+  {
+    "section_id": "MATH 2326-001-S2027",
+    "course_id": "MATH 2326",
+    "term": "S2027",
+    "days": "MWF",
+    "start_time": "09:00",
+    "end_time": "09:50",
+    "instructor": "Staff",
+    "capacity": 40
+  },
+  {
+    "section_id": "MATH 2425-001-S2027",
+    "course_id": "MATH 2425",
+    "term": "S2027",
+    "days": "MTWR",
+    "start_time": "13:00",
+    "end_time": "13:50",
+    "instructor": "Staff",
+    "capacity": 60
+  },
+  {
+    "section_id": "MATH 2425-002-S2027",
+    "course_id": "MATH 2425",
+    "term": "S2027",
+    "days": "MTWR",
+    "start_time": "09:00",
+    "end_time": "09:50",
+    "instructor": "Staff",
+    "capacity": 45
+  },
+  {
+    "section_id": "MATH 3313-001-S2027",
+    "course_id": "MATH 3313",
+    "term": "S2027",
+    "days": "TR",
+    "start_time": "11:00",
+    "end_time": "12:20",
+    "instructor": "Staff",
+    "capacity": 40
+  },
+  {
+    "section_id": "MATH 3330-001-S2027",
+    "course_id": "MATH 3330",
+    "term": "S2027",
+    "days": "MWF",
+    "start_time": "11:00",
+    "end_time": "11:50",
+    "instructor": "Staff",
+    "capacity": 40
+  },
+  {
+    "section_id": "MUSI 1304-001-S2027",
+    "course_id": "MUSI 1304",
+    "term": "S2027",
+    "days": "MWF",
+    "start_time": "12:00",
+    "end_time": "12:50",
+    "instructor": "Staff",
+    "capacity": 40
+  },
+  {
+    "section_id": "PHIL 2300-001-S2027",
+    "course_id": "PHIL 2300",
+    "term": "S2027",
+    "days": "MWF",
+    "start_time": "13:00",
+    "end_time": "13:50",
+    "instructor": "Staff",
+    "capacity": 40
+  },
+  {
+    "section_id": "PHYS 1443-001-S2027",
+    "course_id": "PHYS 1443",
+    "term": "S2027",
+    "days": "MTWR",
+    "start_time": "15:00",
+    "end_time": "15:50",
+    "instructor": "Staff",
+    "capacity": 60
+  },
+  {
+    "section_id": "PHYS 1443-002-S2027",
+    "course_id": "PHYS 1443",
+    "term": "S2027",
+    "days": "MTWR",
+    "start_time": "10:00",
+    "end_time": "10:50",
+    "instructor": "Staff",
+    "capacity": 45
+  },
+  {
+    "section_id": "PHYS 1444-001-S2027",
+    "course_id": "PHYS 1444",
+    "term": "S2027",
+    "days": "MTWR",
+    "start_time": "09:00",
+    "end_time": "09:50",
+    "instructor": "Staff",
+    "capacity": 40
+  },
+  {
+    "section_id": "POLS 2311-001-S2027",
+    "course_id": "POLS 2311",
+    "term": "S2027",
+    "days": "MWF",
+    "start_time": "08:00",
+    "end_time": "08:50",
+    "instructor": "Staff",
+    "capacity": 60
+  },
+  {
+    "section_id": "POLS 2311-002-S2027",
+    "course_id": "POLS 2311",
+    "term": "S2027",
+    "days": "MWF",
+    "start_time": "10:00",
+    "end_time": "10:50",
+    "instructor": "Staff",
+    "capacity": 45
+  },
+  {
+    "section_id": "POLS 2312-001-S2027",
+    "course_id": "POLS 2312",
+    "term": "S2027",
+    "days": "MWF",
+    "start_time": "15:00",
+    "end_time": "15:50",
+    "instructor": "Staff",
+    "capacity": 40
+  },
+  {
+    "section_id": "UNIV 1131-001-S2027",
+    "course_id": "UNIV 1131",
+    "term": "S2027",
+    "days": "F",
+    "start_time": "10:00",
+    "end_time": "10:50",
+    "instructor": "Staff",
+    "capacity": 40
+  },
+  {
+    "section_id": "COMS 2302-001-SU2027",
+    "course_id": "COMS 2302",
+    "term": "SU2027",
+    "days": "MTWR",
+    "start_time": "08:30",
+    "end_time": "10:00",
+    "instructor": "Staff",
+    "capacity": 35
+  },
+  {
+    "section_id": "CSE 1106-001-SU2027",
+    "course_id": "CSE 1106",
+    "term": "SU2027",
+    "days": "F",
+    "start_time": "09:00",
+    "end_time": "09:50",
+    "instructor": "Staff",
+    "capacity": 35
+  },
+  {
+    "section_id": "CSE 1310-001-SU2027",
+    "course_id": "CSE 1310",
+    "term": "SU2027",
+    "days": "MTWR",
+    "start_time": "10:00",
+    "end_time": "11:30",
+    "instructor": "Staff",
+    "capacity": 35
+  },
+  {
+    "section_id": "CSE 1310-002-SU2027",
+    "course_id": "CSE 1310",
+    "term": "SU2027",
+    "days": "MTWR",
+    "start_time": "14:30",
+    "end_time": "16:00",
+    "instructor": "Staff",
+    "capacity": 20
+  },
+  {
+    "section_id": "CSE 1320-001-SU2027",
+    "course_id": "CSE 1320",
+    "term": "SU2027",
+    "days": "MTWR",
+    "start_time": "13:00",
+    "end_time": "14:30",
+    "instructor": "Staff",
+    "capacity": 35
+  },
+  {
+    "section_id": "CSE 1320-002-SU2027",
+    "course_id": "CSE 1320",
+    "term": "SU2027",
+    "days": "MTWR",
+    "start_time": "08:30",
+    "end_time": "10:00",
+    "instructor": "Staff",
+    "capacity": 20
+  },
+  {
+    "section_id": "CSE 1325-001-SU2027",
+    "course_id": "CSE 1325",
+    "term": "SU2027",
+    "days": "MTWR",
+    "start_time": "14:30",
+    "end_time": "16:00",
+    "instructor": "Staff",
+    "capacity": 35
+  },
+  {
+    "section_id": "CSE 2312-001-SU2027",
+    "course_id": "CSE 2312",
+    "term": "SU2027",
+    "days": "MTWR",
+    "start_time": "08:30",
+    "end_time": "10:00",
+    "instructor": "Staff",
+    "capacity": 35
+  },
+  {
+    "section_id": "CSE 2315-001-SU2027",
+    "course_id": "CSE 2315",
+    "term": "SU2027",
+    "days": "MTWR",
+    "start_time": "10:00",
+    "end_time": "11:30",
+    "instructor": "Staff",
+    "capacity": 35
+  },
+  {
+    "section_id": "CSE 2315-002-SU2027",
+    "course_id": "CSE 2315",
+    "term": "SU2027",
+    "days": "MTWR",
+    "start_time": "14:30",
+    "end_time": "16:00",
+    "instructor": "Staff",
+    "capacity": 20
+  },
+  {
+    "section_id": "CSE 3310-001-SU2027",
+    "course_id": "CSE 3310",
+    "term": "SU2027",
+    "days": "MTWR",
+    "start_time": "13:00",
+    "end_time": "14:30",
+    "instructor": "Staff",
+    "capacity": 35
+  },
+  {
+    "section_id": "CSE 3318-001-SU2027",
+    "course_id": "CSE 3318",
+    "term": "SU2027",
+    "days": "MTWR",
+    "start_time": "14:30",
+    "end_time": "16:00",
+    "instructor": "Staff",
+    "capacity": 35
+  },
+  {
+    "section_id": "CSE 3318-002-SU2027",
+    "course_id": "CSE 3318",
+    "term": "SU2027",
+    "days": "MTWR",
+    "start_time": "10:00",
+    "end_time": "11:30",
+    "instructor": "Staff",
+    "capacity": 20
+  },
+  {
+    "section_id": "CSE 3320-001-SU2027",
+    "course_id": "CSE 3320",
+    "term": "SU2027",
+    "days": "MTWR",
+    "start_time": "08:30",
+    "end_time": "10:00",
+    "instructor": "Staff",
+    "capacity": 35
+  },
+  {
+    "section_id": "CSE 4344-001-SU2027",
+    "course_id": "CSE 4344",
+    "term": "SU2027",
+    "days": "MTWR",
+    "start_time": "10:00",
+    "end_time": "11:30",
+    "instructor": "Staff",
+    "capacity": 30
+  },
+  {
+    "section_id": "CSE 4382-001-SU2027",
+    "course_id": "CSE 4382",
+    "term": "SU2027",
+    "days": "MTWR",
+    "start_time": "13:00",
+    "end_time": "14:30",
+    "instructor": "Staff",
+    "capacity": 30
+  },
+  {
+    "section_id": "ECON 2305-001-SU2027",
+    "course_id": "ECON 2305",
+    "term": "SU2027",
+    "days": "MTWR",
+    "start_time": "14:30",
+    "end_time": "16:00",
+    "instructor": "Staff",
+    "capacity": 35
+  },
+  {
+    "section_id": "ENGL 1301-001-SU2027",
+    "course_id": "ENGL 1301",
+    "term": "SU2027",
+    "days": "MTWR",
+    "start_time": "08:30",
+    "end_time": "10:00",
+    "instructor": "Staff",
+    "capacity": 35
+  },
+  {
+    "section_id": "ENGL 1301-002-SU2027",
+    "course_id": "ENGL 1301",
+    "term": "SU2027",
+    "days": "MTWR",
+    "start_time": "13:00",
+    "end_time": "14:30",
+    "instructor": "Staff",
+    "capacity": 20
+  },
+  {
+    "section_id": "HIST 1301-001-SU2027",
+    "course_id": "HIST 1301",
+    "term": "SU2027",
+    "days": "MTWR",
+    "start_time": "10:00",
+    "end_time": "11:30",
+    "instructor": "Staff",
+    "capacity": 35
+  },
+  {
+    "section_id": "HIST 1301-002-SU2027",
+    "course_id": "HIST 1301",
+    "term": "SU2027",
+    "days": "MTWR",
+    "start_time": "14:30",
+    "end_time": "16:00",
+    "instructor": "Staff",
+    "capacity": 20
+  },
+  {
+    "section_id": "HIST 1302-001-SU2027",
+    "course_id": "HIST 1302",
+    "term": "SU2027",
+    "days": "MTWR",
+    "start_time": "13:00",
+    "end_time": "14:30",
+    "instructor": "Staff",
+    "capacity": 35
+  },
+  {
+    "section_id": "MATH 1426-001-SU2027",
+    "course_id": "MATH 1426",
+    "term": "SU2027",
+    "days": "MTWR",
+    "start_time": "09:00",
+    "end_time": "11:00",
+    "instructor": "Staff",
+    "capacity": 35
+  },
+  {
+    "section_id": "MATH 2326-001-SU2027",
+    "course_id": "MATH 2326",
+    "term": "SU2027",
+    "days": "MTWR",
+    "start_time": "14:30",
+    "end_time": "16:00",
+    "instructor": "Staff",
+    "capacity": 35
+  },
+  {
+    "section_id": "MATH 2425-001-SU2027",
+    "course_id": "MATH 2425",
+    "term": "SU2027",
+    "days": "MTWR",
+    "start_time": "13:00",
+    "end_time": "15:00",
+    "instructor": "Staff",
+    "capacity": 35
+  },
+  {
+    "section_id": "PHIL 2300-001-SU2027",
+    "course_id": "PHIL 2300",
+    "term": "SU2027",
+    "days": "MTWR",
+    "start_time": "08:30",
+    "end_time": "10:00",
+    "instructor": "Staff",
+    "capacity": 35
+  },
+  {
+    "section_id": "PHYS 1443-001-SU2027",
+    "course_id": "PHYS 1443",
+    "term": "SU2027",
+    "days": "MTWR",
+    "start_time": "09:00",
+    "end_time": "11:00",
+    "instructor": "Staff",
+    "capacity": 35
+  },
+  {
+    "section_id": "PHYS 1444-001-SU2027",
+    "course_id": "PHYS 1444",
+    "term": "SU2027",
+    "days": "MTWR",
+    "start_time": "13:00",
+    "end_time": "15:00",
+    "instructor": "Staff",
+    "capacity": 35
+  },
+  {
+    "section_id": "POLS 2311-001-SU2027",
+    "course_id": "POLS 2311",
+    "term": "SU2027",
+    "days": "MTWR",
+    "start_time": "10:00",
+    "end_time": "11:30",
+    "instructor": "Staff",
+    "capacity": 35
+  },
+  {
+    "section_id": "POLS 2311-002-SU2027",
+    "course_id": "POLS 2311",
+    "term": "SU2027",
+    "days": "MTWR",
+    "start_time": "14:30",
+    "end_time": "16:00",
+    "instructor": "Staff",
+    "capacity": 20
+  },
+  {
+    "section_id": "POLS 2312-001-SU2027",
+    "course_id": "POLS 2312",
+    "term": "SU2027",
+    "days": "MTWR",
+    "start_time": "13:00",
+    "end_time": "14:30",
+    "instructor": "Staff",
+    "capacity": 35
+  }
 ]

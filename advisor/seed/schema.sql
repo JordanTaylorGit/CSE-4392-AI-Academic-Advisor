@@ -102,3 +102,24 @@ CREATE TABLE IF NOT EXISTS chat_history (
     content    TEXT NOT NULL,
     created_at TEXT NOT NULL DEFAULT (datetime('now'))
 );
+
+-- ============================================================================
+-- ADDITIVE tables (added 2026-10-21, Jordan). Nothing above was changed, so existing
+-- code and an existing advisor.db keep working; these are created by IF NOT EXISTS.
+-- ============================================================================
+
+-- Courses whose prerequisite text requires "Admitted into an Engineering Professional Program".
+-- A student must be admitted before taking these (catalog: 2.5 GPA overall / in required
+-- science-math-engineering courses / in required CSE courses; <= 4 unsuccessful engineering attempts).
+CREATE TABLE IF NOT EXISTS professional_courses (
+    course_id TEXT PRIMARY KEY REFERENCES courses(course_id)
+);
+
+-- (course_id, prereq_id) pairs from `prerequisites` that may be taken in the SAME term
+-- ("or concurrent enrollment" / co-requisite). Verifier rule: a prereq row is satisfied by a
+-- completed course with grade >= min_grade, OR -- if listed here -- by a course planned in the same term.
+CREATE TABLE IF NOT EXISTS prereq_concurrent (
+    course_id TEXT NOT NULL REFERENCES courses(course_id),
+    prereq_id TEXT NOT NULL REFERENCES courses(course_id),
+    PRIMARY KEY (course_id, prereq_id)
+);
