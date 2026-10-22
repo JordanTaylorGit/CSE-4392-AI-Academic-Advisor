@@ -1,0 +1,1147 @@
+{
+  "prerequisites": [
+    {
+      "course_id": "CSE 1106",
+      "group_id": 1,
+      "prereq_id": "CSE 1310",
+      "min_grade": "C",
+      "concurrent_ok": false,
+      "source": "catalog"
+    },
+    {
+      "course_id": "CSE 1205",
+      "group_id": 1,
+      "prereq_id": "CSE 1310",
+      "min_grade": "D",
+      "concurrent_ok": false,
+      "source": "catalog"
+    },
+    {
+      "course_id": "CSE 1310",
+      "group_id": 1,
+      "prereq_id": "MATH 1426",
+      "min_grade": "C",
+      "concurrent_ok": true,
+      "source": "catalog"
+    },
+    {
+      "course_id": "CSE 1310",
+      "group_id": 1,
+      "prereq_id": "MATH 2425",
+      "min_grade": "C",
+      "concurrent_ok": true,
+      "source": "catalog"
+    },
+    {
+      "course_id": "CSE 1310",
+      "group_id": 1,
+      "prereq_id": "MATH 2326",
+      "min_grade": "C",
+      "concurrent_ok": true,
+      "source": "catalog"
+    },
+    {
+      "course_id": "CSE 1310",
+      "group_id": 1,
+      "prereq_id": "MATH 3330",
+      "min_grade": "C",
+      "concurrent_ok": true,
+      "source": "catalog"
+    },
+    {
+      "course_id": "CSE 1311",
+      "group_id": 1,
+      "prereq_id": "MATH 1426",
+      "min_grade": "C",
+      "concurrent_ok": true,
+      "source": "catalog"
+    },
+    {
+      "course_id": "CSE 1311",
+      "group_id": 1,
+      "prereq_id": "MATH 2425",
+      "min_grade": "C",
+      "concurrent_ok": true,
+      "source": "catalog"
+    },
+    {
+      "course_id": "CSE 1311",
+      "group_id": 1,
+      "prereq_id": "MATH 2326",
+      "min_grade": "C",
+      "concurrent_ok": true,
+      "source": "catalog"
+    },
+    {
+      "course_id": "CSE 1311",
+      "group_id": 1,
+      "prereq_id": "MATH 3330",
+      "min_grade": "C",
+      "concurrent_ok": true,
+      "source": "catalog"
+    },
+    {
+      "course_id": "CSE 1320",
+      "group_id": 1,
+      "prereq_id": "CSE 1310",
+      "min_grade": "C",
+      "concurrent_ok": false,
+      "source": "catalog"
+    },
+    {
+      "course_id": "CSE 1320",
+      "group_id": 2,
+      "prereq_id": "MATH 1426",
+      "min_grade": "C",
+      "concurrent_ok": true,
+      "source": "catalog"
+    },
+    {
+      "course_id": "CSE 1320",
+      "group_id": 2,
+      "prereq_id": "MATH 2425",
+      "min_grade": "C",
+      "concurrent_ok": true,
+      "source": "catalog"
+    },
+    {
+      "course_id": "CSE 1320",
+      "group_id": 2,
+      "prereq_id": "MATH 2326",
+      "min_grade": "C",
+      "concurrent_ok": true,
+      "source": "catalog"
+    },
+    {
+      "course_id": "CSE 1320",
+      "group_id": 2,
+      "prereq_id": "MATH 3330",
+      "min_grade": "C",
+      "concurrent_ok": true,
+      "source": "catalog"
+    },
+    {
+      "course_id": "CSE 1325",
+      "group_id": 1,
+      "prereq_id": "CSE 1320",
+      "min_grade": "D",
+      "concurrent_ok": false,
+      "source": "catalog"
+    },
+    {
+      "course_id": "CSE 1326",
+      "group_id": 1,
+      "prereq_id": "CSE 1320",
+      "min_grade": "D",
+      "concurrent_ok": false,
+      "source": "catalog"
+    },
+    {
+      "course_id": "CSE 2100",
+      "group_id": 1,
+      "prereq_id": "CSE 1320",
+      "min_grade": "D",
+      "concurrent_ok": false,
+      "source": "catalog"
+    },
+    {
+      "course_id": "CSE 2312",
+      "group_id": 1,
+      "prereq_id": "CSE 1320",
+      "min_grade": "C",
+      "concurrent_ok": false,
+      "source": "catalog"
+    },
+    {
+      "course_id": "CSE 2312",
+      "group_id": 2,
+      "prereq_id": "CSE 1205",
+      "min_grade": "C",
+      "concurrent_ok": false,
+      "source": "catalog"
+    },
+    {
+      "course_id": "CSE 2312",
+      "group_id": 2,
+      "prereq_id": "CSE 1106",
+      "min_grade": "C",
+      "concurrent_ok": false,
+      "source": "catalog"
+    },
+    {
+      "course_id": "CSE 2315",
+      "group_id": 1,
+      "prereq_id": "CSE 1310",
+      "min_grade": "C",
+      "concurrent_ok": false,
+      "source": "catalog"
+    },
+    {
+      "course_id": "CSE 2315",
+      "group_id": 2,
+      "prereq_id": "MATH 1426",
+      "min_grade": "C",
+      "concurrent_ok": false,
+      "source": "catalog"
+    },
+    {
+      "course_id": "CSE 2315",
+      "group_id": 2,
+      "prereq_id": "MATH 2425",
+      "min_grade": "C",
+      "concurrent_ok": true,
+      "source": "catalog"
+    },
+    {
+      "course_id": "CSE 2440",
+      "group_id": 1,
+      "prereq_id": "MATH 2425",
+      "min_grade": "C",
+      "concurrent_ok": false,
+      "source": "catalog"
+    },
+    {
+      "course_id": "CSE 2440",
+      "group_id": 2,
+      "prereq_id": "PHYS 1444",
+      "min_grade": "C",
+      "concurrent_ok": false,
+      "source": "catalog"
+    },
+    {
+      "course_id": "CSE 2441",
+      "group_id": 1,
+      "prereq_id": "CSE 1320",
+      "min_grade": "D",
+      "concurrent_ok": false,
+      "source": "catalog"
+    },
+    {
+      "course_id": "CSE 2441",
+      "group_id": 2,
+      "prereq_id": "CSE 2315",
+      "min_grade": "D",
+      "concurrent_ok": false,
+      "source": "catalog"
+    },
+    {
+      "course_id": "CSE 3302",
+      "group_id": 1,
+      "prereq_id": "CSE 1325",
+      "min_grade": "C",
+      "concurrent_ok": false,
+      "source": "catalog"
+    },
+    {
+      "course_id": "CSE 3302",
+      "group_id": 2,
+      "prereq_id": "CSE 2312",
+      "min_grade": "C",
+      "concurrent_ok": false,
+      "source": "catalog"
+    },
+    {
+      "course_id": "CSE 3302",
+      "group_id": 3,
+      "prereq_id": "CSE 3318",
+      "min_grade": "C",
+      "concurrent_ok": false,
+      "source": "catalog"
+    },
+    {
+      "course_id": "CSE 3310",
+      "group_id": 1,
+      "prereq_id": "CSE 1320",
+      "min_grade": "C",
+      "concurrent_ok": false,
+      "source": "catalog"
+    },
+    {
+      "course_id": "CSE 3310",
+      "group_id": 2,
+      "prereq_id": "CSE 1325",
+      "min_grade": "C",
+      "concurrent_ok": false,
+      "source": "catalog"
+    },
+    {
+      "course_id": "CSE 3310",
+      "group_id": 3,
+      "prereq_id": "CSE 2315",
+      "min_grade": "C",
+      "concurrent_ok": false,
+      "source": "catalog"
+    },
+    {
+      "course_id": "CSE 3311",
+      "group_id": 1,
+      "prereq_id": "CSE 3310",
+      "min_grade": "C",
+      "concurrent_ok": false,
+      "source": "catalog"
+    },
+    {
+      "course_id": "CSE 3311",
+      "group_id": 2,
+      "prereq_id": "CSE 3318",
+      "min_grade": "C",
+      "concurrent_ok": false,
+      "source": "catalog"
+    },
+    {
+      "course_id": "CSE 3313",
+      "group_id": 1,
+      "prereq_id": "CSE 3318",
+      "min_grade": "C",
+      "concurrent_ok": false,
+      "source": "catalog"
+    },
+    {
+      "course_id": "CSE 3313",
+      "group_id": 2,
+      "prereq_id": "CSE 3380",
+      "min_grade": "C",
+      "concurrent_ok": false,
+      "source": "catalog"
+    },
+    {
+      "course_id": "CSE 3313",
+      "group_id": 2,
+      "prereq_id": "MATH 3330",
+      "min_grade": "C",
+      "concurrent_ok": false,
+      "source": "catalog"
+    },
+    {
+      "course_id": "CSE 3313",
+      "group_id": 3,
+      "prereq_id": "IE 3301",
+      "min_grade": "C",
+      "concurrent_ok": false,
+      "source": "catalog"
+    },
+    {
+      "course_id": "CSE 3313",
+      "group_id": 3,
+      "prereq_id": "MATH 3313",
+      "min_grade": "C",
+      "concurrent_ok": false,
+      "source": "catalog"
+    },
+    {
+      "course_id": "CSE 3314",
+      "group_id": 1,
+      "prereq_id": "CSE 3318",
+      "min_grade": "C",
+      "concurrent_ok": false,
+      "source": "catalog"
+    },
+    {
+      "course_id": "CSE 3314",
+      "group_id": 2,
+      "prereq_id": "COMS 2302",
+      "min_grade": "C",
+      "concurrent_ok": false,
+      "source": "catalog"
+    },
+    {
+      "course_id": "CSE 3315",
+      "group_id": 1,
+      "prereq_id": "CSE 2315",
+      "min_grade": "C",
+      "concurrent_ok": false,
+      "source": "catalog"
+    },
+    {
+      "course_id": "CSE 3318",
+      "group_id": 1,
+      "prereq_id": "CSE 1320",
+      "min_grade": "D",
+      "concurrent_ok": false,
+      "source": "catalog"
+    },
+    {
+      "course_id": "CSE 3318",
+      "group_id": 2,
+      "prereq_id": "CSE 2315",
+      "min_grade": "D",
+      "concurrent_ok": false,
+      "source": "catalog"
+    },
+    {
+      "course_id": "CSE 3320",
+      "group_id": 1,
+      "prereq_id": "CSE 2312",
+      "min_grade": "C",
+      "concurrent_ok": false,
+      "source": "catalog"
+    },
+    {
+      "course_id": "CSE 3323",
+      "group_id": 1,
+      "prereq_id": "CSE 2440",
+      "min_grade": "C",
+      "concurrent_ok": false,
+      "source": "catalog"
+    },
+    {
+      "course_id": "CSE 3330",
+      "group_id": 1,
+      "prereq_id": "CSE 1325",
+      "min_grade": "C",
+      "concurrent_ok": false,
+      "source": "catalog"
+    },
+    {
+      "course_id": "CSE 3330",
+      "group_id": 2,
+      "prereq_id": "CSE 3318",
+      "min_grade": "C",
+      "concurrent_ok": false,
+      "source": "catalog"
+    },
+    {
+      "course_id": "CSE 3340",
+      "group_id": 1,
+      "prereq_id": "CSE 3318",
+      "min_grade": "C",
+      "concurrent_ok": false,
+      "source": "catalog"
+    },
+    {
+      "course_id": "CSE 3340",
+      "group_id": 2,
+      "prereq_id": "CSE 3310",
+      "min_grade": "C",
+      "concurrent_ok": false,
+      "source": "catalog"
+    },
+    {
+      "course_id": "CSE 3341",
+      "group_id": 1,
+      "prereq_id": "CSE 2441",
+      "min_grade": "C",
+      "concurrent_ok": false,
+      "source": "catalog"
+    },
+    {
+      "course_id": "CSE 3380",
+      "group_id": 1,
+      "prereq_id": "CSE 2315",
+      "min_grade": "C",
+      "concurrent_ok": false,
+      "source": "catalog"
+    },
+    {
+      "course_id": "CSE 3442",
+      "group_id": 1,
+      "prereq_id": "CSE 2312",
+      "min_grade": "C",
+      "concurrent_ok": false,
+      "source": "catalog"
+    },
+    {
+      "course_id": "CSE 3442",
+      "group_id": 2,
+      "prereq_id": "CSE 2440",
+      "min_grade": "C",
+      "concurrent_ok": false,
+      "source": "catalog"
+    },
+    {
+      "course_id": "CSE 3442",
+      "group_id": 3,
+      "prereq_id": "CSE 2441",
+      "min_grade": "C",
+      "concurrent_ok": false,
+      "source": "catalog"
+    },
+    {
+      "course_id": "CSE 4303",
+      "group_id": 1,
+      "prereq_id": "CSE 3318",
+      "min_grade": "C",
+      "concurrent_ok": false,
+      "source": "catalog"
+    },
+    {
+      "course_id": "CSE 4303",
+      "group_id": 2,
+      "prereq_id": "CSE 3380",
+      "min_grade": "C",
+      "concurrent_ok": false,
+      "source": "catalog"
+    },
+    {
+      "course_id": "CSE 4303",
+      "group_id": 2,
+      "prereq_id": "MATH 3330",
+      "min_grade": "C",
+      "concurrent_ok": false,
+      "source": "catalog"
+    },
+    {
+      "course_id": "CSE 4304",
+      "group_id": 1,
+      "prereq_id": "CSE 3380",
+      "min_grade": "C",
+      "concurrent_ok": false,
+      "source": "catalog"
+    },
+    {
+      "course_id": "CSE 4304",
+      "group_id": 1,
+      "prereq_id": "MATH 3330",
+      "min_grade": "C",
+      "concurrent_ok": false,
+      "source": "catalog"
+    },
+    {
+      "course_id": "CSE 4305",
+      "group_id": 1,
+      "prereq_id": "CSE 3302",
+      "min_grade": "C",
+      "concurrent_ok": false,
+      "source": "catalog"
+    },
+    {
+      "course_id": "CSE 4305",
+      "group_id": 2,
+      "prereq_id": "CSE 3315",
+      "min_grade": "C",
+      "concurrent_ok": false,
+      "source": "catalog"
+    },
+    {
+      "course_id": "CSE 4308",
+      "group_id": 1,
+      "prereq_id": "CSE 3318",
+      "min_grade": "C",
+      "concurrent_ok": false,
+      "source": "catalog"
+    },
+    {
+      "course_id": "CSE 4308",
+      "group_id": 2,
+      "prereq_id": "IE 3301",
+      "min_grade": "C",
+      "concurrent_ok": false,
+      "source": "catalog"
+    },
+    {
+      "course_id": "CSE 4308",
+      "group_id": 2,
+      "prereq_id": "MATH 3313",
+      "min_grade": "C",
+      "concurrent_ok": false,
+      "source": "catalog"
+    },
+    {
+      "course_id": "CSE 4309",
+      "group_id": 1,
+      "prereq_id": "CSE 3318",
+      "min_grade": "C",
+      "concurrent_ok": false,
+      "source": "catalog"
+    },
+    {
+      "course_id": "CSE 4309",
+      "group_id": 2,
+      "prereq_id": "IE 3301",
+      "min_grade": "C",
+      "concurrent_ok": false,
+      "source": "catalog"
+    },
+    {
+      "course_id": "CSE 4309",
+      "group_id": 2,
+      "prereq_id": "MATH 3313",
+      "min_grade": "C",
+      "concurrent_ok": false,
+      "source": "catalog"
+    },
+    {
+      "course_id": "CSE 4309",
+      "group_id": 3,
+      "prereq_id": "CSE 3380",
+      "min_grade": "C",
+      "concurrent_ok": false,
+      "source": "catalog"
+    },
+    {
+      "course_id": "CSE 4309",
+      "group_id": 3,
+      "prereq_id": "MATH 3330",
+      "min_grade": "C",
+      "concurrent_ok": false,
+      "source": "catalog"
+    },
+    {
+      "course_id": "CSE 4310",
+      "group_id": 1,
+      "prereq_id": "CSE 3318",
+      "min_grade": "C",
+      "concurrent_ok": false,
+      "source": "catalog"
+    },
+    {
+      "course_id": "CSE 4310",
+      "group_id": 2,
+      "prereq_id": "IE 3301",
+      "min_grade": "C",
+      "concurrent_ok": false,
+      "source": "catalog"
+    },
+    {
+      "course_id": "CSE 4310",
+      "group_id": 2,
+      "prereq_id": "MATH 3313",
+      "min_grade": "C",
+      "concurrent_ok": false,
+      "source": "catalog"
+    },
+    {
+      "course_id": "CSE 4310",
+      "group_id": 3,
+      "prereq_id": "CSE 3380",
+      "min_grade": "C",
+      "concurrent_ok": false,
+      "source": "catalog"
+    },
+    {
+      "course_id": "CSE 4310",
+      "group_id": 3,
+      "prereq_id": "MATH 3330",
+      "min_grade": "C",
+      "concurrent_ok": false,
+      "source": "catalog"
+    },
+    {
+      "course_id": "CSE 4311",
+      "group_id": 1,
+      "prereq_id": "CSE 3380",
+      "min_grade": "C",
+      "concurrent_ok": false,
+      "source": "catalog"
+    },
+    {
+      "course_id": "CSE 4311",
+      "group_id": 1,
+      "prereq_id": "MATH 3330",
+      "min_grade": "C",
+      "concurrent_ok": false,
+      "source": "catalog"
+    },
+    {
+      "course_id": "CSE 4311",
+      "group_id": 2,
+      "prereq_id": "IE 3301",
+      "min_grade": "C",
+      "concurrent_ok": false,
+      "source": "catalog"
+    },
+    {
+      "course_id": "CSE 4311",
+      "group_id": 2,
+      "prereq_id": "MATH 3313",
+      "min_grade": "C",
+      "concurrent_ok": false,
+      "source": "catalog"
+    },
+    {
+      "course_id": "CSE 4314",
+      "group_id": 1,
+      "prereq_id": "COMS 2302",
+      "min_grade": "C",
+      "concurrent_ok": false,
+      "source": "catalog"
+    },
+    {
+      "course_id": "CSE 4316",
+      "group_id": 1,
+      "prereq_id": "CSE 3310",
+      "min_grade": "C",
+      "concurrent_ok": false,
+      "source": "catalog"
+    },
+    {
+      "course_id": "CSE 4316",
+      "group_id": 2,
+      "prereq_id": "CSE 3320",
+      "min_grade": "C",
+      "concurrent_ok": false,
+      "source": "catalog"
+    },
+    {
+      "course_id": "CSE 4316",
+      "group_id": 3,
+      "prereq_id": "CSE 3314",
+      "min_grade": "C",
+      "concurrent_ok": true,
+      "source": "catalog"
+    },
+    {
+      "course_id": "CSE 4317",
+      "group_id": 1,
+      "prereq_id": "CSE 4316",
+      "min_grade": "C",
+      "concurrent_ok": false,
+      "source": "catalog"
+    },
+    {
+      "course_id": "CSE 4321",
+      "group_id": 1,
+      "prereq_id": "CSE 3310",
+      "min_grade": "C",
+      "concurrent_ok": false,
+      "source": "catalog"
+    },
+    {
+      "course_id": "CSE 4322",
+      "group_id": 1,
+      "prereq_id": "CSE 3310",
+      "min_grade": "C",
+      "concurrent_ok": false,
+      "source": "catalog"
+    },
+    {
+      "course_id": "CSE 4323",
+      "group_id": 1,
+      "prereq_id": "CSE 3320",
+      "min_grade": "C",
+      "concurrent_ok": false,
+      "source": "catalog"
+    },
+    {
+      "course_id": "CSE 4331",
+      "group_id": 1,
+      "prereq_id": "CSE 3330",
+      "min_grade": "C",
+      "concurrent_ok": false,
+      "source": "catalog"
+    },
+    {
+      "course_id": "CSE 4333",
+      "group_id": 1,
+      "prereq_id": "CSE 3330",
+      "min_grade": "C",
+      "concurrent_ok": false,
+      "source": "catalog"
+    },
+    {
+      "course_id": "CSE 4333",
+      "group_id": 2,
+      "prereq_id": "CSE 3320",
+      "min_grade": "C",
+      "concurrent_ok": false,
+      "source": "catalog"
+    },
+    {
+      "course_id": "CSE 4334",
+      "group_id": 1,
+      "prereq_id": "IE 3301",
+      "min_grade": "C",
+      "concurrent_ok": false,
+      "source": "catalog"
+    },
+    {
+      "course_id": "CSE 4334",
+      "group_id": 1,
+      "prereq_id": "MATH 3313",
+      "min_grade": "C",
+      "concurrent_ok": false,
+      "source": "catalog"
+    },
+    {
+      "course_id": "CSE 4334",
+      "group_id": 2,
+      "prereq_id": "CSE 3330",
+      "min_grade": "C",
+      "concurrent_ok": true,
+      "source": "catalog"
+    },
+    {
+      "course_id": "CSE 4340",
+      "group_id": 1,
+      "prereq_id": "CSE 4344",
+      "min_grade": "C",
+      "concurrent_ok": false,
+      "source": "catalog"
+    },
+    {
+      "course_id": "CSE 4340",
+      "group_id": 1,
+      "prereq_id": "CSE 4352",
+      "min_grade": "C",
+      "concurrent_ok": false,
+      "source": "catalog"
+    },
+    {
+      "course_id": "CSE 4342",
+      "group_id": 1,
+      "prereq_id": "CSE 3323",
+      "min_grade": "C",
+      "concurrent_ok": false,
+      "source": "catalog"
+    },
+    {
+      "course_id": "CSE 4342",
+      "group_id": 2,
+      "prereq_id": "CSE 3442",
+      "min_grade": "C",
+      "concurrent_ok": false,
+      "source": "catalog"
+    },
+    {
+      "course_id": "CSE 4342",
+      "group_id": 3,
+      "prereq_id": "CSE 3313",
+      "min_grade": "C",
+      "concurrent_ok": false,
+      "source": "catalog"
+    },
+    {
+      "course_id": "CSE 4344",
+      "group_id": 1,
+      "prereq_id": "CSE 3320",
+      "min_grade": "C",
+      "concurrent_ok": false,
+      "source": "catalog"
+    },
+    {
+      "course_id": "CSE 4345",
+      "group_id": 1,
+      "prereq_id": "IE 3301",
+      "min_grade": "C",
+      "concurrent_ok": false,
+      "source": "catalog"
+    },
+    {
+      "course_id": "CSE 4345",
+      "group_id": 1,
+      "prereq_id": "MATH 3313",
+      "min_grade": "C",
+      "concurrent_ok": false,
+      "source": "catalog"
+    },
+    {
+      "course_id": "CSE 4345",
+      "group_id": 2,
+      "prereq_id": "CSE 3318",
+      "min_grade": "C",
+      "concurrent_ok": false,
+      "source": "catalog"
+    },
+    {
+      "course_id": "CSE 4345",
+      "group_id": 3,
+      "prereq_id": "CSE 3380",
+      "min_grade": "C",
+      "concurrent_ok": false,
+      "source": "catalog"
+    },
+    {
+      "course_id": "CSE 4345",
+      "group_id": 3,
+      "prereq_id": "MATH 3330",
+      "min_grade": "C",
+      "concurrent_ok": false,
+      "source": "catalog"
+    },
+    {
+      "course_id": "CSE 4351",
+      "group_id": 1,
+      "prereq_id": "CSE 3320",
+      "min_grade": "C",
+      "concurrent_ok": false,
+      "source": "catalog"
+    },
+    {
+      "course_id": "CSE 4352",
+      "group_id": 1,
+      "prereq_id": "CSE 3442",
+      "min_grade": "C",
+      "concurrent_ok": false,
+      "source": "catalog"
+    },
+    {
+      "course_id": "CSE 4354",
+      "group_id": 1,
+      "prereq_id": "CSE 3320",
+      "min_grade": "C",
+      "concurrent_ok": false,
+      "source": "catalog"
+    },
+    {
+      "course_id": "CSE 4354",
+      "group_id": 2,
+      "prereq_id": "CSE 3442",
+      "min_grade": "C",
+      "concurrent_ok": false,
+      "source": "catalog"
+    },
+    {
+      "course_id": "CSE 4355",
+      "group_id": 1,
+      "prereq_id": "CSE 3323",
+      "min_grade": "C",
+      "concurrent_ok": false,
+      "source": "catalog"
+    },
+    {
+      "course_id": "CSE 4355",
+      "group_id": 2,
+      "prereq_id": "CSE 3442",
+      "min_grade": "C",
+      "concurrent_ok": false,
+      "source": "catalog"
+    },
+    {
+      "course_id": "CSE 4356",
+      "group_id": 1,
+      "prereq_id": "CSE 3442",
+      "min_grade": "C",
+      "concurrent_ok": false,
+      "source": "catalog"
+    },
+    {
+      "course_id": "CSE 4358",
+      "group_id": 1,
+      "prereq_id": "CSE 3442",
+      "min_grade": "C",
+      "concurrent_ok": false,
+      "source": "catalog"
+    },
+    {
+      "course_id": "CSE 4360",
+      "group_id": 1,
+      "prereq_id": "CSE 3318",
+      "min_grade": "C",
+      "concurrent_ok": false,
+      "source": "catalog"
+    },
+    {
+      "course_id": "CSE 4360",
+      "group_id": 2,
+      "prereq_id": "CSE 3320",
+      "min_grade": "C",
+      "concurrent_ok": false,
+      "source": "catalog"
+    },
+    {
+      "course_id": "CSE 4360",
+      "group_id": 3,
+      "prereq_id": "CSE 3380",
+      "min_grade": "C",
+      "concurrent_ok": false,
+      "source": "catalog"
+    },
+    {
+      "course_id": "CSE 4360",
+      "group_id": 3,
+      "prereq_id": "MATH 3330",
+      "min_grade": "C",
+      "concurrent_ok": false,
+      "source": "catalog"
+    },
+    {
+      "course_id": "CSE 4361",
+      "group_id": 1,
+      "prereq_id": "CSE 3311",
+      "min_grade": "C",
+      "concurrent_ok": false,
+      "source": "catalog"
+    },
+    {
+      "course_id": "CSE 4372",
+      "group_id": 1,
+      "prereq_id": "CSE 3442",
+      "min_grade": "C",
+      "concurrent_ok": false,
+      "source": "catalog"
+    },
+    {
+      "course_id": "CSE 4373",
+      "group_id": 1,
+      "prereq_id": "CSE 3320",
+      "min_grade": "C",
+      "concurrent_ok": false,
+      "source": "catalog"
+    },
+    {
+      "course_id": "CSE 4376",
+      "group_id": 1,
+      "prereq_id": "CSE 3313",
+      "min_grade": "C",
+      "concurrent_ok": false,
+      "source": "catalog"
+    },
+    {
+      "course_id": "CSE 4377",
+      "group_id": 1,
+      "prereq_id": "CSE 3313",
+      "min_grade": "C",
+      "concurrent_ok": false,
+      "source": "catalog"
+    },
+    {
+      "course_id": "CSE 4377",
+      "group_id": 2,
+      "prereq_id": "CSE 3442",
+      "min_grade": "C",
+      "concurrent_ok": false,
+      "source": "catalog"
+    },
+    {
+      "course_id": "CSE 4379",
+      "group_id": 1,
+      "prereq_id": "CSE 4378",
+      "min_grade": "B",
+      "concurrent_ok": false,
+      "source": "catalog"
+    },
+    {
+      "course_id": "CSE 4380",
+      "group_id": 1,
+      "prereq_id": "CSE 3320",
+      "min_grade": "C",
+      "concurrent_ok": false,
+      "source": "catalog"
+    },
+    {
+      "course_id": "CSE 4381",
+      "group_id": 1,
+      "prereq_id": "CSE 3320",
+      "min_grade": "C",
+      "concurrent_ok": false,
+      "source": "catalog"
+    },
+    {
+      "course_id": "CSE 4381",
+      "group_id": 2,
+      "prereq_id": "CSE 4344",
+      "min_grade": "C",
+      "concurrent_ok": true,
+      "source": "catalog"
+    },
+    {
+      "course_id": "CSE 4382",
+      "group_id": 1,
+      "prereq_id": "CSE 3320",
+      "min_grade": "C",
+      "concurrent_ok": false,
+      "source": "catalog"
+    },
+    {
+      "course_id": "MATH 2425",
+      "group_id": 1,
+      "prereq_id": "MATH 1426",
+      "min_grade": "C",
+      "concurrent_ok": false,
+      "source": "assumed"
+    },
+    {
+      "course_id": "MATH 2326",
+      "group_id": 1,
+      "prereq_id": "MATH 2425",
+      "min_grade": "C",
+      "concurrent_ok": false,
+      "source": "assumed"
+    },
+    {
+      "course_id": "PHYS 1444",
+      "group_id": 1,
+      "prereq_id": "PHYS 1443",
+      "min_grade": "C",
+      "concurrent_ok": false,
+      "source": "assumed"
+    }
+  ],
+  "professional_courses": [
+    "CSE 4303",
+    "CSE 4304",
+    "CSE 4305",
+    "CSE 4308",
+    "CSE 4309",
+    "CSE 4310",
+    "CSE 4311",
+    "CSE 4314",
+    "CSE 4316",
+    "CSE 4317",
+    "CSE 4321",
+    "CSE 4322",
+    "CSE 4323",
+    "CSE 4331",
+    "CSE 4333",
+    "CSE 4334",
+    "CSE 4340",
+    "CSE 4342",
+    "CSE 4344",
+    "CSE 4345",
+    "CSE 4351",
+    "CSE 4352",
+    "CSE 4354",
+    "CSE 4355",
+    "CSE 4356",
+    "CSE 4358",
+    "CSE 4360",
+    "CSE 4361",
+    "CSE 4362",
+    "CSE 4363",
+    "CSE 4372",
+    "CSE 4373",
+    "CSE 4376",
+    "CSE 4377",
+    "CSE 4378",
+    "CSE 4380",
+    "CSE 4381",
+    "CSE 4382"
+  ],
+  "notes": {
+    "CSE 1000": [
+      "Requires departmental good standing and permission of instructor."
+    ],
+    "CSE 1310": [
+      "Catalog also accepts MATH 1302/1402/1421, HONR-SC math, or a qualifying ALEKS PPL score (with UNIV 1131 or ENGR 1101); only the in-degree math courses are modelled."
+    ],
+    "CSE 1311": [
+      "Catalog also accepts MATH 1421 and HONR-SC math courses."
+    ],
+    "CSE 1320": [
+      "Catalog also accepts MATH 1421, HONR-SC math, or a qualifying ALEKS PPL score (with UNIV 1131 or ENGR 1101)."
+    ],
+    "CSE 1392": [
+      "Consent of instructor/advisor may be required."
+    ],
+    "CSE 2000": [
+      "Requires departmental good standing and permission of instructor."
+    ],
+    "CSE 2392": [
+      "Consent of instructor/advisor may be required."
+    ],
+    "CSE 3000": [
+      "Requires departmental good standing and permission of instructor."
+    ],
+    "CSE 3392": [
+      "Consent of instructor/advisor may be required."
+    ],
+    "CSE 4000": [
+      "Requires departmental good standing and permission of instructor."
+    ],
+    "CSE 4191": [
+      "Consent of instructor/advisor may be required."
+    ],
+    "CSE 4316": [
+      "Modelled for academic plans CS and SE (the Computer Engineering branch differs)."
+    ],
+    "CSE 4340": [
+      "Consent of instructor/advisor may be required."
+    ],
+    "CSE 4391": [
+      "Consent of instructor/advisor may be required."
+    ],
+    "CSE 4392": [
+      "Consent of instructor/advisor may be required."
+    ]
+  }
+}

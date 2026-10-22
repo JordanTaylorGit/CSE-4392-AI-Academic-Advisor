@@ -1,0 +1,668 @@
+{
+  "BS Computer Science (no certificate)": {
+    "term_hours": [
+      17,
+      15,
+      16,
+      15,
+      15,
+      15,
+      15,
+      15
+    ],
+    "terms": [
+      {
+        "year": 1,
+        "term": "Fall",
+        "hours": 17,
+        "items": [
+          {
+            "slot": "student_success",
+            "hours": 1,
+            "courses": [
+              "UNIV 1131",
+              "ENGR 1101",
+              "UNIV 1101"
+            ]
+          },
+          {
+            "slot": "cse1310",
+            "hours": 3,
+            "courses": [
+              "CSE 1310"
+            ]
+          },
+          {
+            "slot": "math1426",
+            "hours": 4,
+            "courses": [
+              "MATH 1426"
+            ]
+          },
+          {
+            "slot": "engl1301",
+            "hours": 3,
+            "courses": [
+              "ENGL 1301"
+            ]
+          },
+          {
+            "slot": "us_history",
+            "hours": 3,
+            "courses": []
+          },
+          {
+            "slot": "lpc",
+            "hours": 3,
+            "courses": []
+          }
+        ]
+      },
+      {
+        "year": 1,
+        "term": "Spring",
+        "hours": 15,
+        "items": [
+          {
+            "slot": "cse1106",
+            "hours": 1,
+            "courses": [
+              "CSE 1106"
+            ]
+          },
+          {
+            "slot": "cse1320",
+            "hours": 3,
+            "courses": [
+              "CSE 1320"
+            ]
+          },
+          {
+            "slot": "math2425",
+            "hours": 4,
+            "courses": [
+              "MATH 2425"
+            ]
+          },
+          {
+            "slot": "phys1443",
+            "hours": 4,
+            "courses": [
+              "PHYS 1443"
+            ]
+          },
+          {
+            "slot": "cse2315",
+            "hours": 3,
+            "courses": [
+              "CSE 2315"
+            ]
+          }
+        ]
+      },
+      {
+        "year": 2,
+        "term": "Fall",
+        "hours": 16,
+        "items": [
+          {
+            "slot": "cse1325",
+            "hours": 3,
+            "courses": [
+              "CSE 1325"
+            ]
+          },
+          {
+            "slot": "cse2312",
+            "hours": 3,
+            "courses": [
+              "CSE 2312"
+            ]
+          },
+          {
+            "slot": "cse3318",
+            "hours": 3,
+            "courses": [
+              "CSE 3318"
+            ]
+          },
+          {
+            "slot": "phys1444",
+            "hours": 4,
+            "courses": [
+              "PHYS 1444"
+            ]
+          },
+          {
+            "slot": "us_history",
+            "hours": 3,
+            "courses": []
+          }
+        ]
+      },
+      {
+        "year": 2,
+        "term": "Spring",
+        "hours": 15,
+        "items": [
+          {
+            "slot": "linalg",
+            "hours": 3,
+            "courses": [
+              "CSE 3380",
+              "MATH 3330"
+            ]
+          },
+          {
+            "slot": "cse3310",
+            "hours": 3,
+            "courses": [
+              "CSE 3310"
+            ]
+          },
+          {
+            "slot": "cse3320",
+            "hours": 3,
+            "courses": [
+              "CSE 3320"
+            ]
+          },
+          {
+            "slot": "math2326",
+            "hours": 3,
+            "courses": [
+              "MATH 2326"
+            ]
+          },
+          {
+            "slot": "coms2302",
+            "hours": 3,
+            "courses": [
+              "COMS 2302"
+            ]
+          }
+        ]
+      },
+      {
+        "year": 3,
+        "term": "Fall",
+        "hours": 15,
+        "items": [
+          {
+            "slot": "cse3302",
+            "hours": 3,
+            "courses": [
+              "CSE 3302"
+            ]
+          },
+          {
+            "slot": "cse3330",
+            "hours": 3,
+            "courses": [
+              "CSE 3330"
+            ]
+          },
+          {
+            "slot": "cse3315",
+            "hours": 3,
+            "courses": [
+              "CSE 3315"
+            ]
+          },
+          {
+            "slot": "prob",
+            "hours": 3,
+            "courses": [
+              "IE 3301",
+              "MATH 3313"
+            ]
+          },
+          {
+            "slot": "government",
+            "hours": 3,
+            "courses": []
+          }
+        ]
+      },
+      {
+        "year": 3,
+        "term": "Spring",
+        "hours": 15,
+        "items": [
+          {
+            "slot": "cse4344",
+            "hours": 3,
+            "courses": []
+          },
+          {
+            "slot": "government",
+            "hours": 3,
+            "courses": []
+          },
+          {
+            "slot": "technical_elective",
+            "hours": 3,
+            "courses": []
+          },
+          {
+            "slot": "technical_elective",
+            "hours": 3,
+            "courses": []
+          },
+          {
+            "slot": "technical_elective",
+            "hours": 3,
+            "courses": []
+          }
+        ]
+      },
+      {
+        "year": 4,
+        "term": "Fall",
+        "hours": 15,
+        "items": [
+          {
+            "slot": "cse3314",
+            "hours": 3,
+            "courses": [
+              "CSE 3314"
+            ]
+          },
+          {
+            "slot": "cse4316",
+            "hours": 3,
+            "courses": [
+              "CSE 4316"
+            ]
+          },
+          {
+            "slot": "econ",
+            "hours": 3,
+            "courses": [
+              "IE 2308",
+              "ECON 2305"
+            ]
+          },
+          {
+            "slot": "technical_elective",
+            "hours": 3,
+            "courses": []
+          },
+          {
+            "slot": "technical_elective",
+            "hours": 3,
+            "courses": []
+          }
+        ]
+      },
+      {
+        "year": 4,
+        "term": "Spring",
+        "hours": 15,
+        "items": [
+          {
+            "slot": "cse4317",
+            "hours": 3,
+            "courses": [
+              "CSE 4317"
+            ]
+          },
+          {
+            "slot": "security_course",
+            "hours": 3,
+            "courses": []
+          },
+          {
+            "slot": "technical_elective",
+            "hours": 3,
+            "courses": []
+          },
+          {
+            "slot": "free_elective",
+            "hours": 3,
+            "courses": []
+          },
+          {
+            "slot": "creative_arts",
+            "hours": 3,
+            "courses": []
+          }
+        ]
+      }
+    ],
+    "note": "Catalog-verbatim sequence for the plain degree (no certificate). Test fixture only."
+  },
+  "BS Software Engineering (no certificate)": {
+    "term_hours": [
+      17,
+      15,
+      16,
+      15,
+      15,
+      15,
+      16,
+      15
+    ],
+    "terms": [
+      {
+        "year": 1,
+        "term": "Fall",
+        "hours": 17,
+        "items": [
+          {
+            "slot": "student_success",
+            "hours": 1,
+            "courses": [
+              "UNIV 1131",
+              "ENGR 1101",
+              "UNIV 1101"
+            ]
+          },
+          {
+            "slot": "cse1310",
+            "hours": 3,
+            "courses": [
+              "CSE 1310"
+            ]
+          },
+          {
+            "slot": "math1426",
+            "hours": 4,
+            "courses": [
+              "MATH 1426"
+            ]
+          },
+          {
+            "slot": "engl1301",
+            "hours": 3,
+            "courses": [
+              "ENGL 1301"
+            ]
+          },
+          {
+            "slot": "us_history",
+            "hours": 3,
+            "courses": []
+          },
+          {
+            "slot": "lpc",
+            "hours": 3,
+            "courses": []
+          }
+        ]
+      },
+      {
+        "year": 1,
+        "term": "Spring",
+        "hours": 15,
+        "items": [
+          {
+            "slot": "cse1106",
+            "hours": 1,
+            "courses": [
+              "CSE 1106"
+            ]
+          },
+          {
+            "slot": "cse1320",
+            "hours": 3,
+            "courses": [
+              "CSE 1320"
+            ]
+          },
+          {
+            "slot": "math2425",
+            "hours": 4,
+            "courses": [
+              "MATH 2425"
+            ]
+          },
+          {
+            "slot": "phys1443",
+            "hours": 4,
+            "courses": [
+              "PHYS 1443"
+            ]
+          },
+          {
+            "slot": "cse2315",
+            "hours": 3,
+            "courses": [
+              "CSE 2315"
+            ]
+          }
+        ]
+      },
+      {
+        "year": 2,
+        "term": "Fall",
+        "hours": 16,
+        "items": [
+          {
+            "slot": "cse1325",
+            "hours": 3,
+            "courses": [
+              "CSE 1325"
+            ]
+          },
+          {
+            "slot": "cse2312",
+            "hours": 3,
+            "courses": [
+              "CSE 2312"
+            ]
+          },
+          {
+            "slot": "cse3318",
+            "hours": 3,
+            "courses": [
+              "CSE 3318"
+            ]
+          },
+          {
+            "slot": "phys1444",
+            "hours": 4,
+            "courses": [
+              "PHYS 1444"
+            ]
+          },
+          {
+            "slot": "us_history",
+            "hours": 3,
+            "courses": []
+          }
+        ]
+      },
+      {
+        "year": 2,
+        "term": "Spring",
+        "hours": 15,
+        "items": [
+          {
+            "slot": "linalg",
+            "hours": 3,
+            "courses": [
+              "CSE 3380",
+              "MATH 3330"
+            ]
+          },
+          {
+            "slot": "cse3310",
+            "hours": 3,
+            "courses": [
+              "CSE 3310"
+            ]
+          },
+          {
+            "slot": "cse3320",
+            "hours": 3,
+            "courses": [
+              "CSE 3320"
+            ]
+          },
+          {
+            "slot": "math2326",
+            "hours": 3,
+            "courses": [
+              "MATH 2326"
+            ]
+          },
+          {
+            "slot": "coms2302",
+            "hours": 3,
+            "courses": [
+              "COMS 2302"
+            ]
+          }
+        ]
+      },
+      {
+        "year": 3,
+        "term": "Fall",
+        "hours": 15,
+        "items": [
+          {
+            "slot": "cse3302",
+            "hours": 3,
+            "courses": [
+              "CSE 3302"
+            ]
+          },
+          {
+            "slot": "cse3330",
+            "hours": 3,
+            "courses": [
+              "CSE 3330"
+            ]
+          },
+          {
+            "slot": "prob",
+            "hours": 3,
+            "courses": [
+              "IE 3301",
+              "MATH 3313"
+            ]
+          },
+          {
+            "slot": "cse3311",
+            "hours": 3,
+            "courses": []
+          },
+          {
+            "slot": "government",
+            "hours": 3,
+            "courses": []
+          }
+        ]
+      },
+      {
+        "year": 3,
+        "term": "Spring",
+        "hours": 15,
+        "items": [
+          {
+            "slot": "cse4321",
+            "hours": 3,
+            "courses": []
+          },
+          {
+            "slot": "cse4380",
+            "hours": 3,
+            "courses": []
+          },
+          {
+            "slot": "cse3315",
+            "hours": 3,
+            "courses": [
+              "CSE 3315"
+            ]
+          },
+          {
+            "slot": "government",
+            "hours": 3,
+            "courses": []
+          },
+          {
+            "slot": "technical_elective",
+            "hours": 3,
+            "courses": []
+          }
+        ]
+      },
+      {
+        "year": 4,
+        "term": "Fall",
+        "hours": 16,
+        "items": [
+          {
+            "slot": "cse3314",
+            "hours": 3,
+            "courses": [
+              "CSE 3314"
+            ]
+          },
+          {
+            "slot": "cse4316",
+            "hours": 3,
+            "courses": [
+              "CSE 4316"
+            ]
+          },
+          {
+            "slot": "cse4361",
+            "hours": 3,
+            "courses": []
+          },
+          {
+            "slot": "technical_elective",
+            "hours": 3,
+            "courses": []
+          },
+          {
+            "slot": "science_elective",
+            "hours": 4,
+            "courses": []
+          }
+        ]
+      },
+      {
+        "year": 4,
+        "term": "Spring",
+        "hours": 15,
+        "items": [
+          {
+            "slot": "cse4317",
+            "hours": 3,
+            "courses": [
+              "CSE 4317"
+            ]
+          },
+          {
+            "slot": "cse4322",
+            "hours": 3,
+            "courses": []
+          },
+          {
+            "slot": "econ",
+            "hours": 3,
+            "courses": [
+              "IE 2308",
+              "ECON 2305"
+            ]
+          },
+          {
+            "slot": "creative_arts",
+            "hours": 3,
+            "courses": []
+          },
+          {
+            "slot": "technical_elective",
+            "hours": 3,
+            "courses": []
+          }
+        ]
+      }
+    ],
+    "note": "Catalog-verbatim sequence for the plain degree (no certificate). Test fixture only."
+  }
+}

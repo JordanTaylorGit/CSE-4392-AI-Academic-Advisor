@@ -1,0 +1,759 @@
+[
+  {
+    "program_id": "bs_cs_cyber",
+    "category": "core",
+    "course_id": null,
+    "options": [
+      "UNIV 1131",
+      "ENGR 1101",
+      "UNIV 1101"
+    ],
+    "credits": 1
+  },
+  {
+    "program_id": "bs_cs_cyber",
+    "category": "core",
+    "course_id": "ENGL 1301",
+    "options": [],
+    "credits": 3
+  },
+  {
+    "program_id": "bs_cs_cyber",
+    "category": "core",
+    "course_id": "COMS 2302",
+    "options": [],
+    "credits": 3
+  },
+  {
+    "program_id": "bs_cs_cyber",
+    "category": "math_science",
+    "course_id": "MATH 1426",
+    "options": [],
+    "credits": 4
+  },
+  {
+    "program_id": "bs_cs_cyber",
+    "category": "math_science",
+    "course_id": "MATH 2425",
+    "options": [],
+    "credits": 4
+  },
+  {
+    "program_id": "bs_cs_cyber",
+    "category": "math_science",
+    "course_id": "MATH 2326",
+    "options": [],
+    "credits": 3
+  },
+  {
+    "program_id": "bs_cs_cyber",
+    "category": "math_science",
+    "course_id": "PHYS 1443",
+    "options": [],
+    "credits": 4
+  },
+  {
+    "program_id": "bs_cs_cyber",
+    "category": "math_science",
+    "course_id": "PHYS 1444",
+    "options": [],
+    "credits": 4
+  },
+  {
+    "program_id": "bs_cs_cyber",
+    "category": "core",
+    "course_id": null,
+    "options": [
+      "IE 2308",
+      "ECON 2305"
+    ],
+    "credits": 3
+  },
+  {
+    "program_id": "bs_cs_cyber",
+    "category": "core",
+    "course_id": null,
+    "options": [
+      "HIST 1301",
+      "HIST 1302"
+    ],
+    "credits": 3
+  },
+  {
+    "program_id": "bs_cs_cyber",
+    "category": "core",
+    "course_id": null,
+    "options": [
+      "HIST 1301",
+      "HIST 1302"
+    ],
+    "credits": 3
+  },
+  {
+    "program_id": "bs_cs_cyber",
+    "category": "core",
+    "course_id": null,
+    "options": [
+      "POLS 2311",
+      "POLS 2312"
+    ],
+    "credits": 3
+  },
+  {
+    "program_id": "bs_cs_cyber",
+    "category": "core",
+    "course_id": null,
+    "options": [
+      "POLS 2311",
+      "POLS 2312"
+    ],
+    "credits": 3
+  },
+  {
+    "program_id": "bs_cs_cyber",
+    "category": "core",
+    "course_id": null,
+    "options": [
+      "PHIL 2300",
+      "LING 2371",
+      "HIST 2377"
+    ],
+    "credits": 3
+  },
+  {
+    "program_id": "bs_cs_cyber",
+    "category": "core",
+    "course_id": null,
+    "options": [
+      "ENGL 1375",
+      "MUSI 1304"
+    ],
+    "credits": 3
+  },
+  {
+    "program_id": "bs_cs_cyber",
+    "category": "cse_core",
+    "course_id": "CSE 1106",
+    "options": [],
+    "credits": 1
+  },
+  {
+    "program_id": "bs_cs_cyber",
+    "category": "cse_core",
+    "course_id": "CSE 1310",
+    "options": [],
+    "credits": 3
+  },
+  {
+    "program_id": "bs_cs_cyber",
+    "category": "cse_core",
+    "course_id": "CSE 1320",
+    "options": [],
+    "credits": 3
+  },
+  {
+    "program_id": "bs_cs_cyber",
+    "category": "cse_core",
+    "course_id": "CSE 1325",
+    "options": [],
+    "credits": 3
+  },
+  {
+    "program_id": "bs_cs_cyber",
+    "category": "cse_core",
+    "course_id": "CSE 2312",
+    "options": [],
+    "credits": 3
+  },
+  {
+    "program_id": "bs_cs_cyber",
+    "category": "cse_core",
+    "course_id": "CSE 2315",
+    "options": [],
+    "credits": 3
+  },
+  {
+    "program_id": "bs_cs_cyber",
+    "category": "cse_core",
+    "course_id": "CSE 3318",
+    "options": [],
+    "credits": 3
+  },
+  {
+    "program_id": "bs_cs_cyber",
+    "category": "cse_core",
+    "course_id": null,
+    "options": [
+      "IE 3301",
+      "MATH 3313"
+    ],
+    "credits": 3
+  },
+  {
+    "program_id": "bs_cs_cyber",
+    "category": "cse_core",
+    "course_id": "CSE 3302",
+    "options": [],
+    "credits": 3
+  },
+  {
+    "program_id": "bs_cs_cyber",
+    "category": "cse_core",
+    "course_id": "CSE 3310",
+    "options": [],
+    "credits": 3
+  },
+  {
+    "program_id": "bs_cs_cyber",
+    "category": "cse_core",
+    "course_id": "CSE 3314",
+    "options": [],
+    "credits": 3
+  },
+  {
+    "program_id": "bs_cs_cyber",
+    "category": "cse_core",
+    "course_id": "CSE 3315",
+    "options": [],
+    "credits": 3
+  },
+  {
+    "program_id": "bs_cs_cyber",
+    "category": "cse_core",
+    "course_id": "CSE 3320",
+    "options": [],
+    "credits": 3
+  },
+  {
+    "program_id": "bs_cs_cyber",
+    "category": "cse_core",
+    "course_id": "CSE 3330",
+    "options": [],
+    "credits": 3
+  },
+  {
+    "program_id": "bs_cs_cyber",
+    "category": "cse_core",
+    "course_id": null,
+    "options": [
+      "CSE 3380",
+      "MATH 3330"
+    ],
+    "credits": 3
+  },
+  {
+    "program_id": "bs_cs_cyber",
+    "category": "cse_core",
+    "course_id": "CSE 4316",
+    "options": [],
+    "credits": 3
+  },
+  {
+    "program_id": "bs_cs_cyber",
+    "category": "cse_core",
+    "course_id": "CSE 4317",
+    "options": [],
+    "credits": 3
+  },
+  {
+    "program_id": "bs_cs_cyber",
+    "category": "concentration",
+    "course_id": "CSE 4344",
+    "options": [],
+    "credits": 3
+  },
+  {
+    "program_id": "bs_cs_cyber",
+    "category": "concentration",
+    "course_id": "CSE 4380",
+    "options": [],
+    "credits": 3
+  },
+  {
+    "program_id": "bs_cs_cyber",
+    "category": "concentration",
+    "course_id": "CSE 4381",
+    "options": [],
+    "credits": 3
+  },
+  {
+    "program_id": "bs_cs_cyber",
+    "category": "concentration",
+    "course_id": "CSE 4382",
+    "options": [],
+    "credits": 3
+  },
+  {
+    "program_id": "bs_cs_cyber",
+    "category": "elective",
+    "course_id": null,
+    "options": [
+      "CSE 4303",
+      "CSE 4304",
+      "CSE 4305",
+      "CSE 4308",
+      "CSE 4309",
+      "CSE 4310",
+      "CSE 4311",
+      "CSE 4321",
+      "CSE 4322",
+      "CSE 4323",
+      "CSE 4331",
+      "CSE 4333",
+      "CSE 4334",
+      "CSE 4345",
+      "CSE 4351",
+      "CSE 4360",
+      "CSE 4361",
+      "CSE 4373",
+      "CSE 4376",
+      "CSE 4378",
+      "CSE 4379",
+      "CSE 3311",
+      "CSE 3313",
+      "CSE 3340",
+      "ENGR 4302",
+      "IE 3315"
+    ],
+    "credits": 3
+  },
+  {
+    "program_id": "bs_cs_cyber",
+    "category": "elective",
+    "course_id": null,
+    "options": [
+      "CSE 4303",
+      "CSE 4304",
+      "CSE 4305",
+      "CSE 4308",
+      "CSE 4309",
+      "CSE 4310",
+      "CSE 4311",
+      "CSE 4321",
+      "CSE 4322",
+      "CSE 4323",
+      "CSE 4331",
+      "CSE 4333",
+      "CSE 4334",
+      "CSE 4345",
+      "CSE 4351",
+      "CSE 4360",
+      "CSE 4361",
+      "CSE 4373",
+      "CSE 4376",
+      "CSE 4378",
+      "CSE 4379",
+      "CSE 3311",
+      "CSE 3313",
+      "CSE 3340",
+      "ENGR 4302",
+      "IE 3315"
+    ],
+    "credits": 3
+  },
+  {
+    "program_id": "bs_cs_cyber",
+    "category": "elective",
+    "course_id": null,
+    "options": [
+      "CSE 4303",
+      "CSE 4304",
+      "CSE 4305",
+      "CSE 4308",
+      "CSE 4309",
+      "CSE 4310",
+      "CSE 4311",
+      "CSE 4321",
+      "CSE 4322",
+      "CSE 4323",
+      "CSE 4331",
+      "CSE 4333",
+      "CSE 4334",
+      "CSE 4345",
+      "CSE 4351",
+      "CSE 4360",
+      "CSE 4361",
+      "CSE 4373",
+      "CSE 4376",
+      "CSE 4378",
+      "CSE 4379",
+      "CSE 3311",
+      "CSE 3313",
+      "CSE 3340",
+      "ENGR 4302",
+      "IE 3315"
+    ],
+    "credits": 3
+  },
+  {
+    "program_id": "bs_cs_cyber",
+    "category": "elective",
+    "course_id": null,
+    "options": [
+      "CSE 4303",
+      "CSE 4304",
+      "CSE 4305",
+      "CSE 4308",
+      "CSE 4309",
+      "CSE 4310",
+      "CSE 4311",
+      "CSE 4321",
+      "CSE 4322",
+      "CSE 4323",
+      "CSE 4331",
+      "CSE 4333",
+      "CSE 4334",
+      "CSE 4345",
+      "CSE 4351",
+      "CSE 4360",
+      "CSE 4361",
+      "CSE 4373",
+      "CSE 4376",
+      "CSE 4378",
+      "CSE 4379",
+      "CSE 3311",
+      "CSE 3313",
+      "CSE 3340",
+      "ENGR 4302",
+      "IE 3315"
+    ],
+    "credits": 3
+  },
+  {
+    "program_id": "bs_cs_cyber",
+    "category": "elective",
+    "course_id": null,
+    "options": [],
+    "credits": 3
+  },
+  {
+    "program_id": "bs_se_ai",
+    "category": "core",
+    "course_id": null,
+    "options": [
+      "UNIV 1131",
+      "ENGR 1101",
+      "UNIV 1101"
+    ],
+    "credits": 1
+  },
+  {
+    "program_id": "bs_se_ai",
+    "category": "core",
+    "course_id": "ENGL 1301",
+    "options": [],
+    "credits": 3
+  },
+  {
+    "program_id": "bs_se_ai",
+    "category": "core",
+    "course_id": "COMS 2302",
+    "options": [],
+    "credits": 3
+  },
+  {
+    "program_id": "bs_se_ai",
+    "category": "math_science",
+    "course_id": "MATH 1426",
+    "options": [],
+    "credits": 4
+  },
+  {
+    "program_id": "bs_se_ai",
+    "category": "math_science",
+    "course_id": "MATH 2425",
+    "options": [],
+    "credits": 4
+  },
+  {
+    "program_id": "bs_se_ai",
+    "category": "math_science",
+    "course_id": "MATH 2326",
+    "options": [],
+    "credits": 3
+  },
+  {
+    "program_id": "bs_se_ai",
+    "category": "math_science",
+    "course_id": "PHYS 1443",
+    "options": [],
+    "credits": 4
+  },
+  {
+    "program_id": "bs_se_ai",
+    "category": "math_science",
+    "course_id": "PHYS 1444",
+    "options": [],
+    "credits": 4
+  },
+  {
+    "program_id": "bs_se_ai",
+    "category": "core",
+    "course_id": null,
+    "options": [
+      "IE 2308",
+      "ECON 2305"
+    ],
+    "credits": 3
+  },
+  {
+    "program_id": "bs_se_ai",
+    "category": "core",
+    "course_id": null,
+    "options": [
+      "HIST 1301",
+      "HIST 1302"
+    ],
+    "credits": 3
+  },
+  {
+    "program_id": "bs_se_ai",
+    "category": "core",
+    "course_id": null,
+    "options": [
+      "HIST 1301",
+      "HIST 1302"
+    ],
+    "credits": 3
+  },
+  {
+    "program_id": "bs_se_ai",
+    "category": "core",
+    "course_id": null,
+    "options": [
+      "POLS 2311",
+      "POLS 2312"
+    ],
+    "credits": 3
+  },
+  {
+    "program_id": "bs_se_ai",
+    "category": "core",
+    "course_id": null,
+    "options": [
+      "POLS 2311",
+      "POLS 2312"
+    ],
+    "credits": 3
+  },
+  {
+    "program_id": "bs_se_ai",
+    "category": "core",
+    "course_id": null,
+    "options": [
+      "PHIL 2300",
+      "LING 2371",
+      "HIST 2377"
+    ],
+    "credits": 3
+  },
+  {
+    "program_id": "bs_se_ai",
+    "category": "core",
+    "course_id": null,
+    "options": [
+      "ENGL 1375",
+      "MUSI 1304"
+    ],
+    "credits": 3
+  },
+  {
+    "program_id": "bs_se_ai",
+    "category": "cse_core",
+    "course_id": "CSE 1106",
+    "options": [],
+    "credits": 1
+  },
+  {
+    "program_id": "bs_se_ai",
+    "category": "cse_core",
+    "course_id": "CSE 1310",
+    "options": [],
+    "credits": 3
+  },
+  {
+    "program_id": "bs_se_ai",
+    "category": "cse_core",
+    "course_id": "CSE 1320",
+    "options": [],
+    "credits": 3
+  },
+  {
+    "program_id": "bs_se_ai",
+    "category": "cse_core",
+    "course_id": "CSE 1325",
+    "options": [],
+    "credits": 3
+  },
+  {
+    "program_id": "bs_se_ai",
+    "category": "cse_core",
+    "course_id": "CSE 2312",
+    "options": [],
+    "credits": 3
+  },
+  {
+    "program_id": "bs_se_ai",
+    "category": "cse_core",
+    "course_id": "CSE 2315",
+    "options": [],
+    "credits": 3
+  },
+  {
+    "program_id": "bs_se_ai",
+    "category": "cse_core",
+    "course_id": "CSE 3318",
+    "options": [],
+    "credits": 3
+  },
+  {
+    "program_id": "bs_se_ai",
+    "category": "cse_core",
+    "course_id": null,
+    "options": [
+      "IE 3301",
+      "MATH 3313"
+    ],
+    "credits": 3
+  },
+  {
+    "program_id": "bs_se_ai",
+    "category": "cse_core",
+    "course_id": "CSE 3302",
+    "options": [],
+    "credits": 3
+  },
+  {
+    "program_id": "bs_se_ai",
+    "category": "cse_core",
+    "course_id": "CSE 3310",
+    "options": [],
+    "credits": 3
+  },
+  {
+    "program_id": "bs_se_ai",
+    "category": "cse_core",
+    "course_id": "CSE 3314",
+    "options": [],
+    "credits": 3
+  },
+  {
+    "program_id": "bs_se_ai",
+    "category": "cse_core",
+    "course_id": "CSE 3315",
+    "options": [],
+    "credits": 3
+  },
+  {
+    "program_id": "bs_se_ai",
+    "category": "cse_core",
+    "course_id": "CSE 3320",
+    "options": [],
+    "credits": 3
+  },
+  {
+    "program_id": "bs_se_ai",
+    "category": "cse_core",
+    "course_id": "CSE 3330",
+    "options": [],
+    "credits": 3
+  },
+  {
+    "program_id": "bs_se_ai",
+    "category": "cse_core",
+    "course_id": null,
+    "options": [
+      "CSE 3380",
+      "MATH 3330"
+    ],
+    "credits": 3
+  },
+  {
+    "program_id": "bs_se_ai",
+    "category": "cse_core",
+    "course_id": "CSE 4316",
+    "options": [],
+    "credits": 3
+  },
+  {
+    "program_id": "bs_se_ai",
+    "category": "cse_core",
+    "course_id": "CSE 4317",
+    "options": [],
+    "credits": 3
+  },
+  {
+    "program_id": "bs_se_ai",
+    "category": "cse_core",
+    "course_id": "CSE 3311",
+    "options": [],
+    "credits": 3
+  },
+  {
+    "program_id": "bs_se_ai",
+    "category": "cse_core",
+    "course_id": "CSE 4321",
+    "options": [],
+    "credits": 3
+  },
+  {
+    "program_id": "bs_se_ai",
+    "category": "cse_core",
+    "course_id": "CSE 4322",
+    "options": [],
+    "credits": 3
+  },
+  {
+    "program_id": "bs_se_ai",
+    "category": "cse_core",
+    "course_id": "CSE 4361",
+    "options": [],
+    "credits": 3
+  },
+  {
+    "program_id": "bs_se_ai",
+    "category": "cse_core",
+    "course_id": "CSE 4380",
+    "options": [],
+    "credits": 3
+  },
+  {
+    "program_id": "bs_se_ai",
+    "category": "math_science",
+    "course_id": null,
+    "options": [
+      "BIOL 1441",
+      "CHEM 1441",
+      "CHEM 1465"
+    ],
+    "credits": 4
+  },
+  {
+    "program_id": "bs_se_ai",
+    "category": "concentration",
+    "course_id": "CSE 4308",
+    "options": [],
+    "credits": 3
+  },
+  {
+    "program_id": "bs_se_ai",
+    "category": "concentration",
+    "course_id": "CSE 4309",
+    "options": [],
+    "credits": 3
+  },
+  {
+    "program_id": "bs_se_ai",
+    "category": "concentration",
+    "course_id": "CSE 4310",
+    "options": [],
+    "credits": 3
+  },
+  {
+    "program_id": "bs_se_ai",
+    "category": "concentration",
+    "course_id": "CSE 4311",
+    "options": [],
+    "credits": 3
+  }
+]
