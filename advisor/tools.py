@@ -100,7 +100,7 @@ def switch_major(student_id: str, new_program_id: str) -> dict:
 def search_advising_docs(query: str, k: int = 5) -> list[dict]:
     """Semantic search over the Chroma store (catalog descriptions, degree
     requirements, policies). Returns [{'id', 'text', 'score'}]."""
-    raise NotImplementedError("TODO Miguel")
+    return chains.search_documents(query, k=k)
 
 
 ALL_TOOLS = [
