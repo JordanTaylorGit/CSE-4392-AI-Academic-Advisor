@@ -19,6 +19,9 @@ Due: Sun 10/25/2026. See `PLAN.md` §6–§9 for the team plan.
       backend handoff documented in `ui/README.md`
 - [ ] Merge with real backend: Person A seeds `requirement_slots` (rings go live, no UI change);
       Person D returns `{"text", "cards"}` from `handle_message` (cards go live)
+      - Jordan's `Data` branch (10/22) seeds `requirement_slots`; rings go live with no change.
+        After it merges: count current F2026 `enrollments` as in progress in the rings,
+        rename "Concentration" -> "Certificate", update preview totals to 123 / 127
 
 ## Step 2 — Logging / execution traces (deliverable)
 - [x] Log every UI action via `tracing.trace("ui_action", ...)`; passive redraws not logged
