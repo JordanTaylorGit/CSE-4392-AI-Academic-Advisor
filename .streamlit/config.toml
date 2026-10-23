@@ -1,0 +1,26 @@
+# Light and dark follow the viewer's system setting (HIG dark-mode.md).
+# Colors match the CSS tokens in ui/theme.py.
+[theme]
+font = "sans serif"
+baseRadius = "12px"
+
+[theme.light]
+primaryColor = "#0071E3"
+backgroundColor = "#F5F5F7"
+secondaryBackgroundColor = "#FFFFFF"
+textColor = "#1D1D1F"
+
+[theme.dark]
+primaryColor = "#0071E3"
+backgroundColor = "#000000"
+secondaryBackgroundColor = "#1C1C1E"
+textColor = "#F5F5F7"
+
+[server]
+headless = true
+
+[browser]
+gatherUsageStats = false
+
+[client]
+toolbarMode = "minimal"

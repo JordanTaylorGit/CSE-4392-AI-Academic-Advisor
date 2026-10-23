@@ -13,7 +13,9 @@ orchestrator.handle_message(student_id: str, message: str,
                             history: list[dict]) -> str
 ```
 
-`cli.py` is a stdlib reference client that exercises that contract today.
+The web UI is **Streamlit** (`app.py` + `ui/`). It calls the backend only through
+`ui/services.py`; see `ui/README.md`. `cli.py` is a stdlib reference client that
+exercises the same contract from a terminal.
 
 See `PLAN.md` for the full architecture, work split, and timeline.
 
@@ -33,7 +35,9 @@ ollama pull nomic-embed-text  # local embedding model
 uv run python -m advisor.db        # creates + seeds advisor.db (SQLite)
 uv run python -m advisor.ingest    # embeds catalog + degree docs into .chroma/
 
-# 4. Run the reference CLI
+# 4. Run the web app (opens http://localhost:8501)
+uv run streamlit run app.py
+#    ...or the reference CLI
 uv run python cli.py
 ```
 
@@ -59,7 +63,9 @@ advisor/            the package
     schedule.json   fabricated sections, next 3 terms                    [Jordan]
     degree_reqs/    narrative degree-requirement docs (-> Chroma + SQL)  [Jordan]
     catalog/        cse_undergrad_courses.pdf + course-desc.jsonl        [have]
-cli.py              stdlib reference client (UI contract example)        [Talha owns the real UI]
+app.py              Streamlit web UI entry point                         [Talha]
+ui/                 UI components, theme, backend boundary (services.py) [Talha]
+cli.py              stdlib reference client (UI contract example)        [Talha]
 logs/traces.jsonl   execution trace log (deliverable)
 deliverables/       PPT, screenshots, zip staging                        [Talha]
 tests/              pytest
@@ -73,7 +79,7 @@ tests/              pytest
   compare module consume this shape.
 - **Trace record shape** — `tracing.py` `trace()` fields; Talha renders the log.
 - **UI contract** — `orchestrator.handle_message(student_id, message, history) -> str`.
-  Talha picks the UI stack; `cli.py` shows the intended call pattern.
+  The Streamlit UI calls it through `ui/services.py`; `cli.py` shows the bare call pattern.
 
 ## Status of modules
 
