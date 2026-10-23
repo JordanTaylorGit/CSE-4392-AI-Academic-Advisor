@@ -8,7 +8,7 @@ multi-year degree plans and answers exact + semantic advising queries.
 
 | Decision | Choice | Why |
 |---|---|---|
-| UI | **Talha's choice** (web/desktop/CLI — all spec-legal) | Talha owns task 5; the scaffold ships a stdlib `cli.py` reference client. The only contract: `orchestrator.handle_message(student_id, message, history) -> str` |
+| UI | **Streamlit web app** (Talha's choice; web/desktop/CLI are all spec-legal) | Talha owns task 5: `app.py` + `ui/`, plus the stdlib `cli.py` reference client. The only contract: `orchestrator.handle_message(student_id, message, history) -> str` |
 | LLM backend | **Pluggable: Ollama (default) + OpenAI API** | Ollama is installed locally (qwen3:4b, llama3.2:3b, nomic-embed-text) — free, offline. OpenAI via `OPENAI_API_KEY` for better quality when available. LangChain makes both interchangeable behind one interface |
 | Framework | **LangChain** (required by spec) + Chroma + SQLite | Spec requires LangChain; Chroma is a local vector DB (no account needed); SQLite is the SQL DBMS |
 | Python env | **uv** (single `pyproject.toml`) | Matches existing repo tooling (`RAG/app.py` uses uv) |
@@ -88,7 +88,7 @@ Chroma DBMS, Trace Logger, pluggable LLM adapter (Ollama | OpenAI).
 Assignments/Team Assignment 2/advisor/
   pyproject.toml            # uv project: langchain, langchain-ollama, langchain-openai,
                             # langchain-chroma, chromadb, pypdf, sqlalchemy
-                            # (UI deps added by Talha when he picks a stack)
+                            # streamlit (web UI)
   advisor/
     config.py               # LLM backend switch: ollama | openai (env or sidebar)
     db.py                   # SQLite access (SQLAlchemy)
@@ -101,8 +101,8 @@ Assignments/Team Assignment 2/advisor/
     ingest.py               # Chroma ingest (reuses RAG/app.py loader)
     tracing.py              # execution-trace logger → logs/traces.jsonl
     seed/                   # schema.sql, degree_reqs/*.md, schedule.json, students.json
-  cli.py                    # stdlib reference client; Talha adds the real UI
-                            # on top of orchestrator.handle_message()
+  app.py, ui/               # Streamlit web UI (Talha) over orchestrator.handle_message()
+  cli.py                    # stdlib reference client for the same contract
   logs/traces.jsonl
   deliverables/             # PPT, screenshots, zip staging
 ```
