@@ -7,3 +7,4 @@ advisor.db
 logs/*.jsonl
 !logs/.gitkeep
 .DS_Store
+dist/
