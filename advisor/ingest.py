@@ -126,6 +126,21 @@ def ingest(batch_size: int = 20) -> int:
 
     records = build_documents()
     store = get_vectorstore()
+
+    # Renamed or removed degree .md files otherwise linger in persistent Chroma.
+    # Prune *only* degree requirement entries; leave course and other data alone.
+    valid_degree_ids = {
+        record["id"] for record in records
+        if record["metadata"]["source"] == "degree_requirements"
+    }
+    existing_degree_ids = set(store.get(
+        where={"source": "degree_requirements"}, include=[]
+    )["ids"])
+    stale_degree_ids = sorted(existing_degree_ids - valid_degree_ids)
+    if stale_degree_ids:
+        store.delete(ids=stale_degree_ids)
+        print(f"Removed {len(stale_degree_ids)} outdated degree documents from Chroma")
+
     for start in range(0, len(records), batch_size):
         batch = records[start:start + batch_size]
         # LangChain Chroma's add_texts uses an upsert for existing IDs.

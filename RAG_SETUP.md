@@ -1,106 +1,79 @@
-# Miguel's RAG module — setup, demonstration, and handoff
+# RAG Setup
 
-This work implements three shared integration points **without modifying frozen signatures**:
+## Requirements
 
-- `advisor/ingest.py`: split the catalog PDF into course entries, load 75 course descriptions and two degree-requirement Markdown files, and upsert them into persistent Chroma.
-- `advisor/chains.py`: Chroma nearest-neighbor retrieval (`search_documents`), then LangChain chat-model answering grounded in retrieved text (`answer_semantic`). The `answer_exact` SQL stub is **Kyle's responsibility** and was deliberately left unchanged.
-- `advisor/tools.py`: connect the existing `search_advising_docs(query, k)` tool to the retriever without changing its signature.
-- `tests/test_rag.py`: offline unit tests using fake vector stores/models.
+- Python 3.11+
+- [uv](https://docs.astral.sh/uv/)
+- [Ollama](https://ollama.com/download) (default backend)
 
-## Prepare your branch
+Run the commands below from the repository's root folder.
 
-From your local clone (not the ZIP download):
-
-```bash
-git switch main
-git pull origin main
-git switch -c feature/rag
-```
-
-Copy these modified files into the clone, preserving directories, then:
-
-```bash
-git add advisor/ingest.py advisor/chains.py advisor/tools.py tests/test_rag.py RAG_SETUP.md
-git commit -m "Implement Chroma ingestion and semantic RAG queries"
-git push -u origin feature/rag
-```
-
-Open a GitHub pull request from `feature/rag` into `main`. **Coordinate with Kyle before merging `chains.py` and `tools.py`, as these files are shared**, to avoid overwriting any work on his branch.
-
-## Install and run
-
-The project needs Python 3.11+ and [uv](https://docs.astral.sh/uv/):
+## Install dependencies
 
 ```bash
 uv sync
 ```
 
-Choose exactly one inference and embeddings backend.
+## Start Ollama
 
-**Option A: local Ollama** (default). Have Ollama installed and running, then:
+Start Ollama if it isn't already running:
+
+```bash
+ollama serve
+```
+
+Keep that terminal open, and use a second terminal for the remaining commands. If Ollama is already running, there's no need to start another server.
+
+Download the models if needed:
 
 ```bash
 ollama pull qwen3:4b
 ollama pull nomic-embed-text
 ```
 
-The default `ADVISOR_LLM=ollama` in `.env.example` uses these models. The repo's `config.py` reads environment variables, **but does not load `.env` automatically**. For Ollama you can use defaults without creating `.env`.
+## Index the documents
 
-**Option B: OpenAI**. Set environment variables in your shell, such as PowerShell:
-
-```powershell
-$env:ADVISOR_LLM="openai"
-$env:OPENAI_API_KEY="YOUR_KEY_HERE"
-```
-
-Do not commit your key or `.env` to GitHub. Models may incur API charges.
-
-Then run:
+Check what will be loaded without generating embeddings:
 
 ```bash
 uv run python -m advisor.ingest --dry-run
+```
+
+Index the documents in Chroma:
+
+```bash
 uv run python -m advisor.ingest
+```
+
+The index includes the course catalog, course descriptions, and degree requirement Markdown files. Chroma data is stored in `.chroma/` locally and should not be committed to GitHub.
+
+## Run tests
+
+```bash
 uv run pytest -q
 ```
 
-`--dry-run` reads the local documents and reports the counts without invoking a server. The actual indexing requires Ollama or OpenAI embeddings. Persistent embeddings are placed in `.chroma/` (Git-ignored). **Rebuild `.chroma/` when changing to an embedding model with a different vector dimension.** Repeated indexing with the same backend updates existing IDs.
-
-## Try the RAG component independently
-
-The full CLI invokes `orchestrator.handle_message`, and the team's router remains a placeholder in the provided `main` branch. While Kyle implements routing, run the semantic chain directly:
+## Test a RAG query
 
 ```bash
 uv run python -c "from advisor.chains import answer_semantic; print(answer_semantic('Which courses cover machine learning?'))"
 ```
 
-Another demo question:
+The answer should include relevant course information and retrieved sources.
+
+## Update degree requirements
+
+All `.md` files directly inside `advisor/seed/degree_reqs/` are detected automatically. If these files are added, changed, renamed, or removed, rerun:
 
 ```bash
-uv run python -c "from advisor.chains import answer_semantic; print(answer_semantic('What does the example BS CS cybersecurity concentration require?'))"
+uv run python -m advisor.ingest
 ```
 
-You should see a grounded response and a list of retrieved course/document sources. Retrieval events are also appended to `logs/traces.jsonl` for the assignment deliverable.
+This updates the degree documents in Chroma and removes entries for degree files that no longer exist.
 
-## Architecture explanation for your presentation
+## Notes
 
-```text
-Course catalog PDF ──> load_course_chunks ──┐
-Course descriptions ──> JSONL loader ───────┼──> Embeddings (Ollama/OpenAI)
-Degree requirements ──> Markdown loader ───┘           │
-                                                       ▼
-                                                Chroma vector DB
-                                                       │
-Student question ──> query embedding ──> top-k retrieval
-                                              │
-                                     context + question
-                                              │
-                                         LangChain LLM
-                                              │
-                                 grounded answer + sources
-```
-
-### Presentation sample
-
-"I implemented the Retrieval-Augmented Generation component. It stores embeddings from the course catalog, course descriptions, and degree requirement documents in Chroma. When a student asks a semantic question, the retriever returns the most relevant records, which are supplied as source context to the language model. We log the retrieved IDs and distance scores and include source references to reduce unsupported answers. Eligibility checks must still run through the deterministic course validator, which is a separate component."
-
-**Important limitation:** The two degree requirement Markdown files in the team repository are team-authored example program documents, not verified official UTA degree audits. Also, this RAG module does not validate class schedules, prerequisite completion, or registration eligibility; those are separate team workstreams.
+- Default chat model: `qwen3:4b`
+- Default embedding model: `nomic-embed-text`
+- Ollama must be available for indexing and answering queries; `--dry-run` does not require it.
+- Changing to an embedding model with a different vector dimension may require rebuilding `.chroma/`.

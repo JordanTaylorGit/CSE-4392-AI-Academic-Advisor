@@ -7,26 +7,39 @@ from collections import Counter
 from types import SimpleNamespace
 
 from advisor import chains, ingest, tracing
+from advisor.paths import DEGREE_REQS_DIR
 
 
 def test_build_documents_has_all_sources_and_stable_ids():
     docs = ingest.build_documents()
-    assert len(docs) == 154
+    degree_files = list(DEGREE_REQS_DIR.glob("*.md"))
+    assert len(docs) == 77 + 75 + len(degree_files)
     assert len({doc["id"] for doc in docs}) == len(docs)
     assert Counter(d["metadata"]["source"] for d in docs) == {
         "catalog_pdf": 77,
         "course_description": 75,
-        "degree_requirements": 2,
+        "degree_requirements": len(degree_files),
     }
     assert any("CSE 4308" in d["text"] for d in docs)
-    assert any(d["id"] == "degree_req:bs_cs_cybersecurity" for d in docs)
+    assert {d["id"] for d in docs if d["metadata"]["source"] == "degree_requirements"} == {
+        f"degree_req:{p.stem}" for p in degree_files
+    }
 
 
 def test_ingest_batches_and_reuses_ids(monkeypatch):
     stored = {}
     calls = []
+    document_count = len(ingest.build_documents())
 
     class FakeChroma:
+        def get(self, where=None, include=None):
+            return {"ids": [doc_id for doc_id, (_, metadata) in stored.items()
+                    if metadata.get("source") == where.get("source")]}
+
+        def delete(self, ids):
+            for doc_id in ids:
+                del stored[doc_id]
+
         def add_texts(self, texts, metadatas, ids):
             calls.append(len(ids))
             for identifier, item, metadata in zip(ids, texts, metadatas):
@@ -34,11 +47,38 @@ def test_ingest_batches_and_reuses_ids(monkeypatch):
 
     monkeypatch.setattr(chains, "get_vectorstore", lambda: FakeChroma())
     monkeypatch.setattr(tracing, "trace", lambda *args, **kwargs: None)
-    assert ingest.ingest(batch_size=30) == 154
-    assert calls == [30, 30, 30, 30, 30, 4]
-    assert len(stored) == 154
+    assert ingest.ingest(batch_size=30) == document_count
+    assert calls == [30] * (document_count // 30) + ([document_count % 30] if document_count % 30 else [])
+    assert len(stored) == document_count
     ingest.ingest(batch_size=60)
-    assert len(stored) == 154  # repeated runs don't create new IDs
+    assert len(stored) == document_count  # repeated runs don't create new IDs
+
+
+def test_ingest_removes_only_obsolete_degree_docs(monkeypatch):
+    stored = {
+        "degree_req:old_filename": ("outdated text", {"source": "degree_requirements"}),
+        "other:data": ("keep me", {"source": "other"}),
+    }
+
+    class FakeChroma:
+        def get(self, where=None, include=None):
+            return {"ids": [identifier for identifier, (_, metadata) in stored.items()
+                    if metadata.get("source") == where.get("source")]}
+
+        def delete(self, ids):
+            for identifier in ids:
+                del stored[identifier]
+
+        def add_texts(self, texts, metadatas, ids):
+            for identifier, text, metadata in zip(ids, texts, metadatas):
+                stored[identifier] = (text, metadata)
+
+    monkeypatch.setattr(chains, "get_vectorstore", lambda: FakeChroma())
+    monkeypatch.setattr(tracing, "trace", lambda *args, **kwargs: None)
+    ingest.ingest()
+    assert "degree_req:old_filename" not in stored
+    assert "other:data" in stored
+    assert {f"degree_req:{p.stem}" for p in DEGREE_REQS_DIR.glob("*.md")} <= set(stored)
 
 
 def test_search_documents_returns_grounded_hits(monkeypatch):
