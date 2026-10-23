@@ -53,5 +53,22 @@ Due: Sun 10/25/2026. See `PLAN.md` §6–§9 for the team plan.
 - [ ] Rebuild from final screenshots; update "Limitations" slide; teammates review their code slides
 
 ## Step 6 — Zip packaging
-- [ ] Source code, `logs/traces.jsonl` + rendered log, embedding source docs, PPT
-- [ ] Fresh-clone test: unzip -> run README quick start -> app works
+- [x] `scripts/package_submission.py` -> `dist/CSE4392_TA2_AI_Advisor.zip` (HEAD + traces + SUBMISSION.md)
+- [x] Fresh-unzip test (10/23, all branches merged): uv sync, seed, ingest, 89 tests pass, app starts
+
+## Final run (after every PR is merged into main)
+
+```bash
+git switch main && git pull
+rm -f advisor.db && uv run python -m advisor.db && uv run python -m advisor.ingest
+uv run streamlit run app.py                                   # terminal 1, keep running
+uv run --with playwright python scripts/take_screenshots.py   # terminal 2 -> deliverables/screenshots/
+uv run python scripts/run_demo.py --session demo-final        # transcript + execution_trace_log.md
+uv run --with python-pptx python scripts/build_slides.py      # deck from the final screenshots
+git add deliverables && git commit -m "Final demo outputs, screenshots, deck" && git push
+uv run python scripts/package_submission.py                   # dist/CSE4392_TA2_AI_Advisor.zip
+```
+
+Screenshots run before the demo script: the demo's "switching to Software
+Engineering" step changes Sam's major in advisor.db (backend bug). Reseed
+(`rm -f advisor.db && uv run python -m advisor.db`, restart the app) before presenting.
