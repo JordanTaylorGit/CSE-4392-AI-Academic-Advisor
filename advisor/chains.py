@@ -44,10 +44,17 @@ _COURSE_RE = re.compile(r"\b([A-Z]{2,4})\s*(\d{4})\b")
 
 
 def _course_ids(text: str) -> list[str]:
+    """Extract 'DEPT NNNN' course ids from free text (e.g. 'CSE 3310')."""
     return [f"{d} {n}" for d, n in _COURSE_RE.findall(text.upper())]
 
 
 def _prereq_answer(course_id: str) -> str:
+    """Format a course's prerequisite groups as markdown.
+
+    Rows sharing a group_id are OR-alternatives ("A or B"); different
+    group_ids are ANDed across groups. Reports 'no prerequisites on record'
+    honestly when the table is empty for that course.
+    """
     from . import db
     rows = db.query(
         "SELECT p.group_id, p.prereq_id, p.min_grade, c.title FROM prerequisites p"
@@ -70,6 +77,8 @@ def _prereq_answer(course_id: str) -> str:
 
 
 def _schedule_answer(course_id: str | None) -> str:
+    """List scheduled sections (term-ordered) for one course, or all when
+    course_id is None."""
     from . import db
     from .planner import term_key
     if course_id:
@@ -89,6 +98,8 @@ def _schedule_answer(course_id: str | None) -> str:
 
 
 def _record_answer(student_id: str) -> str:
+    """Render the student's record: program, credit cap, completed courses
+    (term-ordered) with grades, credit total, current enrollments."""
     from . import db
     from .planner import term_key
     rows = db.query("SELECT * FROM students WHERE student_id = :s", {"s": student_id})
@@ -118,6 +129,7 @@ def _record_answer(student_id: str) -> str:
 
 
 def _course_info_answer(course_id: str) -> str:
+    """Single-course fallback: title, credits, catalog description."""
     from . import db
     rows = db.query("SELECT * FROM courses WHERE course_id = :c", {"c": course_id})
     if not rows:

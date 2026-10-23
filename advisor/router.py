@@ -93,6 +93,17 @@ _RULES: list[tuple[re.Pattern, Intent]] = [
 
 
 def _keyword_route(message: str) -> Intent | None:
+    """Deterministic intent match.
+
+    Args:
+        message: Raw student text.
+
+    Returns:
+        The Intent for the first matching rule in `_RULES` order (rules are
+        arranged most-specific first, e.g. MODIFY_PLAN before GENERATE_PLAN),
+        or None when no rule fires — meaning the message is ambiguous and the
+        LLM fallback should classify it.
+    """
     for pattern, intent in _RULES:
         if pattern.search(message):
             return intent
@@ -100,14 +111,25 @@ def _keyword_route(message: str) -> Intent | None:
 
 
 def route(message: str, history: list[dict] | None = None) -> Intent:
-    """Classify `message` into an Intent.
+    """Classify `message` into an Intent (spec req 3's query dispatch).
 
     Two stages: (1) a deterministic keyword pass catches unambiguous phrasing
     with zero latency; (2) anything left goes to a small fast LLM
     (get_router_model — tiny by default because routing latency is
-    user-visible on every message). Recent history is included so follow-ups
-    like "what about 3 classes instead?" still route correctly. Unparseable
-    answers and backend failures fall back to Intent.OTHER.
+    user-visible on every message).
+
+    Args:
+        message: Raw student text for this turn.
+        history: Prior turns as [{'role', 'content'}], newest last. Only the
+            last ~4 are sent to the LLM, and the prompt tells it to use them
+            solely to resolve ambiguous follow-ups like "what about 3 classes
+            instead?" — never to reclassify the old topic.
+
+    Returns:
+        An Intent. The LLM's single-token reply is matched by substring over
+        Intent values (first match wins, in enum order). Unparseable answers
+        and any backend failure fall back to Intent.OTHER, which always has
+        a working handler — routing can degrade but never crash the turn.
     """
     from .config import get_router_model
     from .tracing import trace

@@ -26,7 +26,26 @@ _SYSTEM = (
 
 
 def handle_message(student_id: str, message: str, history: list[dict] | None = None) -> str:
-    """Process one chat turn and return the assistant's reply text."""
+    """Process one chat turn and return the assistant's reply text.
+
+    This is the single UI↔backend contract (see ui/README.md): every UI calls
+    exactly this function per turn.
+
+    Args:
+        student_id: Seed student id (login is assumed per the spec).
+        message: The student's raw text.
+        history: The UI's displayed transcript [{'role', 'content'}] — passed
+            to the router so pronoun-free follow-ups classify correctly.
+
+    Returns:
+        Reply text (markdown). Never raises for stubbed workstreams: a
+        NotImplementedError from an unimplemented tool is converted into a
+        friendly "routes to X, not implemented yet" reply so the UI works
+        while teammates land their modules.
+
+    Side effects: persists both turns to chat_history (spec req 7) and writes
+    user_msg/intent/assistant_msg records to logs/traces.jsonl (deliverable).
+    """
     tracing.trace("user_msg", student_id=student_id, message=message)
     memory.add_message(student_id, "user", message)
 
@@ -42,6 +61,19 @@ def handle_message(student_id: str, message: str, history: list[dict] | None = N
 
 
 def _dispatch(student_id: str, message: str, intent: router.Intent, history) -> str:
+    """Route an Intent to its handler and return reply text.
+
+    Each branch calls the owning workstream's function/tool:
+      EXACT_QUERY/STATUS_QUERY → chains.answer_exact (Kyle, SQL lookups)
+      SEMANTIC_QUERY           → chains.answer_semantic (Miguel, RAG)
+      GENERATE_PLAN/MODIFY_PLAN → planner tools via tools.*.invoke (Loc)
+      CHECK_ELIGIBILITY        → tools.verify_course_eligibility (Loc)
+      SWITCH_MAJOR             → _handle_switch_major (dialog + Loc's tools)
+      OTHER / unrouted         → _general_answer (LLM fallback chat)
+
+    Calling through tool.invoke() keeps the same operations exposed as
+    LangChain tools for a future agent executor without duplicating logic.
+    """
     if intent in (router.Intent.EXACT_QUERY, router.Intent.STATUS_QUERY):
         return chains.answer_exact(message, student_id)
     if intent == router.Intent.SEMANTIC_QUERY:
@@ -69,7 +101,12 @@ _TERM_RE = re.compile(r"\b(SU?\d{4}|F\d{4})\b")
 
 
 def _handle_eligibility(student_id: str, message: str) -> str:
-    """"Can I take X next semester?" -> Loc's 6-check verifier."""
+    """"Can I take X next semester?" -> Loc's 6-check verifier (spec req 4).
+
+    Extracts the course id with a regex and infers the target term (explicit
+    term in the message, else the term after the student's latest completed
+    course). Renders each CheckResult as a ✅/❌ line plus an all-pass note.
+    """
     m = _COURSE_ID_RE.search(message.upper())
     if not m:
         return "Which course did you want me to check? (e.g. \"can I take CSE 4344?\")"
@@ -115,9 +152,12 @@ def _infer_term(student_id: str, message: str) -> str:
 
 def _handle_switch_major(student_id: str, message: str) -> str:
     """Spec req 5: engage the student about a major change, then regenerate
-    the plan with a comparison. Minimal flow: if the target program isn't
-    stated, ask which one (that IS the multi-turn engagement); if stated,
-    run the switch + diff."""
+    the plan with a comparison.
+
+    Flow: if the target program isn't stated, reply with the program list and
+    ask which one — that question IS the spec's "series of chats" engagement
+    (req 5b). If stated, call tools.switch_major (Loc) and render the new
+    plan plus the diff summary (req 5c)."""
     pid = _extract_program(message)
     if pid is None:
         programs = db.query("SELECT program_id, name FROM degree_programs")
@@ -161,7 +201,12 @@ def _extract_program(message: str) -> str | None:
 
 def _extract_modify_args(message: str) -> dict:
     """Pull add/drop course ids and course-load numbers out of the message.
-    Returns kwargs matching tools.modify_plan's signature."""
+
+    Returns kwargs matching tools.modify_plan's signature: 'add'/'drop' are
+    lists of 'DEPT NNNN' ids (None when absent), 'courses_per_semester' is an
+    int parsed from "N classes/courses" phrasing (None when absent). Deliberately
+    narrow — ambiguous phrasing is better answered by asking than misparsed.
+    """
     upper = message.upper()
     adds = [f"{d} {n}" for d, n in
             re.findall(r"(?:ADD|TAKE|REGISTER FOR|ENROLL IN)\s+([A-Z]{2,4})\s*(\d{4})", upper)]
@@ -180,7 +225,11 @@ def _wants_summer(message: str) -> bool:
 
 
 def _format_plan(plan: dict) -> str:
-    """Render a DegreePlan.to_dict() as markdown for chat."""
+    """Render a DegreePlan.to_dict() as markdown for chat.
+
+    Consumes the frozen plan JSON contract (planner.py docstring): semesters
+    become "- `TERM` (N hrs): CSE xxxx, ..." lines, plus total and warnings.
+    """
     sems = plan.get("semesters", [])
     if not sems:
         return "The planner returned an empty plan."
@@ -195,7 +244,13 @@ def _format_plan(plan: dict) -> str:
 
 
 def _general_answer(message: str, history: list[dict] | None) -> str:
-    """OTHER fallback: general advising chat via the configured LLM."""
+    """OTHER fallback: general advising chat via the configured LLM.
+
+    Sends the last ~6 turns plus a narrow system prompt (advising assistant,
+    no record access in this mode). reasoning=False keeps small local models
+    fast; backend failures degrade to a "couldn't reach the LLM" message so a
+    dead Ollama never breaks the turn.
+    """
     from .config import get_chat_model
 
     msgs = [{"role": "system", "content": _SYSTEM}]
