@@ -14,7 +14,7 @@ Due: Sun 10/25/2026. See `PLAN.md` §6–§9 for the team plan.
 - [x] Apple/Stripe-style redesign, light + dark, Apple-style motion (reduced-motion safe)
 - [x] Design review vs Apple HIG, contrast fixes -> `deliverables/design_review.md`
 - [x] Commit + push branch `talha/ui-deliverables` (e6b9489 after rebase onto main). PR to main: later, when the team is ready
-- [ ] Look at light mode on screen (only dark mode seen so far)
+- [x] Look at light mode on screen (screenshots are light mode; reads well)
 - [x] Year view · requirement rings · rich cards in chat answers — built on preview data;
       backend handoff documented in `ui/README.md`
 - [ ] Merge with real backend: Person A seeds `requirement_slots` (rings go live, no UI change);
@@ -40,7 +40,9 @@ Due: Sun 10/25/2026. See `PLAN.md` §6–§9 for the team plan.
 - [ ] Final run on merged main -> commit `demo_transcript.md` + `execution_trace_log.md`
 
 ## Step 4 — Screenshots
-- [ ] One screenshot per demo step (input + output visible) -> `deliverables/screenshots/`
+- [x] `scripts/take_screenshots.py`: headless Chrome walks DEMO_GUIDE, 11 PNGs
+      (draft set taken 10/23 on all branches merged)
+- [ ] Final set on merged main -> `deliverables/screenshots/`
 
 ## Step 5 — PPT (30 min incl. Q&A)
 - [ ] Architecture block diagram + component functions + I/O
