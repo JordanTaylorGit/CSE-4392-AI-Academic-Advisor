@@ -1,18 +1,19 @@
 """SQLite access layer (Jordan owns the data; schema is a frozen contract).
 
 Creates advisor.db from seed/schema.sql and loads seed datasets:
-  - courses          <- catalog/course-desc.jsonl
-  - degree_programs  <- hardcoded below (must match seed/degree_reqs/*.md IDs)
-  - sections         <- seed/schedule.json
-  - students         <- seed/students.json
+  - courses            <- catalog/course-desc.jsonl (+ seed/course_credits.json for real credit hours)
+                          + seed/extra_courses.json (non-CSE courses)
+  - degree_programs    <- seed/programs.json
+  - prerequisites,
+    prereq_concurrent,
+    professional_courses <- seed/prerequisites.json
+  - requirement_slots  <- seed/requirement_slots.json
+  - sections           <- seed/schedule.json
+  - students (+ completed_courses, current-term enrollments) <- seed/students.json
 
-TODO (Jordan):
-  - Parse prerequisite clauses out of the catalog PDF text into
-    `prerequisites` (use advisor/ingest.py's course loader for the raw text).
-  - Expand requirement_slots to cover BOTH programs fully (the .md docs are
-    the source of truth; non-CSE courses like ENGL 1301/MATH/PHYS also need
-    rows in `courses` so slots can reference them).
-  - Enrich `courses` credits (JSONL lacks hours; catalog text has them).
+All the generated JSON above comes from `python advisor/seed/build_seed_data.py`
+(catalog PDF + seed/degree_source.py). Re-run it instead of hand-editing the JSON.
+If advisor.db already exists, delete it and re-run `python -m advisor.db` to reseed.
 """
 
 import json
@@ -26,14 +27,15 @@ from sqlalchemy.engine import Engine
 from .paths import COURSE_DESC_JSONL, DB_PATH, SCHEDULE_JSON, SCHEMA_SQL, SEED_DIR, STUDENTS_JSON
 
 EXTRA_COURSES_JSON = SEED_DIR / "extra_courses.json"
+CREDITS_JSON = SEED_DIR / "course_credits.json"
+PROGRAMS_JSON = SEED_DIR / "programs.json"
+PREREQS_JSON = SEED_DIR / "prerequisites.json"
+SLOTS_JSON = SEED_DIR / "requirement_slots.json"
 
 _engine: Engine | None = None
 
-# Must match the Program IDs in seed/degree_reqs/*.md.
-PROGRAMS = [
-    ("bs_cs_cyber", "BS in Computer Science — Cybersecurity", 120),
-    ("bs_se_ai", "BS in Software Engineering — Artificial Intelligence", 120),
-]
+def _load(path: Path):
+    return json.loads(path.read_text(encoding="utf-8"))
 
 
 def get_engine() -> Engine:
@@ -60,29 +62,32 @@ def _count(conn, table: str) -> int:
 def _seed(conn) -> None:
     _seed_courses(conn)
     _seed_extra_courses(conn)
-    for pid, name, total in PROGRAMS:
+    for p in _load(PROGRAMS_JSON):
         conn.execute(
-            text("INSERT INTO degree_programs VALUES (:pid, :name, :total)"),
-            {"pid": pid, "name": name, "total": total},
-        )
+            text("INSERT INTO degree_programs (program_id, name, total_credits)"
+                 " VALUES (:program_id, :name, :total_credits)"), p)
+    _seed_prereqs(conn)
+    _seed_slots(conn)
     _seed_sections(conn)
     _seed_students(conn)
 
 
 def _seed_courses(conn) -> None:
-    # TODO(Jordan): augment credits from catalog text; add non-CSE courses
-    # (MATH, ENGL, PHYS, ...) referenced by requirement slots.
+    # CSE courses: titles/descriptions from the JSONL, real credit hours parsed from the catalog PDF.
+    credits = _load(CREDITS_JSON) if CREDITS_JSON.exists() else {}
     for line in COURSE_DESC_JSONL.read_text(encoding="utf-8").splitlines():
         if not line.strip():
             continue
         c = json.loads(line)
+        cid = f"CSE {c['id']}"
         conn.execute(
             text(
                 "INSERT OR IGNORE INTO courses"
                 " (course_id, dept, number, title, credits, description)"
-                " VALUES (:cid, 'CSE', :num, :title, 3, :descr)"
+                " VALUES (:cid, 'CSE', :num, :title, :credits, :descr)"
             ),
-            {"cid": f"CSE {c['id']}", "num": c["id"], "title": c["title"], "descr": c["description"]},
+            {"cid": cid, "num": c["id"], "title": c["title"],
+             "credits": credits.get(cid, 3), "descr": c["description"]},
         )
 
 
@@ -100,6 +105,29 @@ def _seed_extra_courses(conn) -> None:
             ),
             {"cid": c["course_id"], "dept": c["dept"], "num": c["number"],
              "title": c["title"], "credits": c["credits"], "descr": c["description"]},
+        )
+
+
+def _seed_prereqs(conn) -> None:
+    data = _load(PREREQS_JSON)
+    for r in data["prerequisites"]:
+        conn.execute(
+            text("INSERT OR IGNORE INTO prerequisites (course_id, group_id, prereq_id, min_grade)"
+                 " VALUES (:course_id, :group_id, :prereq_id, :min_grade)"), r)
+        if r["concurrent_ok"]:
+            conn.execute(
+                text("INSERT OR IGNORE INTO prereq_concurrent (course_id, prereq_id)"
+                     " VALUES (:course_id, :prereq_id)"), r)
+    for cid in data["professional_courses"]:
+        conn.execute(text("INSERT OR IGNORE INTO professional_courses (course_id) VALUES (:c)"), {"c": cid})
+
+
+def _seed_slots(conn) -> None:
+    for r in _load(SLOTS_JSON):
+        conn.execute(
+            text("INSERT INTO requirement_slots (program_id, category, course_id, options, credits)"
+                 " VALUES (:program_id, :category, :course_id, :options, :credits)"),
+            {**r, "options": json.dumps(r["options"])},
         )
 
 
@@ -132,6 +160,11 @@ def _seed_students(conn) -> None:
                 "start": s["start_term"], "maxc": s["max_credits_per_semester"],
             },
         )
+        for sec_id in s.get("current_enrollments", []):
+            conn.execute(
+                text("INSERT OR IGNORE INTO enrollments (student_id, section_id) VALUES (:sid, :sec)"),
+                {"sid": s["student_id"], "sec": sec_id},
+            )
         for cc in s.get("completed_courses", []):
             conn.execute(
                 text(
@@ -162,5 +195,6 @@ def execute(sql: str, params: dict | Iterable[dict] | None = None) -> None:
 
 if __name__ == "__main__":
     init_db()
-    for t in ("courses", "sections", "students", "degree_programs"):
+    for t in ("courses", "prerequisites", "prereq_concurrent", "professional_courses", "requirement_slots",
+              "sections", "students", "completed_courses", "enrollments", "degree_programs"):
         print(f"{t}: {_count(get_engine().connect(), t)}")

@@ -6,7 +6,14 @@
     "start_term": "F2026",
     "max_credits_per_semester": 15,
     "completed_courses": [],
-    "note": "New student — full 4-year plan from scratch."
+    "current_enrollments": [
+      "UNIV 1131-001-F2026",
+      "CSE 1310-001-F2026",
+      "MATH 1426-001-F2026",
+      "ENGL 1301-001-F2026",
+      "HIST 1301-001-F2026"
+    ],
+    "note": "First-semester student (enrolled Fall 2026) — plan the remaining ~3.5 years from scratch."
   },
   {
     "student_id": "s_sophomore",
@@ -15,15 +22,69 @@
     "start_term": "F2025",
     "max_credits_per_semester": 15,
     "completed_courses": [
-      { "course_id": "CSE 1105", "term": "F2025", "grade": "A" },
-      { "course_id": "CSE 1310", "term": "F2025", "grade": "B" },
-      { "course_id": "MATH 1426", "term": "F2025", "grade": "B" },
-      { "course_id": "CSE 1320", "term": "S2026", "grade": "A" },
-      { "course_id": "CSE 1325", "term": "S2026", "grade": "A" },
-      { "course_id": "MATH 2425", "term": "S2026", "grade": "C" },
-      { "course_id": "CSE 2315", "term": "F2026", "grade": "B" }
+      {
+        "course_id": "UNIV 1131",
+        "term": "F2025",
+        "grade": "A"
+      },
+      {
+        "course_id": "CSE 1310",
+        "term": "F2025",
+        "grade": "B"
+      },
+      {
+        "course_id": "MATH 1426",
+        "term": "F2025",
+        "grade": "B"
+      },
+      {
+        "course_id": "ENGL 1301",
+        "term": "F2025",
+        "grade": "B"
+      },
+      {
+        "course_id": "HIST 1301",
+        "term": "F2025",
+        "grade": "B"
+      },
+      {
+        "course_id": "CSE 1106",
+        "term": "S2026",
+        "grade": "A"
+      },
+      {
+        "course_id": "CSE 1320",
+        "term": "S2026",
+        "grade": "A"
+      },
+      {
+        "course_id": "MATH 2425",
+        "term": "S2026",
+        "grade": "C"
+      },
+      {
+        "course_id": "PHYS 1443",
+        "term": "S2026",
+        "grade": "B"
+      },
+      {
+        "course_id": "CSE 2315",
+        "term": "S2026",
+        "grade": "B"
+      },
+      {
+        "course_id": "PHIL 2300",
+        "term": "SU2026",
+        "grade": "A"
+      }
     ],
-    "note": "Mid-degree CS/cyber student — primary demo persona."
+    "current_enrollments": [
+      "CSE 1325-001-F2026",
+      "CSE 2312-001-F2026",
+      "CSE 3318-001-F2026",
+      "PHYS 1444-001-F2026"
+    ],
+    "note": "Mid-degree CS/cybersecurity student — primary demo persona."
   },
   {
     "student_id": "s_switcher",
@@ -32,11 +93,72 @@
     "start_term": "F2025",
     "max_credits_per_semester": 15,
     "completed_courses": [
-      { "course_id": "CSE 1105", "term": "F2025", "grade": "A" },
-      { "course_id": "CSE 1310", "term": "F2025", "grade": "A" },
-      { "course_id": "CSE 1320", "term": "S2026", "grade": "B" },
-      { "course_id": "CSE 1325", "term": "S2026", "grade": "A" },
-      { "course_id": "MATH 1426", "term": "S2026", "grade": "B" }
+      {
+        "course_id": "UNIV 1131",
+        "term": "F2025",
+        "grade": "A"
+      },
+      {
+        "course_id": "CSE 1310",
+        "term": "F2025",
+        "grade": "A"
+      },
+      {
+        "course_id": "MATH 1426",
+        "term": "F2025",
+        "grade": "B"
+      },
+      {
+        "course_id": "ENGL 1301",
+        "term": "F2025",
+        "grade": "A"
+      },
+      {
+        "course_id": "HIST 1301",
+        "term": "F2025",
+        "grade": "B"
+      },
+      {
+        "course_id": "CSE 1106",
+        "term": "S2026",
+        "grade": "B"
+      },
+      {
+        "course_id": "CSE 1320",
+        "term": "S2026",
+        "grade": "B"
+      },
+      {
+        "course_id": "MATH 2425",
+        "term": "S2026",
+        "grade": "B"
+      },
+      {
+        "course_id": "PHYS 1443",
+        "term": "S2026",
+        "grade": "A"
+      },
+      {
+        "course_id": "CSE 2315",
+        "term": "S2026",
+        "grade": "B"
+      },
+      {
+        "course_id": "CSE 1325",
+        "term": "SU2026",
+        "grade": "A"
+      },
+      {
+        "course_id": "PHIL 2300",
+        "term": "SU2026",
+        "grade": "B"
+      }
+    ],
+    "current_enrollments": [
+      "CSE 3310-001-F2026",
+      "CSE 2312-001-F2026",
+      "CSE 3318-001-F2026",
+      "PHYS 1444-001-F2026"
     ],
     "note": "SE/AI student considering a switch to CS — drives the major-switch demo."
   },
@@ -47,18 +169,169 @@
     "start_term": "F2023",
     "max_credits_per_semester": 18,
     "completed_courses": [
-      { "course_id": "CSE 1105", "term": "F2023", "grade": "A" },
-      { "course_id": "CSE 1310", "term": "F2023", "grade": "A" },
-      { "course_id": "CSE 1320", "term": "S2024", "grade": "B" },
-      { "course_id": "CSE 1325", "term": "S2024", "grade": "A" },
-      { "course_id": "CSE 2315", "term": "F2024", "grade": "A" },
-      { "course_id": "CSE 2312", "term": "F2024", "grade": "B" },
-      { "course_id": "CSE 3310", "term": "S2025", "grade": "A" },
-      { "course_id": "CSE 3315", "term": "S2025", "grade": "B" },
-      { "course_id": "CSE 3320", "term": "F2025", "grade": "A" },
-      { "course_id": "MATH 1426", "term": "F2023", "grade": "B" },
-      { "course_id": "MATH 2425", "term": "S2024", "grade": "A" }
+      {
+        "course_id": "UNIV 1131",
+        "term": "F2023",
+        "grade": "A"
+      },
+      {
+        "course_id": "CSE 1310",
+        "term": "F2023",
+        "grade": "A"
+      },
+      {
+        "course_id": "MATH 1426",
+        "term": "F2023",
+        "grade": "B"
+      },
+      {
+        "course_id": "ENGL 1301",
+        "term": "F2023",
+        "grade": "A"
+      },
+      {
+        "course_id": "HIST 1301",
+        "term": "F2023",
+        "grade": "A"
+      },
+      {
+        "course_id": "PHIL 2300",
+        "term": "F2023",
+        "grade": "B"
+      },
+      {
+        "course_id": "CSE 1106",
+        "term": "S2024",
+        "grade": "A"
+      },
+      {
+        "course_id": "CSE 1320",
+        "term": "S2024",
+        "grade": "B"
+      },
+      {
+        "course_id": "MATH 2425",
+        "term": "S2024",
+        "grade": "A"
+      },
+      {
+        "course_id": "PHYS 1443",
+        "term": "S2024",
+        "grade": "B"
+      },
+      {
+        "course_id": "CSE 2315",
+        "term": "S2024",
+        "grade": "A"
+      },
+      {
+        "course_id": "CSE 1325",
+        "term": "F2024",
+        "grade": "A"
+      },
+      {
+        "course_id": "CSE 2312",
+        "term": "F2024",
+        "grade": "B"
+      },
+      {
+        "course_id": "CSE 3318",
+        "term": "F2024",
+        "grade": "B"
+      },
+      {
+        "course_id": "PHYS 1444",
+        "term": "F2024",
+        "grade": "B"
+      },
+      {
+        "course_id": "HIST 1302",
+        "term": "F2024",
+        "grade": "A"
+      },
+      {
+        "course_id": "CSE 3380",
+        "term": "S2025",
+        "grade": "A"
+      },
+      {
+        "course_id": "CSE 3310",
+        "term": "S2025",
+        "grade": "A"
+      },
+      {
+        "course_id": "CSE 3320",
+        "term": "S2025",
+        "grade": "A"
+      },
+      {
+        "course_id": "MATH 2326",
+        "term": "S2025",
+        "grade": "B"
+      },
+      {
+        "course_id": "COMS 2302",
+        "term": "S2025",
+        "grade": "A"
+      },
+      {
+        "course_id": "CSE 3302",
+        "term": "F2025",
+        "grade": "B"
+      },
+      {
+        "course_id": "CSE 3330",
+        "term": "F2025",
+        "grade": "A"
+      },
+      {
+        "course_id": "CSE 3315",
+        "term": "F2025",
+        "grade": "B"
+      },
+      {
+        "course_id": "IE 3301",
+        "term": "F2025",
+        "grade": "B"
+      },
+      {
+        "course_id": "POLS 2311",
+        "term": "F2025",
+        "grade": "A"
+      },
+      {
+        "course_id": "CSE 4344",
+        "term": "S2026",
+        "grade": "B"
+      },
+      {
+        "course_id": "POLS 2312",
+        "term": "S2026",
+        "grade": "A"
+      },
+      {
+        "course_id": "CSE 4380",
+        "term": "S2026",
+        "grade": "A"
+      },
+      {
+        "course_id": "CSE 4303",
+        "term": "S2026",
+        "grade": "A"
+      },
+      {
+        "course_id": "CSE 4351",
+        "term": "S2026",
+        "grade": "B"
+      }
     ],
-    "note": "Near-grad senior — short remaining plan, edge cases for credit caps."
+    "current_enrollments": [
+      "CSE 3314-001-F2026",
+      "CSE 4316-001-F2026",
+      "ECON 2305-001-F2026",
+      "CSE 4381-001-F2026",
+      "CSE 4331-001-F2026"
+    ],
+    "note": "Near-grad senior — exactly one semester (S2027, 15 hrs) remaining after Fall 2026; edge cases for credit caps and capstone sequencing (CSE 4316 -> 4317)."
   }
 ]
