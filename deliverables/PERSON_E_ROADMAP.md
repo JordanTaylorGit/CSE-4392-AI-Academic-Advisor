@@ -45,10 +45,12 @@ Due: Sun 10/25/2026. See `PLAN.md` §6–§9 for the team plan.
 - [ ] Final set on merged main -> `deliverables/screenshots/`
 
 ## Step 5 — PPT (30 min incl. Q&A)
-- [ ] Architecture block diagram + component functions + I/O
-- [ ] Design decisions considered and why we chose ours
-- [ ] Code segments per component (what it does + why needed)
-- [ ] Demo screenshots (what is the input, what the output means)
+- [x] `scripts/build_slides.py` -> `deliverables/AI_Advisor_Presentation.pptx` (23 slides, speaker notes)
+- [x] Architecture block diagram + component functions + I/O
+- [x] Design decisions considered and why we chose ours
+- [x] Code segments per component (what it does + why needed)
+- [x] Demo screenshots (what is the input, what the output means)
+- [ ] Rebuild from final screenshots; update "Limitations" slide; teammates review their code slides
 
 ## Step 6 — Zip packaging
 - [ ] Source code, `logs/traces.jsonl` + rendered log, embedding source docs, PPT
