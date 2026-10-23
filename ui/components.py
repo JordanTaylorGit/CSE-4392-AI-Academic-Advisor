@@ -216,11 +216,11 @@ def diff_view(diff: dict) -> None:
 # -------------------------------------------------------- requirement rings
 
 CATEGORY_LABELS = {"core": "University core", "math_science": "Math & science",
-                   "cse_core": "CSE core", "concentration": "Concentration", "elective": "Electives"}
+                   "cse_core": "CSE core", "concentration": "Certificate", "elective": "Electives"}
 
 
 def rings(progress: list[dict]) -> None:
-    """One ring per requirement category: green = completed, blue = planned."""
+    """One ring per requirement category: green = completed, blue = in progress or planned."""
     items = []
     for r in progress:
         req = max(r["required"], 1)
@@ -230,7 +230,7 @@ def rings(progress: list[dict]) -> None:
         pct = round(d + p)
         items.append(
             f'<figure class="adv-ring-item" role="img" aria-label="{label}: {r["completed"]} of '
-            f'{r["required"]} credits completed, {r["planned"]} planned">'
+            f'{r["required"]} credits completed, {r["planned"]} in progress or planned">'
             f'<div class="adv-ring-wrap"><div class="adv-ring" style="--d:{d:.1f};--p:{p:.1f}"></div>'
             f'<span class="adv-ring-pct" aria-hidden="true">{pct}%</span></div>'
             f'<figcaption><b>{label}</b><span>{r["completed"]} done · {r["planned"]} planned '

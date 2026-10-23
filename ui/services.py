@@ -9,6 +9,8 @@ If a backend function isn't implemented and preview mode is off, NotReady is
 raised and the UI shows a "not implemented yet" message instead.
 """
 
+import csv
+import io
 import json
 from dataclasses import asdict
 
@@ -65,6 +67,28 @@ def completed_courses(student_id: str) -> list[dict]:
         " WHERE cc.student_id = :sid ORDER BY cc.term, cc.course_id",
         {"sid": student_id},
     )
+
+
+def current_courses(student_id: str) -> list[dict]:
+    """Courses the student is enrolled in this term (enrollments -> sections)."""
+    return db.query(
+        "SELECT s.course_id, c.title, c.credits, s.term"
+        " FROM enrollments e JOIN sections s USING (section_id) JOIN courses c USING (course_id)"
+        " WHERE e.student_id = :sid ORDER BY s.course_id",
+        {"sid": student_id},
+    )
+
+
+def transcript_csv(student_id: str) -> bytes:
+    """Completed courses plus current enrollments as a CSV download (opens in Excel)."""
+    out = io.StringIO()
+    w = csv.writer(out)
+    w.writerow(["Course", "Title", "Credits", "Term", "Grade", "Status"])
+    for r in sorted(completed_courses(student_id), key=lambda r: planner.term_key(r["term"])):
+        w.writerow([r["course_id"], r["title"], r["credits"], r["term"], r["grade"], "Completed"])
+    for r in current_courses(student_id):
+        w.writerow([r["course_id"], r["title"], r["credits"], r["term"], "", "In progress"])
+    return out.getvalue().encode("utf-8-sig")  # BOM so Excel reads it as UTF-8
 
 
 def sections(course_id: str, term: str) -> list[dict]:
@@ -145,7 +169,8 @@ def diff_plans(old: dict, new: dict, use_preview: bool):
 
 def _requirements_live(student_id: str, program_id: str, plan: dict | None) -> list[dict]:
     """Credits completed / planned per requirement category, from requirement_slots
-    (schema.sql). Each course fills at most one slot; completed courses fill first."""
+    (schema.sql). Each course fills at most one slot; completed courses fill first.
+    Current-term enrollments count as planned (in progress) even before a plan is built."""
     slots = db.query("SELECT category, course_id, options, credits FROM requirement_slots"
                      " WHERE program_id = :p ORDER BY slot_id", {"p": program_id})
     if not slots:
@@ -153,6 +178,7 @@ def _requirements_live(student_id: str, program_id: str, plan: dict | None) -> l
     done = {r["course_id"] for r in db.query(
         "SELECT course_id FROM completed_courses WHERE student_id = :sid", {"sid": student_id})}
     planned = {c["course_id"] for s in (plan or {}).get("semesters", []) for c in s["courses"]}
+    planned |= {r["course_id"] for r in current_courses(student_id)}
     out: dict[str, dict] = {}
     used: set[str] = set()
     for slot in slots:
@@ -196,8 +222,22 @@ def ask(student_id: str, prompt: str, messages: list[dict], plan: dict | None,
                       reply=reply["text"][:2000], cards=[c.get("type") for c in reply["cards"]],
                       source="preview")
     else:
-        raw, source = orchestrator.handle_message(student_id, prompt, messages), "live"
-        reply = raw if isinstance(raw, dict) else {"text": str(raw), "cards": []}
+        source = "live"
+        try:
+            raw = orchestrator.handle_message(student_id, prompt, messages)
+        except NotImplementedError as e:
+            tracing.trace("ui_action", student_id=student_id, action="ask",
+                          source="not_ready", error=str(e))
+            raise NotReady(str(e)) from e
+        except Exception as e:  # a backend bug must not take the chat down mid-demo
+            tracing.trace("error", student_id=student_id, where="ask",
+                          error=f"{type(e).__name__}: {e}")
+            raw = (f"I couldn't answer that: {e}. Try asking another way, or use the "
+                   "Plan and Check a course screens.")
+        reply = dict(raw) if isinstance(raw, dict) else {"text": str(raw), "cards": []}
+        # Reasoning models (qwen3) can leak their thinking, sometimes without the
+        # opening <think> tag; only the text after the last </think> is the answer.
+        reply["text"] = reply["text"].rsplit("</think>", 1)[-1].strip()
         if reply.get("cards"):
             tracing.trace("ui_action", student_id=student_id, action="show_cards", source="live",
                           cards=[c.get("type") for c in reply["cards"]])

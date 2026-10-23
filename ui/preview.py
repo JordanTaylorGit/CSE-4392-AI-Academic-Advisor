@@ -122,19 +122,25 @@ def diff(old: dict, new: dict) -> dict:
 
 # ------------------------------------------------- requirement rings (mock)
 
-# Category credit totals from seed/degree_reqs/*.md (they sum to 120).
-CATEGORY_CREDITS = {"core": 42, "math_science": 18, "cse_core": 30, "concentration": 15, "elective": 15}
-# Course lists copied from the same docs, used only to sort courses into categories here.
+# Category credit totals per program, matching seed/requirement_slots.json
+# (CS + Cybersecurity = 123, SE + AI = 127). "concentration" is the certificate.
+CATEGORY_CREDITS = {
+    "bs_cs_cyber": {"core": 28, "math_science": 19, "cse_core": 49, "concentration": 12, "elective": 15},
+    "bs_se_ai": {"core": 28, "math_science": 23, "cse_core": 64, "concentration": 12},
+}
+# Fixed CSE courses and certificate courses from the same seed, used only to sort
+# courses into categories here.
+_CSE_SHARED = {"CSE 1106", "CSE 1310", "CSE 1320", "CSE 1325", "CSE 2312", "CSE 2315", "CSE 3302",
+               "CSE 3310", "CSE 3314", "CSE 3315", "CSE 3318", "CSE 3320", "CSE 3330", "CSE 4316",
+               "CSE 4317"}
 PROGRAM_COURSES = {
     "bs_cs_cyber": {
-        "cse_core": {"CSE 1105", "CSE 1310", "CSE 1320", "CSE 1325", "CSE 2312", "CSE 2315",
-                     "CSE 3302", "CSE 3310", "CSE 3315", "CSE 3318", "CSE 3320"},
-        "concentration": {"CSE 4344", "CSE 4380", "CSE 4381", "CSE 4351", "CSE 4382"},
+        "cse_core": _CSE_SHARED,
+        "concentration": {"CSE 4344", "CSE 4352", "CSE 4380", "CSE 4381", "CSE 4382"},
     },
     "bs_se_ai": {
-        "cse_core": {"CSE 1105", "CSE 1310", "CSE 1320", "CSE 1325", "CSE 2312", "CSE 2315",
-                     "CSE 3310", "CSE 3315", "CSE 3318", "CSE 3354", "CSE 4351", "CSE 4352"},
-        "concentration": {"CSE 4308", "CSE 4309", "CSE 4310", "CSE 4303", "CSE 4342"},
+        "cse_core": _CSE_SHARED | {"CSE 3311", "CSE 4321", "CSE 4322", "CSE 4361", "CSE 4380"},
+        "concentration": {"CSE 4308", "CSE 4309", "CSE 4310", "CSE 4311"},
     },
 }
 
@@ -154,15 +160,19 @@ def _category(program_id: str, course_id: str) -> str:
 
 def requirements(student_id: str, program_id: str, current: dict | None) -> list[dict]:
     """Per-category credits completed / planned, sorted by the degree docs' course lists."""
+    credits = CATEGORY_CREDITS.get(program_id, CATEGORY_CREDITS["bs_cs_cyber"])
     out = {c: {"category": c, "required": n, "completed": 0, "planned": 0}
-           for c, n in CATEGORY_CREDITS.items()}
+           for c, n in credits.items()}
     done = db.query("SELECT c.course_id, c.credits FROM completed_courses cc JOIN courses c "
                     "USING (course_id) WHERE cc.student_id = :sid", {"sid": student_id})
+    def bucket(course_id: str) -> dict:  # SE has no elective area; those count as core
+        return out.get(_category(program_id, course_id), out["core"])
+
     for r in done:
-        out[_category(program_id, r["course_id"])]["completed"] += r["credits"]
+        bucket(r["course_id"])["completed"] += r["credits"]
     for s in (current or {}).get("semesters", []):
         for c in s["courses"]:
-            out[_category(program_id, c["course_id"])]["planned"] += c["credits"]
+            bucket(c["course_id"])["planned"] += c["credits"]
     return list(out.values())
 
 
