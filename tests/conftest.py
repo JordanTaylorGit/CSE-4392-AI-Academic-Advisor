@@ -13,6 +13,12 @@ def catalog(tmp_path, monkeypatch):
     path = tmp_path / "advisor.db"
     with sqlite3.connect(path) as conn:
         conn.executescript(db.SCHEMA_SQL.read_text())
+        # Jordan's additive table (created IF NOT EXISTS on the Data branch).
+        conn.executescript(
+            "CREATE TABLE IF NOT EXISTS prereq_concurrent ("
+            " course_id TEXT NOT NULL REFERENCES courses(course_id),"
+            " prereq_id TEXT NOT NULL REFERENCES courses(course_id),"
+            " PRIMARY KEY (course_id, prereq_id))")
     engine = create_engine(f"sqlite:///{path}")
     monkeypatch.setattr(db, "DB_PATH", path)
     monkeypatch.setattr(db, "_engine", engine)

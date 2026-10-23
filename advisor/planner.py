@@ -199,7 +199,9 @@ def generate_plan(
         plan.semesters.pop()
     _audit(context, plan)
     if not _requirements_complete(context, _passed(context) | _plan_ids(plan)):
-        plan.warnings.append(f"Schedule horizon ends at {available[-1]}; future offerings are not assumed.")
+        plan.warnings.append(f"Planning window ends at {terms[-1]}"
+                             + (f" (projected past {context.last_real_term});" if context.last_real_term else ";")
+                             + " requirements remain unfilled.")
     return plan
 
 
@@ -281,7 +283,8 @@ def _slot_complete(context: "_Context", slot: "_Slot", taken: set[str]) -> bool:
 
 
 def _audit(context: "_Context", plan: DegreePlan) -> None:
-    plan.warnings = [w for w in plan.warnings if not w.startswith(("[verification]", "[requirements]", "Schedule horizon"))]
+    plan.warnings = [w for w in plan.warnings
+                     if not w.startswith(("[verification]", "[requirements]", "Planning window", "[projection]"))]
     if not context.slots:
         plan.warnings.append("[requirements] No degree requirement slots are loaded.")
     for semester in plan.semesters:
@@ -289,6 +292,11 @@ def _audit(context: "_Context", plan: DegreePlan) -> None:
             for check in _verify(context, course["course_id"], semester.term, plan):
                 if not check.passed:
                     plan.warnings.append(f"[verification] {course['course_id']} {semester.term}: {check.name}: {check.detail}")
+    if context.last_real_term and any(
+            s.courses and term_key(s.term) > term_key(context.last_real_term) for s in plan.semesters):
+        plan.warnings.append(f"[projection] Terms after {context.last_real_term} assume catalog offering"
+                             " patterns (1000/2000-level every term; 3000+ Fall/Spring);"
+                             " meeting times are not published.")
     allocation = _allocation(context, _passed(context) | _plan_ids(plan))
     for slot, taken in zip(context.slots, allocation):
         if not _slot_complete(context, slot, taken):
@@ -315,6 +323,36 @@ class _Context:
     completed: list[dict]
     sections: list[dict]
     enrollments: list[dict]
+    concurrent: set[tuple[str, str]] = field(default_factory=set)
+    last_real_term: str | None = None
+
+
+# The published schedule only covers a few terms. Beyond it, the catalog implies
+# lower-division courses are offered every term and upper-division at least
+# Fall/Spring, so the planner assumes offerings on that pattern (marked
+# "projected": meeting days/times are unknown and never certify a conflict).
+PROJECTED_TERMS = 18
+
+
+def _course_level(course: dict) -> int:
+    number = str(course["number"]).lstrip()
+    return int(number[0]) if number[:1].isdigit() else 3
+
+
+def _projected_sections(courses: dict[str, dict], last_term: str) -> list[dict]:
+    out = []
+    for term in next_terms(last_term, PROJECTED_TERMS, include_summer=True):
+        summer = term.startswith("SU")
+        for cid, course in courses.items():
+            if _course_level(course) < 3 or not summer:
+                out.append({"section_id": f"{cid}-{term}-projected", "course_id": cid,
+                            "term": term, "days": "", "start_time": "", "end_time": "",
+                            "instructor": "", "capacity": 1, "projected": True})
+    return out
+
+
+def _table_exists(name: str) -> bool:
+    return bool(db.query("SELECT name FROM sqlite_master WHERE type='table' AND name=:t", {"t": name}))
 
 
 def _load_context(student_id: str, program_id: str | None = None) -> _Context:
@@ -346,6 +384,9 @@ def _load_context(student_id: str, program_id: str | None = None) -> _Context:
                 options = []
             slots.append(_Slot(f"slot {row['slot_id']}", set(options), row["credits"]))
     sections = db.query("SELECT * FROM sections ORDER BY section_id")
+    last_real_term = max((s["term"] for s in sections), key=term_key, default=None)
+    if last_real_term is not None:
+        sections = sections + _projected_sections(courses, last_real_term)
     enrollment_rows = db.query(
         "SELECT e.*, s.course_id, s.term AS section_term, s.days, s.start_time, s.end_time, s.capacity"
         " FROM enrollments e JOIN sections s USING (section_id) WHERE e.student_id=:sid",
@@ -364,9 +405,15 @@ def _load_context(student_id: str, program_id: str | None = None) -> _Context:
     program = programs[0]
     if "total_hours" in program:
         program["total_credits"] = program["total_hours"]
-    return _Context(student, program, courses, slots,
-                    db.query("SELECT * FROM prerequisites ORDER BY course_id, group_id, prereq_id"),
-                    completed, sections, enrollments)
+    prerequisites = db.query("SELECT * FROM prerequisites ORDER BY course_id, group_id, prereq_id")
+    # prereq_concurrent (Jordan's additive table) and kind='coreq' rows both mark
+    # prereqs that may be satisfied by a same-term course.
+    concurrent = {(r["course_id"], r["prereq_id"])
+                  for r in (db.query("SELECT * FROM prereq_concurrent")
+                            if _table_exists("prereq_concurrent") else [])}
+    concurrent |= {(r["course_id"], r["prereq_id"]) for r in prerequisites if r.get("kind") == "coreq"}
+    return _Context(student, program, courses, slots, prerequisites,
+                    completed, sections, enrollments, concurrent, last_real_term)
 
 
 _GRADE_POINTS = {"A+": 4.3, "A": 4, "A-": 3.7, "B+": 3.3, "B": 3, "B-": 2.7,
@@ -468,24 +515,33 @@ def _prerequisite_failures(context: _Context, cid: str, term: str, plan: DegreeP
     if accepting and all(slot.professional for slot in accepting) and not context.student.get("professional_admitted"):
         failures.append("professional-program admission for the requirement")
     for (kind, _), alternatives in groups.items():
-        if not any(_prereq_satisfied(context, r, kind, term, plan) for r in alternatives):
-            failures.append(kind + ": " + " or ".join(f"{r['prereq_id']} (grade {r['min_grade']}+)" for r in alternatives))
+        if not any(_prereq_satisfied(context, r, term, plan) for r in alternatives):
+            failures.append(kind + ": " + " or ".join(
+                f"{r['prereq_id']} (grade {r['min_grade']}+"
+                f"{'; concurrent OK' if (r['course_id'], r['prereq_id']) in context.concurrent else ''})"
+                for r in alternatives))
     return failures
 
 
-def _prereq_satisfied(context: _Context, row: dict, kind: str, term: str, plan: DegreePlan) -> bool:
+def _prereq_satisfied(context: _Context, row: dict, term: str, plan: DegreePlan) -> bool:
+    concurrent = (row["course_id"], row["prereq_id"]) in context.concurrent
     for semester in plan.semesters:
-        eligible_term = term_key(semester.term) < term_key(term) or (kind == "coreq" and semester.term == term)
+        eligible_term = term_key(semester.term) < term_key(term) or (concurrent and semester.term == term)
         if eligible_term and any(c["course_id"] == row["prereq_id"] for c in semester.courses):
             return True
-    if kind == "coreq" and any(s["course_id"] == row["prereq_id"] and s["term"] == term for s in context.enrollments):
+    if concurrent and any(s["course_id"] == row["prereq_id"] and s["term"] == term for s in context.enrollments):
         return True
     return any(done["course_id"] == row["prereq_id"] and term_key(done["term"]) < term_key(term)
                and _grade_meets(done["grade"], row["min_grade"]) for done in context.completed)
 
 
 def _corequisite_bundles(context: _Context, cid: str, term: str, plan: DegreePlan):
-    """Enumerate only the unsatisfied corequisite alternatives for a candidate."""
+    """Enumerate bundles that fill the candidate's unsatisfied prerequisites.
+
+    Only same-term-eligible alternatives (prereq_concurrent pairs or kind='coreq'
+    rows) can be pulled into the bundle; other missing prereqs leave the
+    candidate for a later term.
+    """
     seen: set[frozenset[str]] = set()
 
     def expand(bundle: set[str]):
@@ -497,15 +553,16 @@ def _corequisite_bundles(context: _Context, cid: str, term: str, plan: DegreePla
         semester = next(s for s in trial.semesters if s.term == term)
         semester.courses.extend(_course_dict(context, c) for c in sorted(bundle))
         for course in sorted(bundle):
-            groups: dict[int, list[dict]] = {}
+            groups: dict[tuple[str, int], list[dict]] = {}
             for row in context.prerequisites:
-                if row["course_id"] == course and row.get("kind") == "coreq":
-                    groups.setdefault(row["group_id"], []).append(row)
+                if row["course_id"] == course:
+                    groups.setdefault((row.get("kind", "prereq"), row["group_id"]), []).append(row)
             for alternatives in groups.values():
-                if not any(_prereq_satisfied(context, row, "coreq", term, trial) for row in alternatives):
+                if not any(_prereq_satisfied(context, row, term, trial) for row in alternatives):
                     for row in alternatives:
                         prerequisite = row["prereq_id"]
-                        if prerequisite in context.courses and prerequisite not in bundle:
+                        if ((row["course_id"], prerequisite) in context.concurrent
+                                and prerequisite in context.courses and prerequisite not in bundle):
                             yield from expand(bundle | {prerequisite})
                     return
         yield bundle
@@ -540,7 +597,10 @@ def _section_assignment(context: _Context, course_ids: set[str], term: str) -> d
             return True
         cid = order[index]
         for section in choices[cid]:
-            if _known_meeting(section) and all(not _overlap(section, other) for other in selected.values()):
+            # Projected offerings have unknown meeting times; they cannot be
+            # certified conflict-free, but they must not block a term either.
+            if section.get("projected") or (_known_meeting(section)
+                                            and all(not _overlap(section, other) for other in selected.values())):
                 selected[cid] = section
                 if place(index + 1):
                     return True
@@ -574,7 +634,14 @@ def _verify(context: _Context, cid: str, term: str, plan: DegreePlan) -> list[Ch
     scheduled_elsewhere = any(s.term != term and any(c["course_id"] == cid for c in s.courses) for s in plan.semesters)
     scheduled_elsewhere |= any(s["course_id"] == cid and s["term"] != term for s in context.enrollments)
     scheduled_elsewhere |= sum(c["course_id"] == cid for s in plan.semesters for c in s.courses) > 1
-    schedule_ok = _section_assignment(context, semester_ids, term) is not None
+    assignment = _section_assignment(context, semester_ids, term)
+    schedule_ok = assignment is not None
+    if schedule_ok:
+        schedule_detail = ("Assumed offered beyond the published schedule; meeting times are not yet available."
+                           if assignment[cid].get("projected") else
+                           "A conflict-free section combination exists.")
+    else:
+        schedule_detail = f"No conflict-free offered section combination in {term}; missing offerings also fail this check."
     return [
         CheckResult(CHECK_NAMES[0], not prereqs, "Missing: " + "; ".join(prereqs) if prereqs else
                     "Prerequisites satisfied; earlier planned courses must be passed."),
@@ -582,8 +649,7 @@ def _verify(context: _Context, cid: str, term: str, plan: DegreePlan) -> list[Ch
                     "Already passed or planned in another term." if cid in passed or scheduled_elsewhere else "Not already passed or planned elsewhere."),
         CheckResult(CHECK_NAMES[2], fulfills, "Fills an unfilled degree requirement." if fulfills else
                     "No unfilled requirement accepts this course; check requirement data."),
-        CheckResult(CHECK_NAMES[3], schedule_ok, "A conflict-free section combination exists." if schedule_ok else
-                    f"No conflict-free offered section combination in {term}; missing offerings also fail this check."),
+        CheckResult(CHECK_NAMES[3], schedule_ok, schedule_detail),
         CheckResult(CHECK_NAMES[4], semester_credits <= semester_cap, f"{semester_credits}/{semester_cap} semester credits."),
         CheckResult(CHECK_NAMES[5], degree_credits <= degree_cap, f"{degree_credits}/{degree_cap} degree credits (applicable completed + planned/enrolled)."),
     ]

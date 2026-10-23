@@ -113,7 +113,8 @@ The planner supports these operations:
 - Prerequisite groups are ANDed; alternatives within a group are ORed.
   Recorded minimum grades are enforced.
   Earlier planned prerequisites are conditional on passing them; they are not recorded as completed courses.
-- The expanded schema's corequisites may share a term, and professional-admission restrictions are enforced when selecting requirements.
+- Prerequisites listed in `prereq_concurrent` (or a `kind='coreq'` row) may share a term,
+  and professional-admission restrictions are enforced when selecting requirements.
 - A course fills at most one degree requirement.
   Fixed, one-of, choose-N, category-hour, and free-elective slots are supported.
   Only explicitly listed courses are treated as approved for an open category; an open-list flag does not invent approval for other courses.
@@ -126,9 +127,11 @@ The planner supports these operations:
   Missing sections, unknown meeting times, and conflicting meetings fail verification.
 - Planning starts at the first available term at or after the student's start term and after the latest completed transcript term.
   Summer is optional, and an explicit course-count limit also respects the credit cap.
-- Generation is deterministic and uses only the supplied schedule horizon.
+- Generation is deterministic. Past the published schedule it assumes catalog offering
+  patterns — 1000/2000-level every term, 3000+ at least Fall/Spring — and flags those
+  terms as projections rather than certifying meeting times.
   Missing data, prerequisite cycles, unmet admission conditions, or infeasible loads produce partial plans with warnings.
-  It does not promise a globally optimal graduation date or project annual offerings beyond the supplied sections.
+  It does not promise a globally optimal graduation date.
 - The legacy schema saves course assignments in `plan_semesters`; warnings are recalculated on load.
   The expanded schema additionally saves the full JSON snapshot in `plans.plan_json`.
 

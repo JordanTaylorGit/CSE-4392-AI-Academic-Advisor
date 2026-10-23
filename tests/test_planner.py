@@ -64,7 +64,9 @@ def test_schedule_search_uses_alternative_section_and_boundary_times(catalog):
     catalog.execute("INSERT INTO sections VALUES ('alternate', 'CSE 4000', 'F2026',"
                     " 'MWF', '10:00', '11:00', '', 40)")
     assert checks("CSE 4000", plan=p)["no_schedule_conflict"].passed
-    assert not checks(term="F2030")["no_schedule_conflict"].passed
+    projected = checks(term="F2030")["no_schedule_conflict"]
+    assert projected.passed and "Assumed offered" in projected.detail
+    assert not checks(term="F2045")["no_schedule_conflict"].passed  # Beyond the projection window.
 
 
 def test_enrollments_lock_sections_and_count_once_against_caps(catalog):
@@ -243,3 +245,59 @@ def test_full_multiyear_chain_uses_earlier_terms_for_every_prerequisite(catalog)
     assert p.semesters[-1].term == "F2029"
     assert p.to_dict()["total_credits_planned"] == 21
     assert not p.warnings
+
+
+def test_concurrent_prereq_is_satisfied_by_same_term_plan_or_enrollment(catalog):
+    catalog.execute("INSERT INTO prereq_concurrent VALUES ('CSE 2000', 'CSE 1000')")
+    p = plan_with(("F2026", ["CSE 1000"]))
+    assert checks("CSE 2000", plan=p)["prerequisites_met"].passed
+    catalog.execute("INSERT INTO enrollments VALUES ('s1', '1000-F2026')")
+    assert checks("CSE 2000")["prerequisites_met"].passed
+
+
+def test_non_concurrent_prereq_still_requires_an_earlier_term(catalog):
+    p = plan_with(("F2026", ["CSE 1000"]))
+    assert not checks("CSE 2000", plan=p)["prerequisites_met"].passed
+
+
+def test_generation_pulls_a_concurrent_prereq_into_the_same_term(catalog):
+    catalog.execute("INSERT INTO prerequisites VALUES ('CSE 1000', 1, 'CSE 4100', 'C')")
+    catalog.execute("INSERT INTO prereq_concurrent VALUES ('CSE 1000', 'CSE 4100')")
+    p = planner.generate_plan("s1")
+    assert {"CSE 1000", "CSE 4100"} <= {c["course_id"] for c in p.semesters[0].courses}
+    assert not p.warnings
+
+
+def test_dropped_course_readded_beside_its_concurrent_prereq(catalog):
+    catalog.execute("INSERT INTO prereq_concurrent VALUES ('CSE 2000', 'CSE 1000')")
+    p = plan_with(("F2026", ["CSE 1000", "CSE 2000"]))
+    dropped = planner.drop_course(p, "CSE 2000", "F2026")
+    readded = planner.add_course(dropped, "CSE 2000", "F2026")
+    assert not any("[verification]" in w for w in readded.warnings)
+
+
+def test_generation_projects_offerings_beyond_the_schedule(catalog):
+    catalog.execute("DELETE FROM sections WHERE term != 'F2026'")
+    p = planner.generate_plan("s1")
+    terms = {c["course_id"]: s.term for s in p.semesters for c in s.courses}
+    assert terms["CSE 1000"] == "F2026"
+    assert planner.term_key(terms["CSE 3000"]) > planner.term_key("S2027")
+    assert p.to_dict()["total_credits_planned"] == 15
+    assert any("[projection]" in w for w in p.warnings)
+    assert all(not s.term.startswith("SU") for s in p.semesters)
+    for semester in p.semesters:
+        for course in semester.courses:
+            assert all(c.passed for c in planner.verify_course("s1", course["course_id"], semester.term, p))
+
+
+def test_projected_verification_is_flagged_not_certified(catalog):
+    catalog.execute("DELETE FROM sections WHERE term != 'F2026'")
+    result = checks("CSE 1000", "S2027")
+    assert result["no_schedule_conflict"].passed
+    assert "Assumed offered" in result["no_schedule_conflict"].detail
+
+
+def test_upper_level_courses_are_not_assumed_in_summer(catalog):
+    catalog.execute("DELETE FROM sections WHERE term != 'F2026'")
+    assert not checks("CSE 4000", "SU2027")["no_schedule_conflict"].passed
+    assert checks("CSE 2000", "SU2027")["no_schedule_conflict"].passed
