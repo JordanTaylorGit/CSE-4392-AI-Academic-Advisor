@@ -34,8 +34,10 @@ Due: Sun 10/25/2026. See `PLAN.md` §6–§9 for the team plan.
       (`uv run python scripts/render_traces.py --session <demo session id>`)
 
 ## Step 3 — Demo script
-- [ ] `scripts/run_demo.py` replays the 7 prompts from `PLAN.md` §9, captures traces
-- [ ] Demo personas + expected outputs written down for the presenters
+- [x] `scripts/run_demo.py` replays the 7 prompts from `PLAN.md` §9, captures traces
+      (tested 10/23 on all branches merged: 7/7 run; step 7 hits Kyle's term bug)
+- [x] Presenter guide: `deliverables/DEMO_GUIDE.md` (walk-through, warm-up, fallbacks)
+- [ ] Final run on merged main -> commit `demo_transcript.md` + `execution_trace_log.md`
 
 ## Step 4 — Screenshots
 - [ ] One screenshot per demo step (input + output visible) -> `deliverables/screenshots/`

@@ -58,7 +58,7 @@ def render(records: list[dict], filters: str, source: Path) -> str:
             f"- **Time range:** {local(records[0]['ts'])} to {local(records[-1]['ts'])}",
             f"- **Chat turns:** {len(turns)}, **UI actions:** {len(actions)}, "
             f"**events:** {len(records)}",
-            f"- **Students:** {', '.join(sorted({names.get(r.get('student_id'), r.get('student_id', '?')) for r in records}))}",
+            f"- **Students:** {', '.join(sorted({names.get(r['student_id'], r['student_id']) for r in records if r.get('student_id')}))}",
             "", "| Event | Count |", "|---|---|"]
     out += [f"| {e} | {n} |" for e, n in Counter(r["event"] for r in records).most_common()]
     out.append("")
