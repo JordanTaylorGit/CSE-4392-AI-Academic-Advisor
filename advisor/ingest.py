@@ -1,6 +1,6 @@
 """Load course/degree documents and upsert their embeddings into Chroma.
 
-Owned by Miguel (RAG workstream). The document IDs are stable, so re-running
+  The document IDs are stable, so re-running
 ``python -m advisor.ingest`` updates existing records rather than duplicating
 those documents. Embeddings come from advisor.config (Ollama or OpenAI).
 """

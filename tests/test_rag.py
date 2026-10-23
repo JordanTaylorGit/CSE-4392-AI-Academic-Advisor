@@ -1,4 +1,4 @@
-"""Offline tests for Miguel's RAG ingestion and semantic-answering modules.
+"""Offline tests for RAG ingestion and semantic answering.
 
 No Ollama server or OpenAI API key is required: external services are mocked.
 """
@@ -121,13 +121,14 @@ def test_answer_semantic_uses_sources_and_cites(monkeypatch):
     monkeypatch.setattr(tracing, "trace", lambda *args, **kwargs: None)
     result = chains.answer_semantic("Which courses cover machine learning?", "s1")
     assert "CSE 4309 covers machine learning" in result
-    assert "Retrieved sources: CSE 4309" in result
+    assert "(CSE 4309 course catalog)" in result
+    assert "Retrieved sources" not in result
     assert prompts[0][0] == "system"
     assert "Use ONLY" in prompts[0][1]
-    assert "catalog:CSE-4309" in prompts[1][1]
+    assert "CSE 4309 course catalog" in prompts[1][1]
 
 
 def test_answer_semantic_without_hits(monkeypatch):
     monkeypatch.setattr(chains, "search_documents", lambda query, k: [])
-    result = chains.answer_semantic("Any question")
+    result = chains.answer_semantic("Which courses cover machine learning?")
     assert "python -m advisor.ingest" in result
