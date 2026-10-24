@@ -2,7 +2,7 @@
 name = "ai-advisor"
 version = "0.1.0"
 description = "Academic AI Advisor — CSE 4392 Team Assignment 2 (LangChain + RAG + deterministic degree planner)"
-requires-python = ">=3.11"
+requires-python = ">=3.13"
 dependencies = [
     "langchain>=0.3",
     "langchain-core>=0.3",
@@ -26,7 +26,7 @@ dev = [
 package = false
 
 [tool.ruff]
-target-version = "py311"
+target-version = "py313"
 
 [tool.ruff.lint]
 select = ["E4", "E7", "E9", "F", "I", "UP", "B", "C4", "SIM", "RUF"]

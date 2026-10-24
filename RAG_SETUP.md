@@ -1,8 +1,8 @@
-# RAG Setup
+﻿# RAG Setup
 
 ## Requirements
 
-- Python 3.11+
+- Python 3.13+
 - [uv](https://docs.astral.sh/uv/)
 - [Ollama](https://ollama.com/download) (default backend)
 
