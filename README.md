@@ -81,10 +81,6 @@ Implemented now (scaffold): `paths`, `config` (backend switch), `db` (schema ini
 + seed loading), `tracing`, `memory` (SQLite-backed chat history), `cli.py`
 reference client.
 
-Loc's planner work is implemented in `planner.py`, `compare.py`, and `plan_store.py`.
-The four planner tool bodies in `tools.py` are also implemented; their signatures and the degree-plan JSON contract are unchanged.
-`router`, the orchestrator handlers, the query/RAG tool bodies, and other teammates' stubs still need their owners' implementations.
-
 ## Deterministic planner (Loc)
 
 Run the tests without Ollama, OpenAI credentials, or an embedding database:
