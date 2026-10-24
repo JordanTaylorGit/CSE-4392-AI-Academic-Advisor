@@ -91,7 +91,7 @@ uv run pytest -q
 ```
 
 Python 3.13 is the tested runtime; the locked ONNX dependency does not currently have a Python 3.15 wheel.
-Tests use temporary SQLite databases, including a small complete catalog and a fixture matching the expanded schema on the Data branch.
+Tests use temporary SQLite databases, including a small complete catalog.
 
 The planner supports these operations:
 
@@ -109,14 +109,11 @@ The planner supports these operations:
 - Prerequisite groups are ANDed; alternatives within a group are ORed.
   Recorded minimum grades are enforced.
   Earlier planned prerequisites are conditional on passing them; they are not recorded as completed courses.
-- Prerequisites listed in `prereq_concurrent` (or a `kind='coreq'` row) may share a term,
-  and professional-admission restrictions are enforced when selecting requirements.
+- Prerequisites listed in `prereq_concurrent` may share a term.
 - A course fills at most one degree requirement.
-  Fixed, one-of, choose-N, category-hour, and free-elective slots are supported.
-  Only explicitly listed courses are treated as approved for an open category; an open-list flag does not invent approval for other courses.
+  Fixed slots and elective options lists are supported; a course must be explicitly listed to count.
 - Completed CSE courses need C or better to count toward the degree; other courses need D or better.
   Unknown grades, pass/fail codes, and incompletes do not establish a letter-grade threshold.
-  Distinct completed retakes are retained when they appear in the expanded enrollment records.
 - Semester credit totals use catalog values and include current enrollments once.
   Degree caps include applicable completed credits and all planned/enrolled courses, without double-counting the same course.
 - Section selection searches alternative combinations and keeps enrolled sections fixed.
@@ -128,8 +125,7 @@ The planner supports these operations:
   terms as projections rather than certifying meeting times.
   Missing data, prerequisite cycles, unmet admission conditions, or infeasible loads produce partial plans with warnings.
   It does not promise a globally optimal graduation date.
-- The legacy schema saves course assignments in `plan_semesters`; warnings are recalculated on load.
-  The expanded schema additionally saves the full JSON snapshot in `plans.plan_json`.
+- Saved plans keep course assignments in `plan_semesters`; warnings are recalculated on load.
 
 ### Integration status
 
@@ -138,8 +134,5 @@ It also provides only three terms of sections.
 Jordan's complete degree requirements, prerequisite data, and schedules are needed before the seeded personas can produce useful verified degree plans.
 The planner reports missing requirements explicitly instead of manufacturing degree rules.
 The original schema and Jordan's data files are unchanged by this work.
-Compatibility tests for the expanded schema do not validate or repair the Data branch's unfinished schema/seed loader.
 
 Verification includes a seven-semester prerequisite chain, all six checks, alternative sections, caps, overlapping electives, corequisite bundles, admission restrictions, passing retakes, add/drop, comparison, persistence, and major changes.
-The five planner operations were also exercised through Talha's UI service layer with preview disabled and a complete test catalog.
-Browser rendering and the unfinished conversational router were not part of that service-level integration check.
