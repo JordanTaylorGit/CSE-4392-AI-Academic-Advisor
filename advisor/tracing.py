@@ -12,7 +12,7 @@ run can be pulled out of the shared log.
 
 import json
 from contextvars import ContextVar
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any
 
@@ -31,7 +31,7 @@ def trace(event: str, **fields: Any) -> None:
     'intent', 'tool_call', 'retrieval', 'llm_response', 'error', ..."""
     LOGS_DIR.mkdir(exist_ok=True)
     record = {
-        "ts": datetime.now(timezone.utc).isoformat(),
+        "ts": datetime.now(UTC).isoformat(),
         "event": event,
         **({"session": s} if (s := _session.get()) else {}),
         **fields,

@@ -231,7 +231,7 @@ def test_full_multiyear_chain_uses_earlier_terms_for_every_prerequisite(catalog)
     catalog.execute("DELETE FROM sections")
     ids = ["CSE 1000", "CSE 2000", "CSE 3000", "CSE 4000", "CSE 4100", "CSE 4200", "CSE 4300"]
     catalog.execute("UPDATE degree_programs SET total_credits=21")
-    terms = ["F2026"] + planner.next_terms("F2026", 7)
+    terms = ["F2026", *planner.next_terms("F2026", 7)]
     for i, cid in enumerate(ids):
         catalog.execute("INSERT INTO requirement_slots (program_id, category, course_id, credits)"
                         " VALUES ('cs', 'core', :cid, 3)", {"cid": cid})

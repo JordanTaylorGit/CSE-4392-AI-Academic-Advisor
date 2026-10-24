@@ -15,7 +15,7 @@ def _terms(include_summer: bool) -> list[str]:
     """First scheduled term onward (next_terms() excludes its start term)."""
     rows = db.query("SELECT DISTINCT term FROM sections")
     first = min((r["term"] for r in rows), key=planner.term_key, default="F2026")
-    return [first] + planner.next_terms(first, 20, include_summer)
+    return [first, *planner.next_terms(first, 20, include_summer)]
 
 
 def plan(student_id: str, program_id: str, include_summer: bool,

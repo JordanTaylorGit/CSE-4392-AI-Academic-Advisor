@@ -84,7 +84,7 @@ def search_documents(query: str, k: int = 5) -> list[dict]:
         rows = zip(
             records.get("ids") or [],
             records.get("documents") or [],
-            records.get("metadatas") or [],
+            records.get("metadatas") or [], strict=False,
         )
         # Catalog entries usually contain the formal prerequisite clauses.
         for doc_id, text, metadata in sorted(
@@ -153,8 +153,8 @@ def _naturalize_citations(answer: str, names: list[str]) -> str:
         index = int(match.group(1)) - 1
         return names[index] if 0 <= index < len(names) else "the provided course documents"
 
-    answer = re.sub(r"\[Source\s+(\d+)\]", lambda m: f"({replace(m)})", answer, flags=re.I)
-    return re.sub(r"\bSource\s+(\d+)\b", replace, answer, flags=re.I)
+    answer = re.sub(r"\[Source\s+(\d+)\]", lambda m: f"({replace(m)})", answer, flags=re.IGNORECASE)
+    return re.sub(r"\bSource\s+(\d+)\b", replace, answer, flags=re.IGNORECASE)
 
 
 def answer_semantic(query: str, student_id: str | None = None, k: int = 5) -> str:

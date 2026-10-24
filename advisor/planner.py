@@ -275,7 +275,7 @@ def _course_dict(context: "_Context", cid: str) -> dict:
 
 def _requirements_complete(context: "_Context", ids: set[str]) -> bool:
     return all(_slot_complete(context, slot, taken)
-               for slot, taken in zip(context.slots, _allocation(context, ids)))
+               for slot, taken in zip(context.slots, _allocation(context, ids), strict=False))
 
 
 def _slot_complete(context: "_Context", slot: "_Slot", taken: set[str]) -> bool:
@@ -298,7 +298,7 @@ def _audit(context: "_Context", plan: DegreePlan) -> None:
                              " patterns (1000/2000-level every term; 3000+ Fall/Spring);"
                              " meeting times are not published.")
     allocation = _allocation(context, _passed(context) | _plan_ids(plan))
-    for slot, taken in zip(context.slots, allocation):
+    for slot, taken in zip(context.slots, allocation, strict=False):
         if not _slot_complete(context, slot, taken):
             options = ", ".join(sorted(slot.options - taken)) or "no approved courses loaded"
             plan.warnings.append(f"[requirements] Unfilled {slot.label}: {options}. Check prerequisites, offerings, and credit caps.")
@@ -482,7 +482,7 @@ def _allocation(context: _Context, course_ids: set[str]) -> list[set[str]]:
 
 def _coverage(context: _Context, allocation: list[set[str]]) -> int:
     return sum(len(taken) if slot.count else min(slot.hours, _credits(context, taken))
-               for slot, taken in zip(context.slots, allocation))
+               for slot, taken in zip(context.slots, allocation, strict=False))
 
 
 def _credits(context: _Context, course_ids: set[str]) -> int:

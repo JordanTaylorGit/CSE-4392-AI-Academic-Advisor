@@ -17,7 +17,7 @@ from .paths import CATALOG_PDF, COURSE_DESC_JSONL, DEGREE_REQS_DIR
 
 # A real entry begins "CSE 1325. OBJECT-ORIENTED PROGRAMMING. 3 Hours."
 # Mere prerequisite mentions ("CSE 1325.") are not new course entries.
-ENTRY_RE = re.compile(r"^CSE (\d{4})\.\s*\S.*?\b\d+ Hours?\.", re.S)
+ENTRY_RE = re.compile(r"^CSE (\d{4})\.\s*\S.*?\b\d+ Hours?\.", re.DOTALL)
 
 
 def load_course_chunks(pdf_path: Path = CATALOG_PDF) -> list[dict]:
@@ -72,7 +72,7 @@ def build_documents() -> list[dict]:
         })
 
     with COURSE_DESC_JSONL.open(encoding="utf-8") as handle:
-        for lineno, line in enumerate(handle, start=1):
+        for _lineno, line in enumerate(handle, start=1):
             if not line.strip():
                 continue
             raw = json.loads(line)

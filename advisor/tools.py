@@ -10,7 +10,7 @@ from dataclasses import asdict
 from langchain_core.tools import tool
 from sqlalchemy import text
 
-from . import chains, compare, db, planner, plan_store
+from . import chains, compare, db, plan_store, planner
 
 
 @tool

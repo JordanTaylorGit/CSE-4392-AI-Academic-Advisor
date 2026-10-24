@@ -84,7 +84,8 @@ def hero(student: dict, program_line: str, completed: list[dict], plan: dict | N
     done = sum(r["credits"] for r in completed)
     planned = plan["total_credits_planned"] if plan else 0
     left = max(total - done - planned, 0)
-    pct = lambda n: f"{min(n / total * 100, 100):.2f}%" if total else "0%"
+    def pct(n):
+        return f"{min(n / total * 100, 100):.2f}%" if total else "0%"
     stats = [f'<span><i class="adv-dot" style="background:var(--green)"></i>'
              f'<b>{_count(done)}</b> of {total} credits completed</span>']
     if plan:
@@ -264,7 +265,7 @@ def year_view(plan: dict | None, completed: list[dict]) -> None:
             f'<div class="adv-yterm{" done" if terms[t]["done"] else ""}">'
             f'<div class="adv-yterm-head"><span>{term_label(t).split()[0]}</span>'
             f'<span>{sum(c["credits"] for c in terms[t]["courses"])} cr</span></div>'
-            f'<div class="adv-ychips">{"".join(f"<span>{escape(c["course_id"])}</span>" for c in terms[t]["courses"])}</div>'
+            f'<div class="adv-ychips">{"".join("<span>{}</span>".format(escape(c["course_id"])) for c in terms[t]["courses"])}</div>'
             f'</div>' for t in ts)
         cols.append(f'<section class="adv-year" style="--i:{n - 1}"><h4>Year {n}</h4>'
                     f'<p class="adv-muted">{y}–{str(y + 1)[2:]}</p>{blocks}</section>')

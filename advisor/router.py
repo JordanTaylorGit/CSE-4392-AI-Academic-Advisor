@@ -6,10 +6,10 @@ models handle this reliably where free-form tool-calling agents do not.
 """
 
 import re
-from enum import Enum
+from enum import StrEnum
 
 
-class Intent(str, Enum):
+class Intent(StrEnum):
     EXACT_QUERY = "exact_query"          # prereqs, record, schedule lookups -> SQL chain
     SEMANTIC_QUERY = "semantic_query"    # course content / policy questions -> RAG chain
     GENERATE_PLAN = "generate_plan"      # "build my degree plan"
@@ -59,7 +59,7 @@ Reply with ONLY the intent name, nothing else."""
 
 def _strip_think(text: str) -> str:
     """Remove <think>...</think> blocks emitted by reasoning models."""
-    return re.sub(r"<think>.*?</think>", "", text, flags=re.S).strip()
+    return re.sub(r"<think>.*?</think>", "", text, flags=re.DOTALL).strip()
 
 
 # --- deterministic pre-pass -------------------------------------------------
@@ -71,24 +71,24 @@ _COURSE = r"[A-Z]{2,4}\s*\d{4}"
 
 _RULES: list[tuple[re.Pattern, Intent]] = [
     # modify_plan: add/drop/replace courses or change course load
-    (re.compile(rf"\b(?:add|drop|remove|replace|swap)\b.*{_COURSE}|\b{_COURSE}.*\b(?:add|drop|remove|replace|swap)\b", re.I), Intent.MODIFY_PLAN),
-    (re.compile(r"\b\d+\s*(?:classes|courses)\b.*\b(?:instead|per semester|each semester|next semester)\b|\b(?:instead|change).*\b\d+\s*(?:classes|courses)\b", re.I), Intent.MODIFY_PLAN),
+    (re.compile(rf"\b(?:add|drop|remove|replace|swap)\b.*{_COURSE}|\b{_COURSE}.*\b(?:add|drop|remove|replace|swap)\b", re.IGNORECASE), Intent.MODIFY_PLAN),
+    (re.compile(r"\b\d+\s*(?:classes|courses)\b.*\b(?:instead|per semester|each semester|next semester)\b|\b(?:instead|change).*\b\d+\s*(?:classes|courses)\b", re.IGNORECASE), Intent.MODIFY_PLAN),
     # switch_major: talking about changing program/major/concentration
-    (re.compile(r"\b(?:switch|change|transfer)\b.*\b(?:major|program|concentration|degree)\b|\b(?:major|program|concentration)\b.*\b(?:switch|change|transfer)\b|thinking of switching|switching to", re.I), Intent.SWITCH_MAJOR),
+    (re.compile(r"\b(?:switch|change|transfer)\b.*\b(?:major|program|concentration|degree)\b|\b(?:major|program|concentration)\b.*\b(?:switch|change|transfer)\b|thinking of switching|switching to", re.IGNORECASE), Intent.SWITCH_MAJOR),
     # generate_plan: asking for a plan to be built
-    (re.compile(r"\b(?:generate|build|create|make|plan out|design)\b.*\b(?:degree\s*)?plan\b|\bdegree plan\b.*\b(?:generate|build|create|make|for me)\b", re.I), Intent.GENERATE_PLAN),
-    (re.compile(r"\b(?:what|which)\b.*\b(?:should|do|need to|must)\s+(?:i\s+)?take\b|\b(?:take|needed?|required)\b.*\bgraduat|\bclasses? to take\b", re.I), Intent.GENERATE_PLAN),
+    (re.compile(r"\b(?:generate|build|create|make|plan out|design)\b.*\b(?:degree\s*)?plan\b|\bdegree plan\b.*\b(?:generate|build|create|make|for me)\b", re.IGNORECASE), Intent.GENERATE_PLAN),
+    (re.compile(r"\b(?:what|which)\b.*\b(?:should|do|need to|must)\s+(?:i\s+)?take\b|\b(?:take|needed?|required)\b.*\bgraduat|\bclasses? to take\b", re.IGNORECASE), Intent.GENERATE_PLAN),
     # check_eligibility: "can I take X?"
-    (re.compile(rf"\b(?:can|could|should|am i (?:able|eligible|allowed) to|may i)\b.*\b(?:take|enroll in|register for|add)\b.*{_COURSE}|\b(?:eligible|prerequisites? (?:met|satisfied))\b.*{_COURSE}", re.I), Intent.CHECK_ELIGIBILITY),
+    (re.compile(rf"\b(?:can|could|should|am i (?:able|eligible|allowed) to|may i)\b.*\b(?:take|enroll in|register for|add)\b.*{_COURSE}|\b(?:eligible|prerequisites? (?:met|satisfied))\b.*{_COURSE}", re.IGNORECASE), Intent.CHECK_ELIGIBILITY),
     # semantic_query: degree requirements / program / policy questions
-    (re.compile(r"\b(?:degree\s+)?requirements?\b|\bconcentration\b|\belectives?\b|\bpolicy\b|\bcatalog\b|\bhow does\b.*\b(?:program|degree|concentration|major)\b", re.I), Intent.SEMANTIC_QUERY),
+    (re.compile(r"\b(?:degree\s+)?requirements?\b|\bconcentration\b|\belectives?\b|\bpolicy\b|\bcatalog\b|\bhow does\b.*\b(?:program|degree|concentration|major)\b", re.IGNORECASE), Intent.SEMANTIC_QUERY),
     # exact_query: structured lookups
-    (re.compile(r"\bprereq|\bschedule\b|\bsection\b|offered|what time|meeting time", re.I), Intent.EXACT_QUERY),
-    (re.compile(r"\b(?:my|show)\b.*\b(?:record|transcript|completed|enrolled|enrollment)\b|\bwhat.*\b(?:have i|i've)\s+(?:taken|completed)\b", re.I), Intent.EXACT_QUERY),
+    (re.compile(r"\bprereq|\bschedule\b|\bsection\b|offered|what time|meeting time", re.IGNORECASE), Intent.EXACT_QUERY),
+    (re.compile(r"\b(?:my|show)\b.*\b(?:record|transcript|completed|enrolled|enrollment)\b|\bwhat.*\b(?:have i|i've)\s+(?:taken|completed)\b", re.IGNORECASE), Intent.EXACT_QUERY),
     # status_query: progress toward degree / plan status
-    (re.compile(r"\b(?:how far|progress|status|on track|remaining|left to take|graduat)", re.I), Intent.STATUS_QUERY),
+    (re.compile(r"\b(?:how far|progress|status|on track|remaining|left to take|graduat)", re.IGNORECASE), Intent.STATUS_QUERY),
     # semantic_query: open-ended "which courses cover X" questions
-    (re.compile(r"\b(?:which|what)\b.*\b(?:courses?|classes?)\b.*\b(?:cover|about|teach|learn|topics?|involv|focus)\b", re.I), Intent.SEMANTIC_QUERY),
+    (re.compile(r"\b(?:which|what)\b.*\b(?:courses?|classes?)\b.*\b(?:cover|about|teach|learn|topics?|involv|focus)\b", re.IGNORECASE), Intent.SEMANTIC_QUERY),
 ]
 
 

@@ -17,8 +17,8 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
-from advisor import tracing  # noqa: E402
-from advisor.paths import REPO_ROOT, STUDENTS_JSON, TRACE_LOG  # noqa: E402
+from advisor import tracing
+from advisor.paths import REPO_ROOT, STUDENTS_JSON, TRACE_LOG
 
 HIDDEN = {"ts", "event", "session", "student_id"}
 
@@ -52,7 +52,7 @@ def render(records: list[dict], filters: str, source: Path) -> str:
            f"Generated {datetime.now().astimezone():%b %d %Y, %H:%M} from `{shown_source}`."
            f" Filters: {filters or 'none'}.", ""]
     if not records:
-        return "\n".join(out + ["No trace records matched.", ""])
+        return "\n".join([*out, "No trace records matched.", ""])
 
     out += ["## Summary", "",
             f"- **Time range:** {local(records[0]['ts'])} to {local(records[-1]['ts'])}",

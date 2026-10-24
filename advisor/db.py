@@ -18,13 +18,20 @@ If advisor.db already exists, delete it and re-run `python -m advisor.db` to res
 
 import json
 import sqlite3
+from collections.abc import Iterable
 from pathlib import Path
-from typing import Iterable
 
 from sqlalchemy import create_engine, text
 from sqlalchemy.engine import Engine
 
-from .paths import COURSE_DESC_JSONL, DB_PATH, SCHEDULE_JSON, SCHEMA_SQL, SEED_DIR, STUDENTS_JSON
+from .paths import (
+    COURSE_DESC_JSONL,
+    DB_PATH,
+    SCHEDULE_JSON,
+    SCHEMA_SQL,
+    SEED_DIR,
+    STUDENTS_JSON,
+)
 
 EXTRA_COURSES_JSON = SEED_DIR / "extra_courses.json"
 CREDITS_JSON = SEED_DIR / "course_credits.json"
