@@ -4,6 +4,7 @@ from advisor import db, planner
 
 
 def test_schema_and_seed(tmp_path, monkeypatch):
+    monkeypatch.setattr(db, "DB_PATH", tmp_path / "advisor.db")
     monkeypatch.setattr(db, "_engine", None)
     db.init_db()
     assert db.query("SELECT COUNT(*) AS n FROM courses")[0]["n"] > 0

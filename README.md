@@ -23,7 +23,7 @@ See `PLAN.md` for the full architecture, work split, and timeline.
 
 ```bash
 # 1. Install deps (uses uv; https://docs.astral.sh/uv/)
-uv sync
+uv sync --python 3.13
 
 # 2. Pick an LLM backend (default: local Ollama)
 cp .env.example .env          # edit if needed
@@ -87,9 +87,58 @@ Implemented now (scaffold): `paths`, `config` (backend switch), `db` (schema ini
 + seed loading), `tracing`, `memory` (SQLite-backed chat history), `cli.py`
 reference client.
 
-Stubbed with `NotImplementedError` + docstrings (contracts are final, bodies are
-TODOs for the owner): `planner`, `compare`, `router`, `chains`, `tools`,
-`orchestrator`, `ingest`.
+## Deterministic planner (Loc)
 
-The app runs today — every query answers "not implemented yet" until the owner
-fills in their module.
+Run the tests without Ollama, OpenAI credentials, or an embedding database:
+
+```bash
+uv sync --python 3.13
+uv run pytest -q
+```
+
+Python 3.13 is the tested runtime; the locked ONNX dependency does not currently have a Python 3.15 wheel.
+Tests use temporary SQLite databases, including a small complete catalog.
+
+The planner supports these operations:
+
+- `generate_plan(student_id, program_id=None, include_summer=False, courses_per_semester=None)` orders courses by prerequisite readiness, packs semesters, and returns a `DegreePlan`.
+- `verify_course(student_id, course_id, term, plan=None)` always returns the six named checks in contract order, including detailed failure reasons.
+- `add_course` and `drop_course` return independent plans and recheck the remaining courses.
+  Invalid additions are rejected; dropping a prerequisite leaves its dependent courses visible with warnings.
+- `diff_plans(old, new)` separates additions, removals, and moves and reports semester/credit changes.
+- The LangChain tools generate and save plans, modify the latest saved plan, verify against it, and atomically save a new plan with a major change.
+  Batch additions are checked together so mutual corequisites can be added in one request.
+  Course additions/removals require an explicit term.
+
+### Planning rules and assumptions
+
+- Prerequisite groups are ANDed; alternatives within a group are ORed.
+  Recorded minimum grades are enforced.
+  Earlier planned prerequisites are conditional on passing them; they are not recorded as completed courses.
+- Prerequisites listed in `prereq_concurrent` may share a term.
+- A course fills at most one degree requirement.
+  Fixed slots and elective options lists are supported; a course must be explicitly listed to count.
+- Completed CSE courses need C or better to count toward the degree; other courses need D or better.
+  Unknown grades, pass/fail codes, and incompletes do not establish a letter-grade threshold.
+- Semester credit totals use catalog values and include current enrollments once.
+  Degree caps include applicable completed credits and all planned/enrolled courses, without double-counting the same course.
+- Section selection searches alternative combinations and keeps enrolled sections fixed.
+  Missing sections, unknown meeting times, and conflicting meetings fail verification.
+- Planning starts at the first available term at or after the student's start term and after the latest completed transcript term.
+  Summer is optional, and an explicit course-count limit also respects the credit cap.
+- Generation is deterministic. Past the published schedule it assumes catalog offering
+  patterns — 1000/2000-level every term, 3000+ at least Fall/Spring — and flags those
+  terms as projections rather than certifying meeting times.
+  Missing data, prerequisite cycles, unmet admission conditions, or infeasible loads produce partial plans with warnings.
+  It does not promise a globally optimal graduation date.
+- Saved plans keep course assignments in `plan_semesters`; warnings are recalculated on load.
+
+### Integration status
+
+Main's seed loader currently creates zero requirement slots or prerequisite rows.
+It also provides only three terms of sections.
+Jordan's complete degree requirements, prerequisite data, and schedules are needed before the seeded personas can produce useful verified degree plans.
+The planner reports missing requirements explicitly instead of manufacturing degree rules.
+The original schema and Jordan's data files are unchanged by this work.
+
+Verification includes a seven-semester prerequisite chain, all six checks, alternative sections, caps, overlapping electives, corequisite bundles, admission restrictions, passing retakes, add/drop, comparison, persistence, and major changes.

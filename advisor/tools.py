@@ -5,9 +5,12 @@ Owners implement the bodies; signatures and docstrings may only change with
 team sign-off.
 """
 
-from langchain_core.tools import tool
+from dataclasses import asdict
 
-from . import chains, compare, db, planner
+from langchain_core.tools import tool
+from sqlalchemy import text
+
+from . import chains, compare, db, planner, plan_store
 
 
 @tool
@@ -34,14 +37,17 @@ def generate_degree_plan(student_id: str, include_summer: bool = False) -> dict:
     """Generate a multi-year degree plan for the student. Returns
     DegreePlan.to_dict(). All six verification checks are applied inside the
     planner before any course is recommended."""
-    raise NotImplementedError("TODO Loc")
+    plan = planner.generate_plan(student_id, include_summer=include_summer)
+    plan_store.save(plan)
+    return plan.to_dict()
 
 
 @tool
 def verify_course_eligibility(student_id: str, course_id: str, term: str) -> list[dict]:
     """Run the six recommendation checks for a course in a term and return
     per-check pass/fail details."""
-    raise NotImplementedError("TODO Loc")
+    plan = plan_store.latest(student_id)
+    return [asdict(c) for c in planner.verify_course(student_id, course_id, term, plan)]
 
 
 @tool
@@ -49,14 +55,34 @@ def modify_plan(student_id: str, add: list[str] | None = None, drop: list[str] |
                 term: str | None = None, courses_per_semester: int | None = None) -> dict:
     """Modify the student's current plan: add/drop courses, or regenerate with
     a different semester course load. Returns the updated plan dict."""
-    raise NotImplementedError("TODO Loc")
+    if (add or drop) and term is None:
+        raise ValueError("An explicit term is required when adding or dropping courses")
+    plan = plan_store.latest(student_id) or planner.generate_plan(student_id)
+    if courses_per_semester is not None:
+        plan = planner.generate_plan(student_id, program_id=plan.program_id,
+                                     include_summer=any(s.term.startswith("SU") for s in plan.semesters),
+                                     courses_per_semester=courses_per_semester)
+    for cid in drop or []:
+        plan = planner.drop_course(plan, cid, term)
+    if add:
+        plan = planner.add_courses(plan, add, term)
+    plan_store.save(plan)
+    return plan.to_dict()
 
 
 @tool
 def switch_major(student_id: str, new_program_id: str) -> dict:
     """Switch the student's program, generate the new plan, and return
     {new_plan, diff} where diff comes from compare.diff_plans."""
-    raise NotImplementedError("TODO Loc")
+    old = plan_store.latest(student_id) or planner.generate_plan(student_id)
+    new = planner.generate_plan(student_id, program_id=new_program_id,
+                                include_summer=any(s.term.startswith("SU") for s in old.semesters))
+    difference = compare.diff_plans(old, new)
+    with db.get_engine().begin() as conn:
+        conn.execute(text("UPDATE students SET program_id=:pid WHERE student_id=:sid"),
+                     {"pid": new_program_id, "sid": student_id})
+        plan_store.write(conn, new)
+    return {"new_plan": new.to_dict(), "diff": difference}
 
 
 @tool
