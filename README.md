@@ -23,7 +23,7 @@ See `PLAN.md` for the full architecture, work split, and timeline.
 
 ```bash
 # 1. Install deps (uses uv; https://docs.astral.sh/uv/)
-uv sync --python 3.13
+uv sync
 
 # 2. Pick an LLM backend (default: local Ollama)
 cp .env.example .env          # edit if needed
@@ -92,11 +92,11 @@ reference client.
 Run the tests without Ollama, OpenAI credentials, or an embedding database:
 
 ```bash
-uv sync --python 3.13
+uv sync
 uv run pytest -q
 ```
 
-Python 3.13 is the tested runtime; the locked ONNX dependency does not currently have a Python 3.15 wheel.
+Python 3.13 is pinned in `.python-version`; the locked ONNX dependency does not currently have a Python 3.15 wheel.
 Tests use temporary SQLite databases, including a small complete catalog.
 
 The planner supports these operations:

@@ -156,10 +156,10 @@ def generate_plan(
     pending = list(mandatory)
     while pending:
         course = pending.pop()
-        groups: dict[tuple[str, int], list[dict]] = {}
+        groups: dict[int, list[dict]] = {}
         for row in context.prerequisites:
             if row["course_id"] == course:
-                groups.setdefault((row.get("kind", "prereq"), row["group_id"]), []).append(row)
+                groups.setdefault(row["group_id"], []).append(row)
         for alternatives in groups.values():
             if any(any(done["course_id"] == row["prereq_id"] and _grade_meets(done["grade"], row["min_grade"])
                        for done in context.completed) for row in alternatives):
@@ -310,7 +310,6 @@ class _Slot:
     options: set[str]
     hours: int
     count: int = 1  # zero means a credit-hour bucket
-    professional: bool = False
 
 
 @dataclass
@@ -367,22 +366,12 @@ def _load_context(student_id: str, program_id: str | None = None) -> _Context:
     courses = {c["course_id"]: c for c in db.query("SELECT * FROM courses ORDER BY course_id")}
     slots = []
     rows = db.query("SELECT * FROM requirement_slots WHERE program_id=:pid ORDER BY slot_id", {"pid": pid})
-    expanded = bool(rows and "slot_type" in rows[0])
-    links = db.query("SELECT * FROM slot_courses") if expanded else []
     for row in rows:
-        if expanded:
-            kind = row["slot_type"]
-            options = {r["course_id"] for r in links if str(r["slot_id"]) == str(row["slot_id"])}
-            if kind == "free":
-                options = set(courses)
-            count = row["courses_needed"] if kind == "choose_n" else (0 if kind in ("category", "free") else 1)
-            slots.append(_Slot(row["label"], options, row["hours"], count, bool(row["professional"])))
-        else:
-            options = [row["course_id"]] if row["course_id"] else json.loads(row["options"])
-            # A category tag is not an explicit list of approved courses.
-            if not isinstance(options, list):
-                options = []
-            slots.append(_Slot(f"slot {row['slot_id']}", set(options), row["credits"]))
+        options = [row["course_id"]] if row["course_id"] else json.loads(row["options"])
+        # A category tag is not an explicit list of approved courses.
+        if not isinstance(options, list):
+            options = []
+        slots.append(_Slot(f"slot {row['slot_id']}", set(options), row["credits"]))
     sections = db.query("SELECT * FROM sections ORDER BY section_id")
     last_real_term = max((s["term"] for s in sections), key=term_key, default=None)
     if last_real_term is not None:
@@ -406,12 +395,11 @@ def _load_context(student_id: str, program_id: str | None = None) -> _Context:
     if "total_hours" in program:
         program["total_credits"] = program["total_hours"]
     prerequisites = db.query("SELECT * FROM prerequisites ORDER BY course_id, group_id, prereq_id")
-    # prereq_concurrent (Jordan's additive table) and kind='coreq' rows both mark
-    # prereqs that may be satisfied by a same-term course.
+    # prereq_concurrent (Jordan's additive table) marks pairs that may be
+    # satisfied by a course taken in the same term.
     concurrent = {(r["course_id"], r["prereq_id"])
                   for r in (db.query("SELECT * FROM prereq_concurrent")
                             if _table_exists("prereq_concurrent") else [])}
-    concurrent |= {(r["course_id"], r["prereq_id"]) for r in prerequisites if r.get("kind") == "coreq"}
     return _Context(student, program, courses, slots, prerequisites,
                     completed, sections, enrollments, concurrent, last_real_term)
 
@@ -443,8 +431,6 @@ def _allocation(context: _Context, course_ids: set[str]) -> list[set[str]]:
     """
     units, mixed = [], []
     for i, slot in enumerate(context.slots):
-        if slot.professional and not context.student.get("professional_admitted"):
-            continue
         if slot.count:
             units.extend([i] * slot.count)
         else:
@@ -504,19 +490,14 @@ def _credits(context: _Context, course_ids: set[str]) -> int:
 
 
 def _prerequisite_failures(context: _Context, cid: str, term: str, plan: DegreePlan) -> list[str]:
-    groups: dict[tuple[str, int], list[dict]] = {}
+    groups: dict[int, list[dict]] = {}
     for row in context.prerequisites:
         if row["course_id"] == cid:
-            groups.setdefault((row.get("kind", "prereq"), row["group_id"]), []).append(row)
+            groups.setdefault(row["group_id"], []).append(row)
     failures = []
-    if context.courses[cid].get("requires_professional") and not context.student.get("professional_admitted"):
-        failures.append("professional-program admission")
-    accepting = [slot for slot in context.slots if cid in slot.options]
-    if accepting and all(slot.professional for slot in accepting) and not context.student.get("professional_admitted"):
-        failures.append("professional-program admission for the requirement")
-    for (kind, _), alternatives in groups.items():
+    for alternatives in groups.values():
         if not any(_prereq_satisfied(context, r, term, plan) for r in alternatives):
-            failures.append(kind + ": " + " or ".join(
+            failures.append("prereq: " + " or ".join(
                 f"{r['prereq_id']} (grade {r['min_grade']}+"
                 f"{'; concurrent OK' if (r['course_id'], r['prereq_id']) in context.concurrent else ''})"
                 for r in alternatives))
@@ -538,9 +519,8 @@ def _prereq_satisfied(context: _Context, row: dict, term: str, plan: DegreePlan)
 def _corequisite_bundles(context: _Context, cid: str, term: str, plan: DegreePlan):
     """Enumerate bundles that fill the candidate's unsatisfied prerequisites.
 
-    Only same-term-eligible alternatives (prereq_concurrent pairs or kind='coreq'
-    rows) can be pulled into the bundle; other missing prereqs leave the
-    candidate for a later term.
+    Only prereq_concurrent pairs can be pulled into the bundle; other missing
+    prereqs leave the candidate for a later term.
     """
     seen: set[frozenset[str]] = set()
 
@@ -553,10 +533,10 @@ def _corequisite_bundles(context: _Context, cid: str, term: str, plan: DegreePla
         semester = next(s for s in trial.semesters if s.term == term)
         semester.courses.extend(_course_dict(context, c) for c in sorted(bundle))
         for course in sorted(bundle):
-            groups: dict[tuple[str, int], list[dict]] = {}
+            groups: dict[int, list[dict]] = {}
             for row in context.prerequisites:
                 if row["course_id"] == course:
-                    groups.setdefault((row.get("kind", "prereq"), row["group_id"]), []).append(row)
+                    groups.setdefault(row["group_id"], []).append(row)
             for alternatives in groups.values():
                 if not any(_prereq_satisfied(context, row, term, trial) for row in alternatives):
                     for row in alternatives:
