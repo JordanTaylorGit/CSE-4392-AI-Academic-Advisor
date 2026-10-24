@@ -118,9 +118,10 @@ def header(slide, title, takeaway=""):
         text(slide, MARGIN, Inches(1.25), W - 2 * MARGIN, Inches(0.5), takeaway, size=16, color=MUTED)
 
 
-def footer(slide, n):
-    text(slide, W - MARGIN - Inches(3), H - Inches(0.45), Inches(3), Inches(0.3),
-         f"Academic AI Advisor  ·  {n}", size=10, color=MUTED, align=PP_ALIGN.RIGHT)
+def footer(slide, n, section=""):
+    label = f"{section}  ·  {n}" if section else str(n)
+    text(slide, W - MARGIN - Inches(5), H - Inches(0.45), Inches(5), Inches(0.3),
+         f"Academic AI Advisor  ·  {label}", size=10, color=MUTED, align=PP_ALIGN.RIGHT)
 
 
 def notes(slide, body):
@@ -198,6 +199,7 @@ def build(shots: Path, out: Path) -> None:
     prs.slide_width, prs.slide_height = W, H
     blank = prs.slide_layouts[6]
     n = 0
+    sec = [""]  # current section of the professor's outline, shown in the footer
 
     def new():
         nonlocal n
@@ -206,37 +208,70 @@ def build(shots: Path, out: Path) -> None:
         s.background.fill.solid()
         s.background.fill.fore_color.rgb = WHITE
         if n > 1:
-            footer(s, n)
+            footer(s, n, sec[0])
         return s
 
-    # 1. Title
+    # Title (professor's template wording)
     s = new()
     rect(s, 0, 0, W, H, fill=SURFACE, shape=MSO_SHAPE.RECTANGLE)
-    dot_y = Inches(2.35)
+    dot_y = Inches(1.4)
     rect(s, MARGIN, dot_y, Inches(0.28), Inches(0.28), fill=GREEN, shape=MSO_SHAPE.OVAL)
     o = rect(s, MARGIN, dot_y + Inches(0.38), Inches(0.28), Inches(0.28), fill=SURFACE, shape=MSO_SHAPE.OVAL)
     o.line.color.rgb = BLUE
     o.line.width = Pt(3.5)
-    text(s, MARGIN + Inches(0.55), Inches(2.1), Inches(11), Inches(1.2), "Academic AI Advisor",
-         size=54, bold=True)
-    text(s, MARGIN + Inches(0.55), Inches(3.2), Inches(11), Inches(0.6),
-         "Degree plans, course checks, and answers about UTA CSE, built on LangChain",
-         size=22, color=MUTED)
-    text(s, MARGIN + Inches(0.55), Inches(4.6), Inches(11), Inches(1.2), [
-        "CSE 4392  ·  Team Assignment 2  ·  October 2026",
-        "Jordan (data)  ·  Loc (planner)  ·  Miguel (RAG)  ·  Kyle (agent)  ·  Talha (UI, logging, demo)"],
-        size=16, color=MUTED, spacing=1.5)
+    text(s, MARGIN + Inches(0.55), Inches(0.75), Inches(11), Inches(0.5),
+         "CSE 4392/5320  ·  Software Engineering with Generative AI", size=18, color=MUTED)
+    text(s, MARGIN + Inches(0.55), Inches(1.25), Inches(11.5), Inches(1.0),
+         "An AI Advisor Using LangChain", size=48, bold=True)
+    text(s, MARGIN + Inches(0.55), Inches(2.25), Inches(11), Inches(0.5),
+         "Team Assignment 2  ·  October 2026", size=20, color=MUTED)
+    text(s, MARGIN + Inches(0.55), Inches(3.3), Inches(6), Inches(0.4),
+         "Team Members and Their Roles", size=18, bold=True)
+    team = [("Jordan Taylor", "Data: SQLite schema, catalog parsing, seed data, degree requirements"),
+            ("Loc Nguyen", "Degree planner, six verification checks, plan comparison"),
+            ("Miguel", "RAG: document ingestion into Chroma, semantic retrieval and answers"),
+            ("Kyle", "Agent: intent router, orchestrator, exact-query (SQL) chain"),
+            ("Talha Nadeem", "Web UI, execution-trace logging, demo, presentation, packaging")]
+    y = Inches(3.85)
+    for name, role in team:
+        text(s, MARGIN + Inches(0.55), y, Inches(2.6), Inches(0.42), name, size=16, bold=True,
+             anchor=MSO_ANCHOR.MIDDLE)
+        text(s, MARGIN + Inches(3.2), y, Inches(8.6), Inches(0.42), role, size=16, color=MUTED,
+             anchor=MSO_ANCHOR.MIDDLE)
+        y += Inches(0.5)
     notes(s, """
 Presenter: Talha. 30 seconds.
-"We built an academic advisor for UTA CSE students. It plans a degree semester by semester,
-checks whether a course can be taken, answers questions from the catalog, and keeps a full
-trace of how it reached every answer. Each of us owned one layer; we'll walk the architecture,
-show the code that matters, then the demo."
+"We built an AI advisor for UTA CSE students with LangChain. It plans a degree semester by
+semester, checks whether a course can be taken, answers questions from the catalog, and keeps a
+full trace of how it reached every answer. Each of us owned one layer, listed here."
+TODO before presenting: confirm full names for Miguel and Kyle.
 """)
 
+    # Overview of Presentation
+    sec[0] = "Overview"
+    s = new()
+    header(s, "Overview of Presentation")
+    agenda = [("Functional requirements implemented", "what the advisor does, requirement by requirement"),
+              ("Assumptions and constraints", "what we assumed and the limits the system enforces"),
+              ("System architecture", "components, how they relate, the two databases, design decisions"),
+              ("Implementation", "a request end to end, then the code behind each component"),
+              ("Demo", "screenshots for every requirement and constraint, then the live app"),
+              ("Lessons learned, conclusions, future work", "")]
+    y = Inches(1.8)
+    for i, (head, sub) in enumerate(agenda, 1):
+        rect(s, MARGIN, y, Inches(0.55), Inches(0.55), fill=BLUE, shape=MSO_SHAPE.OVAL)
+        text(s, MARGIN, y, Inches(0.55), Inches(0.55), str(i), size=16, bold=True, color=WHITE,
+             align=PP_ALIGN.CENTER, anchor=MSO_ANCHOR.MIDDLE)
+        text(s, MARGIN + Inches(0.85), y, Inches(10.8), Inches(0.55),
+             [[(head, {"bold": True}), (("  " + sub) if sub else "", {"color": MUTED})]],
+             size=18, anchor=MSO_ANCHOR.MIDDLE)
+        y += Inches(0.78)
+    notes(s, "Presenter: Talha. 20 seconds: the order of the talk, which follows the course template.")
+
+    sec[0] = "Requirements"
     # 2. What it does
     s = new()
-    header(s, "What the advisor does", "Every requirement in the assignment, and where it lives in the system.")
+    header(s, "Functional Requirements Implemented", "Every requirement in the assignment, how we meet it, and where the demo shows it.")
     table(s, MARGIN, Inches(2.0), W - 2 * MARGIN, [
         ["Requirement", "How we meet it", "Shown in demo"],
         ["1  User interface", "Streamlit web app: chat, plan timeline, dialogs for add / drop", "Every screen"],
@@ -253,9 +288,41 @@ Walk the table top to bottom. Point out that every requirement maps to a specifi
 and a specific demo moment, so the rest of the talk follows this table.
 """)
 
+    # Assumptions and Constraints
+    sec[0] = "Assumptions and constraints"
+    s = new()
+    header(s, "Assumptions and Constraints")
+    col = (W - 2 * MARGIN - Inches(0.5)) / 2
+    for i, (title, fill, line, items) in enumerate([
+        ("Assumptions", BLUE_TINT, BLUE, [
+            ("Signed in:", " the student is already logged in (given by the assignment)"),
+            ("Catalog:", " requirements and courses come from the real UTA 2026\u201327 catalog"),
+            ("Students and sections:", " four personas and class sections are fabricated, consistent with prerequisites"),
+            ("Programs:", " BS CS + Cybersecurity certificate (123 credits) and BS SE + AI certificate (127)"),
+            ("Current term:", " Fall 2026; planning starts after it"),
+            ("Certificates:", " certificate courses also count toward the degree (not yet confirmed by UTA)")]),
+        ("Constraints the system enforces", GREEN_TINT, GREEN, [
+            ("Prerequisites:", " every prerequisite passed (minimum grade C), or taken the same term when allowed"),
+            ("Credit caps:", " each student\u2019s semester limit (15 or 18) and the degree total"),
+            ("Schedule:", " a conflict-free set of real sections must exist for the term"),
+            ("No repeats:", " a passed or already-planned course can\u2019t be added again"),
+            ("Local only:", " runs offline on a laptop: Ollama, SQLite, Chroma; no accounts or API keys"),
+            ("Horizon:", " sections are published for three terms (Fall 2026 \u2013 Summer 2027)")]),
+    ]):
+        x = MARGIN + i * (col + Inches(0.5))
+        rect(s, x, Inches(1.65), col, Inches(5.1), fill=fill, radius=0.05)
+        text(s, x + Inches(0.35), Inches(1.85), col - Inches(0.7), Inches(0.5), title, size=20,
+             bold=True, color=line)
+        bullets(s, x + Inches(0.35), Inches(2.5), col - Inches(0.7), Inches(4.1), items, size=14, gap=0.08)
+    notes(s, """
+Presenter: Jordan (assumptions, data) + Loc (constraints).
+Constraints on the right are the ones the six verification checks enforce; the demo shows them.
+""")
+
+    sec[0] = "Architecture"
     # 3. Architecture
     s = new()
-    header(s, "Architecture", "One entry point, one router, specialised handlers, two databases, and a trace of every step.")
+    header(s, "System Architecture", "One entry point, one router, specialised handlers, two databases, and a trace of every step.")
     bx = lambda col: MARGIN + Inches(col)
     label_box(s, bx(0), Inches(2.0), Inches(2.2), Inches(0.8), "Student", "signed in (given)")
     label_box(s, bx(3.0), Inches(2.0), Inches(3.2), Inches(0.8), "Streamlit UI", "app.py, ui/  ·  Talha",
@@ -300,8 +367,8 @@ Every step writes a trace record, which is how we produce the execution log.
 
     # 4. Components: function + I/O
     s = new()
-    header(s, "Components: what each one does, its input and output")
-    table(s, MARGIN, Inches(1.65), W - 2 * MARGIN, [
+    header(s, "System Components and Relationships", "What each component does, with its input and output.")
+    table(s, MARGIN, Inches(1.95), W - 2 * MARGIN, [
         ["Component", "Function", "Input", "Output"],
         ["UI (Streamlit)", "Screens, dialogs, chat; calls the backend via ui/services.py", "Clicks, typed questions", "Rendered answers, plans, checks"],
         ["Orchestrator", "Keeps the conversation, routes each turn", "student_id, message, history", "Reply text"],
@@ -312,37 +379,31 @@ Every step writes a trace record, which is how we produce the execution log.
         ["Verification engine", "Six checks (a)–(f) before recommending", "Course, term, plan", "Pass / fail + reason ×6"],
         ["Plan compare", "Diffs two plans after a change or switch", "Old plan, new plan", "Added, removed, moved"],
         ["Trace logger", "Appends one JSON line per step", "Event + fields", "logs/traces.jsonl"],
-    ], [2.4, 4.5, 2.6, 2.43], size=13, row_h=0.5)
+    ], [2.4, 4.5, 2.6, 2.43], size=13, row_h=0.47)
     notes(s, """
 Presenter: Talha. The spec asks for "functions of each component and input/output" on the slides;
 this is that slide. Don't read it; point at two rows and move on.
 """)
 
-    # 5. One chat turn, step by step
+    # System Components and Relationships (continued): how they connect
     s = new()
-    header(s, "One question, step by step",
-           "“Which courses cover machine learning or AI topics?”, as recorded in the trace log.")
-    steps = [("1", "user_msg", "The question arrives with the student id and session"),
-             ("2", "router_keyword", "A keyword rule matches “courses … cover” → semantic_query (no LLM call)"),
-             ("3", "retrieval", "Chroma returns the 5 closest passages: CSE 4309, CSE 4308, CSE 4311 …"),
-             ("4", "llm_response", "qwen3:4b answers using only those passages"),
-             ("5", "assistant_msg", "Reply shown in the chat and stored in history for follow-ups")]
-    y = Inches(2.1)
-    for num, ev, desc in steps:
-        rect(s, MARGIN, y, Inches(0.55), Inches(0.55), fill=BLUE, shape=MSO_SHAPE.OVAL)
-        text(s, MARGIN, y, Inches(0.55), Inches(0.55), num, size=16, bold=True, color=WHITE,
-             align=PP_ALIGN.CENTER, anchor=MSO_ANCHOR.MIDDLE)
-        text(s, MARGIN + Inches(0.85), y, Inches(2.6), Inches(0.55), ev, size=15, font=MONO,
-             anchor=MSO_ANCHOR.MIDDLE)
-        text(s, MARGIN + Inches(3.5), y, Inches(8.4), Inches(0.55), desc, size=16, anchor=MSO_ANCHOR.MIDDLE)
-        y += Inches(0.78)
-    text(s, MARGIN, Inches(6.15), W - 2 * MARGIN, Inches(0.5),
-         "Exact questions take the same path but step 3 is a SQL query and there is no LLM call: they answer in milliseconds.",
-         size=14, color=MUTED)
+    header(s, "System Components and Relationships",
+           "How the components connect: each one is an agreed interface, frozen early so five people could build in parallel.")
+    table(s, MARGIN, Inches(1.95), W - 2 * MARGIN, [
+        ["From \u2192 To", "Interface", "What passes between them"],
+        ["UI \u2192 backend", "ui/services.py (the UI\u2019s only door)", "Clicks and questions in; (result, live / preview) out"],
+        ["UI \u2192 Orchestrator", "handle_message(student_id, message, history)", "One chat turn; history makes follow-ups work"],
+        ["Orchestrator \u2192 Router", "route(message, history) \u2192 Intent", "Which handler should answer"],
+        ["Orchestrator \u2192 Planner", "LangChain tools: tools.*.invoke(...)", "Plan, add / drop, eligibility, switch major"],
+        ["Planner \u2192 UI / Compare", "DegreePlan.to_dict() JSON", "Semesters, courses, credits, warnings"],
+        ["Chains, Planner \u2192 SQLite", "schema.sql tables", "Courses, prerequisites, sections, records, slots"],
+        ["RAG chain \u2192 Chroma", "search_documents(query, k)", "Top-k passages with source and score"],
+        ["Every component \u2192 Log", "trace(event, **fields)", "One JSON line per step in logs/traces.jsonl"],
+    ], [3.0, 4.6, 4.33], size=13, row_h=0.5)
     notes(s, """
-Presenter: Kyle (router) + Miguel (retrieval).
-This is a real turn from our trace log (screenshot later). Emphasise that routing is cheap:
-keyword rules catch most phrasing so the LLM is only used where it adds value.
+Presenter: Kyle (the orchestrator is wired to everyone's interfaces).
+These contracts were agreed on day one (README "Integration contracts"), which is why the
+pieces merged with few conflicts.
 """)
 
     # 6. Data
@@ -366,10 +427,10 @@ keyword rules catch most phrasing so the LLM is only used where it adds value.
             ("Used by", " the RAG chain for open-ended questions")]),
     ]):
         x = MARGIN + i * (col + Inches(0.5))
-        rect(s, x, Inches(2.0), col, Inches(4.5), fill=fill, radius=0.05)
-        text(s, x + Inches(0.35), Inches(2.25), col - Inches(0.7), Inches(0.5), title, size=20,
+        rect(s, x, Inches(1.9), col, Inches(4.85), fill=fill, radius=0.05)
+        text(s, x + Inches(0.35), Inches(2.1), col - Inches(0.7), Inches(0.5), title, size=20,
              bold=True, color=line)
-        bullets(s, x + Inches(0.35), Inches(2.95), col - Inches(0.7), Inches(3.4), items, size=15)
+        bullets(s, x + Inches(0.35), Inches(2.75), col - Inches(0.7), Inches(3.9), items, size=15)
     notes(s, """
 Presenter: Jordan.
 Data comes from the real UTA 2026-27 catalog (degree plans parsed from it); class sections and
@@ -397,6 +458,61 @@ Strongest point: plans and the six checks are deterministic code, so the LLM can
 prerequisite or a section that doesn't exist.
 """)
 
+    sec[0] = "Implementation"
+    # 5. One chat turn, step by step
+    s = new()
+    header(s, "One question, step by step",
+           "“Which courses cover machine learning or AI topics?”, as recorded in the trace log.")
+    steps = [("1", "user_msg", "The question arrives with the student id and session"),
+             ("2", "router_keyword", "A keyword rule matches “courses … cover” → semantic_query (no LLM call)"),
+             ("3", "retrieval", "Chroma returns the 5 closest passages: CSE 4309, CSE 4308, CSE 4311 …"),
+             ("4", "llm_response", "qwen3:4b answers using only those passages"),
+             ("5", "assistant_msg", "Reply shown in the chat and stored in history for follow-ups")]
+    y = Inches(2.1)
+    for num, ev, desc in steps:
+        rect(s, MARGIN, y, Inches(0.55), Inches(0.55), fill=BLUE, shape=MSO_SHAPE.OVAL)
+        text(s, MARGIN, y, Inches(0.55), Inches(0.55), num, size=16, bold=True, color=WHITE,
+             align=PP_ALIGN.CENTER, anchor=MSO_ANCHOR.MIDDLE)
+        text(s, MARGIN + Inches(0.85), y, Inches(2.6), Inches(0.55), ev, size=15, font=MONO,
+             anchor=MSO_ANCHOR.MIDDLE)
+        text(s, MARGIN + Inches(3.5), y, Inches(8.4), Inches(0.55), desc, size=16, anchor=MSO_ANCHOR.MIDDLE)
+        y += Inches(0.78)
+    text(s, MARGIN, Inches(6.15), W - 2 * MARGIN, Inches(0.5),
+         "Exact questions take the same path but step 3 is a SQL query and there is no LLM call: they answer in milliseconds.",
+         size=14, color=MUTED)
+    notes(s, """
+Presenter: Kyle (router) + Miguel (retrieval).
+This is a real turn from our trace log (screenshot later). Emphasise that routing is cheap:
+keyword rules catch most phrasing so the LLM is only used where it adds value.
+""")
+
+    # Implementation: how the relationships are implemented in code
+    s = new()
+    header(s, "Code: how the components are connected (Kyle)")
+    text(s, MARGIN, Inches(1.25), Inches(8), Inches(0.4), "advisor/orchestrator.py", size=13, font=MONO, color=MUTED)
+    code(s, MARGIN, Inches(1.8), Inches(7.6), Inches(5.0), """
+def handle_message(student_id, message, history=None) -> str:
+    # The single UI <-> backend contract: one call per chat turn
+    tracing.trace("user_msg", student_id=student_id, message=message)
+    memory.add_message(student_id, "user", message)   # chat history (SQLite)
+
+    intent = router.route(message, history)            # router
+    tracing.trace("intent", student_id=student_id, intent=intent.value)
+
+    try:
+        reply = _dispatch(student_id, message, intent, history)  # one handler
+    except NotImplementedError as e:                   # module not merged yet
+        reply = (f"That request routes to **{intent.value}**, which isn't "
+                 f"implemented yet.  `{e}`")
+    return _finish(student_id, reply, intent.value)    # trace + save reply""", size=11)
+    text(s, MARGIN + Inches(7.95), Inches(1.85), Inches(4.0), Inches(0.4), "What it does and why", size=16, bold=True)
+    bullets(s, MARGIN + Inches(7.95), Inches(2.4), Inches(4.0), Inches(4.4), [
+        "The UI calls only this function, through ui/services.py",
+        "It ties memory, router, handlers and the trace log together in one place",
+        "Every step is traced, which is what the execution log is made of",
+        "Unfinished modules degrade to a message instead of crashing, so we could integrate early"], size=15)
+    notes(s, "Presenter: Kyle. This is the template's 'how the relationships are implemented in code'.")
+
     # 8-13. Code segments
     code_slides = [
         ("Code: requirement data (Jordan)", "advisor/seed/schema.sql", """
@@ -423,11 +539,11 @@ CREATE TABLE prereq_concurrent (
          "decide whether a course “counts” (check c) or what's left to graduate."),
         ("Code: intent router (Kyle)", "advisor/router.py", """
 def route(message, history=None) -> Intent:
-    # 1. Deterministic keyword pass: zero latency, predictable
+    # Stage 1: deterministic keyword pass: zero latency, predictable
     if (kw := _keyword_route(message)) is not None:
         trace("router_keyword", intent=kw.value)
         return kw
-    # 2. Ambiguous phrasing: ask a small, fast LLM
+    # Stage 2: ambiguous phrasing: ask a small, fast LLM
     recent = "\\n".join(f"{m['role']}: {m['content'][:200]}"
                        for m in (history or [])[-4:])
     try:
@@ -546,38 +662,44 @@ def trace(event: str, **fields) -> None:   # one JSON line per step
         bullets(s, MARGIN + Inches(7.95), Inches(2.4), Inches(4.0), Inches(4.4), why, size=15)
         notes(s, who + "\nExplain what the segment does (left) and why the system needs it (right).")
 
+    sec[0] = "Demo screenshots"
     # 14-20. Demo screenshots
     demo = [
-        ("01_overview_rings.png", "Demo: Sam’s progress at a glance",
+        ("01_overview_rings.png", "Demo · Req 1, 7: the student’s record at a glance",
          "Pick a student", "Credits done, in progress, and per-area requirement rings from SQLite",
          "Sam has 32 of 123 credits; blue is this fall’s 4 classes. The certificate ring is empty: still to plan."),
-        ("03_plan_years.png", "Demo: a multi-year degree plan",
+        ("03_plan_years.png", "Demo · Req 2: a degree plan",
          "Plan → Build plan (auto load, no summer) → Years",
          "Completed terms (green), then planned semesters (blue), year by year",
          "The planner fills semesters in prerequisite order within the 15-credit cap; the rings show what each area still needs."),
-        ("05_six_checks.png", "Demo: six checks before recommending",
+        ("05_six_checks.png", "Demo · Req 4: six checks before recommending",
          "Check a course: CSE 4344, Spring 2027", "Checks (a)–(f), each with pass/fail and the reason",
          "A course is only recommended if all six pass; the reasons tell the student exactly what to fix."),
-        ("07_ask_semantic_rag.png", "Demo: exact vs. semantic questions",
+        ("04_add_dialog_checks.png", "Demo \u00b7 Constraints: a course the system refuses",
+         "Plan \u2192 Add a course: BIOL 1441, Fall 2026",
+         "Five checks pass; (e) fails at 17 of 15 semester credits, so Add stays disabled",
+         "Constraints are enforced, not just reported: the advisor won\u2019t add a course that breaks one."),
+        ("07_ask_semantic_rag.png", "Demo · Req 3: exact vs. semantic questions",
          "“Prerequisites for CSE 3310?” then “Which courses cover machine learning?”",
          "SQL answer in milliseconds; RAG answer grounded in the catalog",
          "Same chat, two paths: the router sent the first to SQL and the second to Chroma + the LLM."),
-        ("08_ask_followup_memory.png", "Demo: the conversation remembers",
+        ("08_ask_followup_memory.png", "Demo · Req 6: the conversation remembers",
          "“Generate my degree plan”, then “What about only 3 classes next semester?”",
          "A new plan with 3 classes in Spring 2027",
          "The follow-up has no subject of its own; the history passed into the turn makes it resolvable."),
-        ("09_switch_major_compare.png", "Demo: switching major, compared",
+        ("09_switch_major_compare.png", "Demo · Req 5: switching major, compared",
          "Switch major → Software Engineering + AI → Compare plans",
          "Current plan and the new one side by side, plus what changes",
          "Lets a student see the cost of switching before committing to it."),
-        ("10_execution_traces.png", "Demo: the execution trace",
+        ("10_execution_traces.png", "Demo · Deliverable: the execution trace",
          "More → Show execution traces → Traces", "Every turn and action, step by step, with timings",
          "This is the required log of execution traces; the zip has the same data as JSONL and as a readable report."),
     ]
     crops = {"01_overview_rings.png": (0.13, 0.2, 0.13), "03_plan_years.png": (0.13, 0.47, 0.13),
              "05_six_checks.png": (0.13, 0.12, 0.13), "07_ask_semantic_rag.png": (0.13, 0.03, 0.13),
              "08_ask_followup_memory.png": (0.13, 0.0, 0.13), "09_switch_major_compare.png": (0.13, 0.17, 0.13),
-             "10_execution_traces.png": (0.13, 0.12, 0.13)}
+             "10_execution_traces.png": (0.13, 0.12, 0.13),
+             "04_add_dialog_checks.png": (0.04, 0.0, 0.04)}
     for img, title, inp, outp, meaning in demo:
         s = new()
         header(s, title)
@@ -590,6 +712,51 @@ def trace(event: str, **fields) -> None:   # one JSON line per step
             y += Inches(1.75)
         notes(s, f"Input: {inp}\nOutput: {outp}\nWhat it means: {meaning}")
 
+    # Live Demo (optional)
+    sec[0] = "Live demo"
+    s = new()
+    header(s, "Live Demo", "The same walk-through in the running app, if time allows.")
+    bullets(s, MARGIN, Inches(1.9), Inches(6.2), Inches(4.8), [
+        ("1  ", "Pick Sam Martinez; show progress and requirement rings"),
+        ("2  ", "Plan \u2192 Build plan; open Add a course to show the checks"),
+        ("3  ", "Check a course: CSE 4344, Spring 2027"),
+        ("4  ", "Ask: prerequisites for CSE 3310, then machine learning courses"),
+        ("5  ", "Switch major \u2192 Compare plans"),
+        ("6  ", "Traces: the turns just asked, step by step")], size=17)
+    rect(s, MARGIN + Inches(6.7), Inches(1.9), Inches(5.2), Inches(3.2), fill=AMBER_TINT, radius=0.05)
+    text(s, MARGIN + Inches(7.0), Inches(2.1), Inches(4.6), Inches(0.4), "Good to know", size=16, bold=True, color=AMBER)
+    bullets(s, MARGIN + Inches(7.0), Inches(2.6), Inches(4.6), Inches(2.4), [
+        "The local model answers open questions in 20\u201370 s; exact questions and plans are instant",
+        "If time is short, the screenshots on the previous slides cover every step"], size=14)
+    notes(s, "Presenter: Talha. Warm the model 10 minutes before (see deliverables/DEMO_GUIDE.md).")
+
+    # Lessons Learned
+    sec[0] = "Lessons learned"
+    s = new()
+    header(s, "Lessons Learned", "Working with LangChain, a local LLM, and two databases.")
+    col = (W - 2 * MARGIN - Inches(0.5)) / 2
+    for i, (title, fill, line, items) in enumerate([
+        ("What worked", GREEN_TINT, GREEN, [
+            ("Freeze interfaces first:", " schema, plan JSON, handle_message and the trace format let five people build in parallel"),
+            ("LLM only where it helps:", " keyword routing and a deterministic planner are instant and always correct"),
+            ("Local stack:", " Ollama + Chroma + SQLite meant no accounts, no cost, and an offline demo"),
+            ("Trace from day one:", " the log made debugging fast and is itself a deliverable"),
+            ("LangChain tools:", " wrapping planner functions as tools keeps them ready for an agent")]),
+        ("What to avoid", AMBER_TINT, AMBER, [
+            ("Changing shared contracts late:", " a mid-project schema rewrite had to be reverted"),
+            ("Trusting \u201cno reasoning\u201d flags:", " qwen3 still emitted its reasoning; strip it at the boundary"),
+            ("Side effects in exploratory tools:", " \u201cthinking about switching\u201d must not change the record"),
+            ("Reformatting shared files:", " line-ending changes caused merge conflicts"),
+            ("Unpinned environments:", " a new Python version broke an install; pin it")]),
+    ]):
+        x = MARGIN + i * (col + Inches(0.5))
+        rect(s, x, Inches(1.95), col, Inches(4.85), fill=fill, radius=0.05)
+        text(s, x + Inches(0.35), Inches(2.15), col - Inches(0.7), Inches(0.5), title, size=20,
+             bold=True, color=line)
+        bullets(s, x + Inches(0.35), Inches(2.8), col - Inches(0.7), Inches(3.9), items, size=14, gap=0.08)
+    notes(s, "Presenter: everyone can add one line from their own workstream. Keep it to 2 minutes.")
+
+    sec[0] = "Conclusions and future work"
     # 21. Testing
     s = new()
     header(s, "How we know it works")
@@ -597,7 +764,7 @@ def trace(event: str, **fields) -> None:   # one JSON line per step
         ("89 automated tests", " across planner, router, RAG retrieval, data schema, UI services, and tracing"),
         ("Scripted demo", " (scripts/run_demo.py) replays the 7 demo questions end to end and renders the trace log"),
         ("Scripted screenshots", " (scripts/take_screenshots.py) drive the real app in a browser"),
-        ("Every branch merged and tested together", " before merging into main"),
+        ("All five branches tested together", " in one combined copy, plus a fresh-unzip install test"),
     ], size=17)
     rect(s, MARGIN + Inches(6.6), Inches(1.8), Inches(5.3), Inches(4.3), fill=SURFACE, radius=0.05)
     text(s, MARGIN + Inches(6.95), Inches(2.05), Inches(4.6), Inches(0.4), "Response time on a laptop (M5, 16 GB)",
@@ -606,23 +773,37 @@ def trace(event: str, **fields) -> None:   # one JSON line per step
         ["Question type", "Time"],
         ["Exact (SQL)", "< 0.1 s"],
         ["Plan / checks / modify", "< 0.1 s"],
-        ["Semantic (RAG + qwen3:4b)", "20–50 s"],
+        ["Semantic (RAG + qwen3:4b)", "20–70 s"],
         ["General chat (qwen3:4b)", "≈ 20 s"],
     ], [3.1, 1.5], size=14, row_h=0.55, head_fill=WHITE)
     notes(s, "Presenter: Talha. Mention that slow answers are local-model speed; OpenAI is a one-line switch.")
 
-    # 22. Limitations
+    # Conclusions and Future Work
     s = new()
-    header(s, "Limitations and next steps")
-    bullets(s, MARGIN, Inches(1.8), W - 2 * MARGIN, Inches(4.8), [
-        ("Schedule horizon:", " sections exist for three terms only; plans beyond them assume courses repeat"),
-        ("Local model speed:", " 20–50 s per LLM answer on a laptop; a GPU or the OpenAI switch fixes it"),
-        ("Prompts in code:", " move them to template files (Jinja) so they can be tuned without code changes"),
-        ("Layer folders:", " split database, backend, and AI logic into separate packages"),
-        ("Real data:", " student records are fabricated personas; a real deployment would read the registrar"),
-    ], size=18)
-    notes(s, "Update this slide after the final run: drop anything the team fixed before the deadline.")
+    header(s, "Conclusions and Future Work")
+    cols = [("Teamwork", BLUE_TINT, BLUE, [
+                "Five workstreams on five branches, joined through agreed interfaces",
+                "Every branch tested together before the final merge",
+                "Work merged into main through pull requests"]),
+            ("Achievements", GREEN_TINT, GREEN, [
+                "All eight functional requirements implemented",
+                "Six checks before any recommendation",
+                "Exact and semantic answers over two databases",
+                "A full execution trace for every turn"]),
+            ("If the project continues", AMBER_TINT, AMBER, [
+                "Plan past the published schedule using each course\u2019s usual terms",
+                "Prompts in template files (Jinja); split the code into layer folders",
+                "Faster answers: a GPU or the OpenAI switch",
+                "Real records from the registrar instead of personas"])]
+    cw = (W - 2 * MARGIN - Inches(0.6)) / 3
+    for i, (title, fill, line, items) in enumerate(cols):
+        x = MARGIN + i * (cw + Inches(0.3))
+        rect(s, x, Inches(1.65), cw, Inches(5.1), fill=fill, radius=0.05)
+        text(s, x + Inches(0.3), Inches(1.85), cw - Inches(0.6), Inches(0.5), title, size=20, bold=True, color=line)
+        bullets(s, x + Inches(0.3), Inches(2.5), cw - Inches(0.6), Inches(4.1), items, size=15, gap=0.1)
+    notes(s, "Presenter: Talha. Update after the final run: drop anything the team fixed before the deadline.")
 
+    sec[0] = ""
     # 23. Questions
     s = new()
     rect(s, 0, 0, W, H, fill=SURFACE, shape=MSO_SHAPE.RECTANGLE)
