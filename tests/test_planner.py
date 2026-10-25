@@ -301,3 +301,58 @@ def test_upper_level_courses_are_not_assumed_in_summer(catalog):
     catalog.execute("DELETE FROM sections WHERE term != 'F2026'")
     assert not checks("CSE 4000", "SU2027")["no_schedule_conflict"].passed
     assert checks("CSE 2000", "SU2027")["no_schedule_conflict"].passed
+
+
+def test_open_elective_uses_unallocated_courses_without_double_counting(catalog):
+    catalog.execute("INSERT INTO requirement_slots (program_id, category, credits)"
+                    " VALUES ('cs', 'elective', 3)")
+    p = planner.generate_plan("s1")
+    assert p.to_dict()["total_credits_planned"] == 18
+    assert not p.warnings
+    assert len({c["course_id"] for s in p.semesters for c in s.courses}) == 6
+
+
+def test_open_elective_requires_its_full_credit_hours(catalog):
+    catalog.execute("DELETE FROM requirement_slots WHERE program_id='cs'")
+    catalog.execute("INSERT INTO requirement_slots (program_id, category, credits)"
+                    " VALUES ('cs', 'elective', 3)")
+    catalog.execute("UPDATE courses SET credits=1 WHERE course_id='CSE 1000'")
+    catalog.execute("INSERT INTO completed_courses VALUES ('s1', 'CSE 1000', 'S2026', 'A')")
+    p = planner.generate_plan("s1")
+    assert p.to_dict()["total_credits_planned"] >= 2
+    assert not p.warnings
+
+
+def test_open_elective_additions_preserve_partial_credit_and_do_not_overfill(catalog):
+    catalog.execute("DELETE FROM requirement_slots WHERE program_id='cs'")
+    catalog.execute("INSERT INTO requirement_slots (program_id, category, credits)"
+                    " VALUES ('cs', 'elective', 3)")
+    catalog.execute("UPDATE courses SET credits=2 WHERE course_id='CSE 1000'")
+    catalog.execute("UPDATE courses SET credits=1 WHERE course_id='CSE 4100'")
+    p = plan_with(("F2026", ["CSE 1000"]))
+    assert not checks("CSE 4000", "S2027", p)["fulfills_degree_requirement"].passed
+    assert checks("CSE 4100", "S2027", p)["fulfills_degree_requirement"].passed
+    catalog.execute("UPDATE courses SET credits=4 WHERE course_id='CSE 4000'")
+    assert not checks("CSE 4000")["fulfills_degree_requirement"].passed
+
+
+def test_completed_elective_replaced_in_allocation_does_not_consume_degree_cap(catalog):
+    catalog.execute("DELETE FROM requirement_slots WHERE program_id='cs'")
+    catalog.execute("INSERT INTO requirement_slots (program_id, category, credits)"
+                    " VALUES ('cs', 'elective', 3)")
+    catalog.execute("UPDATE degree_programs SET total_credits=3 WHERE program_id='cs'")
+    catalog.execute("UPDATE courses SET credits=1 WHERE course_id='CSE 1000'")
+    catalog.execute("INSERT INTO completed_courses VALUES ('s1', 'CSE 1000', 'S2026', 'A')")
+    p = planner.add_course(plan_with(), "CSE 4000", "F2026")
+    assert p.to_dict()["total_credits_planned"] == 3
+    assert not p.warnings
+
+
+@pytest.mark.parametrize("category, options", [("core", "[]"), ("elective", '"technical"')])
+def test_unresolved_restricted_slot_does_not_become_an_open_elective(catalog, category, options):
+    catalog.execute("DELETE FROM requirement_slots WHERE program_id='cs'")
+    catalog.execute("INSERT INTO requirement_slots (program_id, category, options, credits)"
+                    " VALUES ('cs', :category, :options, 3)", {"category": category, "options": options})
+    p = planner.generate_plan("s1")
+    assert not p.semesters
+    assert any("no approved courses loaded" in w for w in p.warnings)

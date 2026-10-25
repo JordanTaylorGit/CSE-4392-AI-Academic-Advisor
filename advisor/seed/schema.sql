@@ -46,6 +46,8 @@ CREATE TABLE IF NOT EXISTS degree_programs (
 -- Requirement slots: a program is a set of slots. For fixed slots course_id
 -- names the exact course; for elective slots course_id IS NULL and `options`
 -- lists allowed course_ids (JSON array) or a category tag.
+-- An elective-category slot with NULL course_id and [] options is an open
+-- elective credit-hour bucket; any otherwise-unused catalog course can fill it.
 CREATE TABLE IF NOT EXISTS requirement_slots (
     slot_id    INTEGER PRIMARY KEY AUTOINCREMENT,
     program_id TEXT NOT NULL REFERENCES degree_programs(program_id),

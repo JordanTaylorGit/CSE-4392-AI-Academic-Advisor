@@ -106,10 +106,10 @@ def generate_plan(
 ) -> DegreePlan:
     """Pack a prerequisite-ready frontier into the available schedule horizon.
 
-    A course becomes ready only after its prerequisites occur in earlier terms.
-    Alternative prerequisites/sections are considered without inventing future
-    offerings. Incomplete data or an infeasible graph returns a partial plan
-    with explicit warnings, never an unverified recommendation.
+    Prerequisites must occur earlier unless explicitly allowed concurrently.
+    Terms beyond the published schedule use marked catalog projections.
+    Incomplete requirements or an infeasible graph return a partial plan with
+    explicit warnings.
     """
     if courses_per_semester is not None and (isinstance(courses_per_semester, bool)
                                             or not isinstance(courses_per_semester, int)
@@ -310,6 +310,7 @@ class _Slot:
     options: set[str]
     hours: int
     count: int = 1  # zero means a credit-hour bucket
+    category: str = ""
 
 
 @dataclass
@@ -368,10 +369,15 @@ def _load_context(student_id: str, program_id: str | None = None) -> _Context:
     rows = db.query("SELECT * FROM requirement_slots WHERE program_id=:pid ORDER BY slot_id", {"pid": pid})
     for row in rows:
         options = [row["course_id"]] if row["course_id"] else json.loads(row["options"])
-        # A category tag is not an explicit list of approved courses.
-        if not isinstance(options, list):
+        # build_seed_data.expand_slots encodes an open elective as NULL + [].
+        # Other empty categories and unresolved category tags stay unfilled.
+        is_open = row["category"] == "elective" and not row["course_id"] and options == []
+        if is_open:
+            options = [cid for cid, course in courses.items() if course["credits"] > 0]
+        elif not isinstance(options, list):
             options = []
-        slots.append(_Slot(f"slot {row['slot_id']}", set(options), row["credits"]))
+        slots.append(_Slot(f"slot {row['slot_id']}", set(options), row["credits"],
+                           count=0 if is_open else 1, category=row["category"]))
     sections = db.query("SELECT * FROM sections ORDER BY section_id")
     last_real_term = max((s["term"] for s in sections), key=term_key, default=None)
     if last_real_term is not None:
@@ -478,6 +484,27 @@ def _allocation(context: _Context, course_ids: set[str]) -> list[set[str]]:
         result[i] = sums[min(enough) if enough else max(sums)]
         used.update(result[i])
     return result
+
+
+def requirement_progress(student_id: str, program_id: str, plan: DegreePlan | None = None) -> list[dict]:
+    """Report category credits using the same allocation as plan verification.
+
+    Passing records count as completed; plan courses and current enrollments
+    count as planned. Each course contributes to at most one requirement.
+    """
+    context = _load_context(student_id, program_id)
+    done = _passed(context)
+    planned = (_plan_ids(plan) if plan else set()) | {r["course_id"] for r in context.enrollments}
+    allocation = _allocation(context, done | planned)
+    out: dict[str, dict] = {}
+    for slot, taken in zip(context.slots, allocation, strict=True):
+        row = out.setdefault(slot.category, {"category": slot.category, "required": 0,
+                                            "completed": 0, "planned": 0})
+        completed = min(slot.hours, _credits(context, taken & done))
+        row["required"] += slot.hours
+        row["completed"] += completed
+        row["planned"] += min(slot.hours - completed, _credits(context, taken - done))
+    return list(out.values())
 
 
 def _coverage(context: _Context, allocation: list[set[str]]) -> int:
@@ -602,12 +629,19 @@ def _verify(context: _Context, cid: str, term: str, plan: DegreePlan) -> list[Ch
     existing = (planned | passed | enrolled) - {cid}
     before = _allocation(context, existing)
     after = _allocation(context, existing | {cid})
-    fulfills = _coverage(context, after) > _coverage(context, before)
+    # An added elective must not strand an already-counted plan course or
+    # overfill its hour bucket and spend credits needed by the rest of the degree.
+    allocated_before = set().union(*before)
+    allocated_after = set().union(*after)
+    preserves_plan = ((planned | enrolled) & allocated_before) <= allocated_after
+    overfills = any(not slot.count and cid in taken and _credits(context, taken) > slot.hours
+                    for slot, taken in zip(context.slots, after, strict=True))
+    fulfills = _coverage(context, after) > _coverage(context, before) and preserves_plan and not overfills
     prereqs = _prerequisite_failures(context, cid, term, plan)
     semester_ids = _plan_ids(plan, term) | {s["course_id"] for s in context.enrollments if s["term"] == term} | {cid}
     semester_credits = _credits(context, semester_ids)
     # Completed courses outside the target program do not consume its credit budget.
-    applied_completed = set().union(*_allocation(context, passed)) if context.slots else set()
+    applied_completed = allocated_after & passed
     degree_credits = _credits(context, applied_completed | planned | enrolled | {cid})
     semester_cap = context.student["max_credits_per_semester"]
     degree_cap = context.program["total_credits"]
