@@ -18,7 +18,7 @@ from pptx.dml.color import RGBColor
 from pptx.enum.shapes import MSO_CONNECTOR, MSO_SHAPE
 from pptx.enum.text import MSO_ANCHOR, PP_ALIGN
 from pptx.oxml.ns import qn
-from pptx.util import Emu, Inches, Pt
+from pptx.util import Inches, Pt
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
 
@@ -323,7 +323,8 @@ Constraints on the right are the ones the six verification checks enforce; the d
     # 3. Architecture
     s = new()
     header(s, "System Architecture", "One entry point, one router, specialised handlers, two databases, and a trace of every step.")
-    bx = lambda col: MARGIN + Inches(col)
+    def bx(col):
+        return MARGIN + Inches(col)
     label_box(s, bx(0), Inches(2.0), Inches(2.2), Inches(0.8), "Student", "signed in (given)")
     label_box(s, bx(3.0), Inches(2.0), Inches(3.2), Inches(0.8), "Streamlit UI", "app.py, ui/  ·  Talha",
               fill=BLUE_TINT, line=BLUE)
@@ -708,7 +709,7 @@ def trace(event: str, **fields) -> None:   # one JSON line per step
         y = Inches(1.55)
         for head, body in (("Input", inp), ("Output", outp), ("What it means", meaning)):
             text(s, tx, y, Inches(3.3), Inches(0.35), head, size=13, bold=True, color=BLUE)
-            box = text(s, tx, y + Inches(0.38), Inches(3.3), Inches(1.4), body, size=15)
+            text(s, tx, y + Inches(0.38), Inches(3.3), Inches(1.4), body, size=15)
             y += Inches(1.75)
         notes(s, f"Input: {inp}\nOutput: {outp}\nWhat it means: {meaning}")
 

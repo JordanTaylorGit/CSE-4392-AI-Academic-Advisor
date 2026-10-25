@@ -23,11 +23,11 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
-from advisor import tracing  # noqa: E402
-from advisor.paths import REPO_ROOT, TRACE_LOG  # noqa: E402
-from ui import services as svc  # noqa: E402
+import render_traces
 
-import render_traces  # noqa: E402  (same folder)
+from advisor import tracing
+from advisor.paths import REPO_ROOT, TRACE_LOG
+from ui import services as svc
 
 # PLAN.md §9, one prompt per spec requirement it demonstrates.
 STEPS = [
