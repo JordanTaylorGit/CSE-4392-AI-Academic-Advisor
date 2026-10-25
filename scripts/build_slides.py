@@ -2,10 +2,11 @@
 
     uv run --with python-pptx python scripts/build_slides.py
     uv run --with python-pptx python scripts/build_slides.py --shots /path/to/screenshots
+    uv run --with python-pptx python scripts/build_slides.py --notes   # include speaker notes
 
 Writes deliverables/AI_Advisor_Presentation.pptx: architecture, components and
 their inputs/outputs, design decisions, code segments, and the demo screenshots
-from scripts/take_screenshots.py, with speaker notes on every slide. Re-run it
+from scripts/take_screenshots.py, with speaker notes on every slide when --notes is passed. Re-run it
 after taking the final screenshots; edit the text in SLIDES-building code below
 or in PowerPoint afterwards. python-pptx is not a project dependency.
 """
@@ -124,8 +125,12 @@ def footer(slide, n, section=""):
          f"Academic AI Advisor  ·  {label}", size=10, color=MUTED, align=PP_ALIGN.RIGHT)
 
 
+INCLUDE_NOTES = False  # speaker notes stay in this script; --notes writes them into the deck
+
+
 def notes(slide, body):
-    slide.notes_slide.notes_text_frame.text = body.strip()
+    if INCLUDE_NOTES:
+        slide.notes_slide.notes_text_frame.text = body.strip()
 
 
 def table(slide, x, y, w, rows, col_w, size=13, row_h=0.42, head_fill=SURFACE):
@@ -823,7 +828,10 @@ def main(argv=None) -> int:
     ap = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     ap.add_argument("--shots", type=Path, default=REPO_ROOT / "deliverables" / "screenshots")
     ap.add_argument("--out", type=Path, default=REPO_ROOT / "deliverables" / "AI_Advisor_Presentation.pptx")
+    ap.add_argument("--notes", action="store_true", help="include the speaker notes (left out by default)")
     args = ap.parse_args(argv)
+    global INCLUDE_NOTES
+    INCLUDE_NOTES = args.notes
     build(args.shots, args.out)
     return 0
 
