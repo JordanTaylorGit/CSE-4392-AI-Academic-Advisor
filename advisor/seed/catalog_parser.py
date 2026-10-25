@@ -16,9 +16,10 @@ per-plan branches); they are hand-written in OVERRIDES and flagged in `notes`.
 from __future__ import annotations
 
 import re
+
 from pypdf import PdfReader
 
-ENTRY_RE = re.compile(r"^CSE (\d{4})\. ", re.M)
+ENTRY_RE = re.compile(r"^CSE (\d{4})\. ", re.MULTILINE)
 CODE_RE = r"[A-Z]{2,5}(?:-[A-Z]{2})? \d{4}"
 TOKEN_RE = re.compile(rf"@G_[A-D]|@CONCPREV|@CONCNEXT|{CODE_RE}|\bor\b|\band\b|[(),]")
 
@@ -57,7 +58,7 @@ ASSUMED_NON_CSE_PREREQS = [
 
 def load_entries(pdf_path) -> dict[str, dict]:
     text = "\n".join(p.extract_text() for p in PdfReader(str(pdf_path)).pages)
-    text = re.sub(r"^\s*\d{1,2}\s*$", "", text, flags=re.M)          # lone page numbers
+    text = re.sub(r"^\s*\d{1,2}\s*$", "", text, flags=re.MULTILINE)          # lone page numbers
     starts = [(m.start(), m.group(1)) for m in ENTRY_RE.finditer(text)]
     out = {}
     for i, (s, num) in enumerate(starts):
@@ -122,7 +123,7 @@ def parse_prereq_text(text: str):
         el2 = [[(c, g, True) for c, g, _ in el] for el in el2]
         return prof, el1 + el2, n1 + n2
     notes = []
-    professional = bool(re.search(r"Professional Program|professional engineering", text, re.I))
+    professional = bool(re.search(r"Professional Program|professional engineering", text, re.IGNORECASE))
     t = re.sub(r"Pre-?requisites?:|Co-?requisites?:", " ", text)
     # admission sentences
     t = re.sub(r"Admitted into an? (?:Engineering|CSE) Professional Program\.?", " ", t)
@@ -134,7 +135,7 @@ def parse_prereq_text(text: str):
         notes.append("Consent of instructor/advisor may be required.")
     if "good standing" in text:
         notes.append("Requires departmental good standing and permission of instructor.")
-    t = re.sub(r"\b(?:Grade )?([A-D]) or better(?: in)?", lambda m: f" @G_{m.group(1)} ", t, flags=re.I)
+    t = re.sub(r"\b(?:Grade )?([A-D]) or better(?: in)?", lambda m: f" @G_{m.group(1)} ", t, flags=re.IGNORECASE)
     return professional, _parse_tokens(_tokenize(t)), notes
 
 

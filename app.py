@@ -93,8 +93,7 @@ with st.container(key="topbar"):
                                   label_visibility="collapsed")
     student = STUDENTS[student_id]
     done = svc.completed_courses(student_id)
-    with c_more:
-        with st.popover("More", help="Transcript and options"):
+    with c_more, st.popover("More", help="Transcript and options"):
             st.markdown(f"**{student['name']}**")
             st.caption(f"{program_name(student['program_id'])} · up to "
                        f"{student['max_credits_per_semester']} credits per semester")

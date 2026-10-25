@@ -7,7 +7,7 @@ from pathlib import Path
 from advisor import tracing
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "scripts"))
-import render_traces  # noqa: E402
+import render_traces
 
 RECORDS = [
     {"ts": "2026-10-21T15:00:00+00:00", "event": "ui_action", "session": "a", "student_id": "s_sophomore",

@@ -22,8 +22,8 @@ from collections import defaultdict
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-import catalog_parser as cp          # noqa: E402
-import degree_source as ds           # noqa: E402
+import catalog_parser as cp
+import degree_source as ds
 
 SEED = Path(__file__).resolve().parent
 CAT_PDF = SEED / "catalog" / "cse_undergrad_courses.pdf"

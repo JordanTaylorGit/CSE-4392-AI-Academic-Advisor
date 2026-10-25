@@ -1055,6 +1055,78 @@
       "min_grade": "C",
       "concurrent_ok": false,
       "source": "assumed"
+    },
+    {
+      "course_id": "PHYS 1443",
+      "group_id": 1,
+      "prereq_id": "MATH 1426",
+      "min_grade": "C",
+      "concurrent_ok": true,
+      "source": "catalog"
+    },
+    {
+      "course_id": "MATH 3330",
+      "group_id": 1,
+      "prereq_id": "MATH 2425",
+      "min_grade": "C",
+      "concurrent_ok": false,
+      "source": "catalog"
+    },
+    {
+      "course_id": "MATH 3313",
+      "group_id": 1,
+      "prereq_id": "MATH 2326",
+      "min_grade": "C",
+      "concurrent_ok": false,
+      "source": "catalog"
+    },
+    {
+      "course_id": "CHEM 1441",
+      "group_id": 1,
+      "prereq_id": "MATH 1426",
+      "min_grade": "C",
+      "concurrent_ok": false,
+      "source": "catalog"
+    },
+    {
+      "course_id": "CHEM 1465",
+      "group_id": 1,
+      "prereq_id": "MATH 1426",
+      "min_grade": "C",
+      "concurrent_ok": true,
+      "source": "catalog"
+    },
+    {
+      "course_id": "CHEM 1465",
+      "group_id": 1,
+      "prereq_id": "MATH 2425",
+      "min_grade": "C",
+      "concurrent_ok": true,
+      "source": "catalog"
+    },
+    {
+      "course_id": "IE 2308",
+      "group_id": 1,
+      "prereq_id": "MATH 1426",
+      "min_grade": "C",
+      "concurrent_ok": true,
+      "source": "catalog"
+    },
+    {
+      "course_id": "IE 3301",
+      "group_id": 1,
+      "prereq_id": "MATH 2425",
+      "min_grade": "C",
+      "concurrent_ok": false,
+      "source": "catalog"
+    },
+    {
+      "course_id": "IE 3315",
+      "group_id": 1,
+      "prereq_id": "MATH 2326",
+      "min_grade": "C",
+      "concurrent_ok": true,
+      "source": "catalog"
     }
   ],
   "professional_courses": [
@@ -1069,6 +1141,7 @@
     "CSE 4316",
     "CSE 4317",
     "CSE 4321",
+    "ENGR 4302",
     "CSE 4322",
     "CSE 4323",
     "CSE 4331",
