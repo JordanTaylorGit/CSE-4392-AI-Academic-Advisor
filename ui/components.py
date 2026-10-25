@@ -2,6 +2,7 @@
 DegreePlan.to_dict(), CheckResult rows, and compare.diff_plans() output.
 Styling lives in ui/theme.py; these functions emit its `adv-*` classes."""
 
+import re
 from html import escape
 
 import streamlit as st
@@ -143,9 +144,31 @@ def route(plan: dict | None, completed: list[dict], animate: bool = False) -> No
         st.html(f'<div class="adv-route{" enter" if animate else ""}">{"".join(parts)}</div>')
 
 
+_WARN_TAG = re.compile(r"^\[\w+\]\s*")
+_UNFILLED = re.compile(r"^Unfilled slot \d+: (.+?)\. Check prerequisites, offerings, and credit caps\.$")
+
+
+def warning_text(w: str) -> str:
+    """The planner's warning in plain words: drop the [tag], name unfilled slots by their courses."""
+    w = _WARN_TAG.sub("", w)
+    m = _UNFILLED.match(w)
+    if not m:
+        return w
+    if m.group(1) == "no approved courses loaded":
+        return "Not scheduled yet: a requirement with no course list in the data."
+    return "Not scheduled yet: " + " or ".join(m.group(1).split(", ")) + "."
+
+
 def plan_warnings(plan: dict) -> None:
-    for w in plan.get("warnings", []):
-        note(escape(w), kind="caution")
+    """One caution note, details on demand, so warnings never bury the plan itself."""
+    items = [warning_text(w) for w in plan.get("warnings", [])]
+    if len(items) == 1:
+        note(escape(items[0]), kind="caution")
+    elif items:
+        note(f"The planner flagged {len(items)} things to look at, mostly requirements it "
+             "couldn't fit into the semesters shown.", kind="caution")
+        with st.expander("Show details"):
+            st.html(f'<p class="adv-muted">{"<br>".join(escape(w) for w in items)}</p>')
 
 
 def transcript(completed: list[dict]) -> None:
@@ -217,11 +240,11 @@ def diff_view(diff: dict) -> None:
 # -------------------------------------------------------- requirement rings
 
 CATEGORY_LABELS = {"core": "University core", "math_science": "Math & science",
-                   "cse_core": "CSE core", "concentration": "Concentration", "elective": "Electives"}
+                   "cse_core": "CSE core", "concentration": "Certificate", "elective": "Electives"}
 
 
 def rings(progress: list[dict]) -> None:
-    """One ring per requirement category: green = completed, blue = planned."""
+    """One ring per requirement category: green = completed, blue = in progress or planned."""
     items = []
     for r in progress:
         req = max(r["required"], 1)
@@ -231,7 +254,7 @@ def rings(progress: list[dict]) -> None:
         pct = round(d + p)
         items.append(
             f'<figure class="adv-ring-item" role="img" aria-label="{label}: {r["completed"]} of '
-            f'{r["required"]} credits completed, {r["planned"]} planned">'
+            f'{r["required"]} credits completed, {r["planned"]} in progress or planned">'
             f'<div class="adv-ring-wrap"><div class="adv-ring" style="--d:{d:.1f};--p:{p:.1f}"></div>'
             f'<span class="adv-ring-pct" aria-hidden="true">{pct}%</span></div>'
             f'<figcaption><b>{label}</b><span>{r["completed"]} done · {r["planned"]} planned '

@@ -99,6 +99,13 @@ with st.container(key="topbar"):
                        f"{student['max_credits_per_semester']} credits per semester")
             st.markdown("**Transcript**")
             ui.transcript(done)
+            st.download_button(
+                "Download transcript (.csv)", width="stretch",
+                data=svc.transcript_csv(student_id),
+                file_name=f"transcript_{student['name'].replace(' ', '_')}.csv",
+                mime="text/csv",
+                on_click=lambda: tracing.trace("ui_action", student_id=student_id,
+                                               action="download_transcript", source="live"))
             if st.button("Clear the conversation", width="stretch"):
                 ss.messages.pop(student_id, None)
                 st.rerun()
@@ -240,7 +247,7 @@ if section == "Plan":
     if plan or done:
         with st.container(key="card_rings"):
             st.markdown("### Degree requirements")
-            st.caption("Green is completed, blue is planned. Each ring is one requirement area "
+            st.caption("Green is completed, blue is in progress or planned. Each ring is one requirement area "
                        "of your degree.")
             try:
                 progress, source = svc.requirement_progress(student_id, shown_program, plan,
@@ -299,8 +306,13 @@ elif section == "Ask":
         messages.append({"role": "user", "content": prompt})
         st.chat_message("user").markdown(prompt)
         with st.chat_message("assistant"):
-            with st.spinner("Thinking…"):
-                reply, source = svc.ask(student_id, prompt, messages, plan, use_preview)
+            try:
+                with st.spinner("Thinking…"):
+                    reply, source = svc.ask(student_id, prompt, messages, plan, use_preview)
+            except svc.NotReady as e:
+                messages.pop()  # let them ask again once the chat backend lands
+                not_ready(e)
+                st.stop()
             st.write_stream(type_out(reply["text"]))
         messages.append({"role": "assistant", "content": reply["text"],
                          "cards": reply["cards"], "source": source})

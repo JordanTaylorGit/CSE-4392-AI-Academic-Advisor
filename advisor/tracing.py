@@ -66,6 +66,8 @@ def group_turns(records: list[dict]) -> list[dict]:
     """Group records into chat turns (a user_msg up to its assistant_msg, per
     student) and standalone UI actions, oldest first.
 
+    Records without a student_id join the open turn, if any.
+
     Turn:   {"kind": "turn", "student_id", "session", "start", "end",
              "message", "intent", "reply", "events": [...]}
     Action: {"kind": "action", "student_id", "session", "start", "end", "events": [record]}
@@ -75,6 +77,10 @@ def group_turns(records: list[dict]) -> list[dict]:
     for r in records:
         sid = r.get("student_id", "")
         turn = open_turns.get(sid)
+        if not sid and turn is None and open_turns:
+            # Router/chain/retrieval records often carry no student_id; they belong
+            # to the turn in progress (the most recently opened one).
+            turn = list(open_turns.values())[-1]
         if r["event"] == "user_msg":
             turn = {"kind": "turn", "student_id": sid, "session": r.get("session"),
                     "start": r["ts"], "end": r["ts"], "message": r.get("message", ""),

@@ -93,6 +93,8 @@ hr { border-color: var(--hairline) !important; }
   box-shadow: 0 0 0 100vmax var(--glass); clip-path: inset(0 -100vmax); }
 .st-key-topbar::after { content: ""; position: absolute; left: -100vmax; right: -100vmax; bottom: 0;
   height: 1px; background: var(--hairline); }
+/* The full-bleed hairline above counts as overflow; nothing here scrolls sideways. */
+[data-testid="stMain"], [data-testid="stAppScrollToBottomContainer"] { overflow-x: hidden; }
 [data-testid="stPopover"] button > div > div:last-child { display: none; }  /* menu chevron */
 .adv-wordmark { display: flex; align-items: center; gap: .55rem; font-weight: 600;
                 font-size: 1.05rem; letter-spacing: -0.01em; color: var(--text); white-space: nowrap; }

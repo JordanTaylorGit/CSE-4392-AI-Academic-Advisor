@@ -16,6 +16,8 @@ RECORDS = [
      "message": "Can I take CSE 4344?"},
     {"ts": "2026-10-21T15:00:01.200000+00:00", "event": "intent", "session": "a", "student_id": "s_sophomore",
      "intent": "exact_query"},
+    {"ts": "2026-10-21T15:00:01.300000+00:00", "event": "tool_call", "session": "a",
+     "tool": "get_course_prerequisites"},  # no student_id: joins the open turn
     {"ts": "2026-10-21T15:00:01.500000+00:00", "event": "assistant_msg", "session": "a",
      "student_id": "s_sophomore", "intent": "exact_query", "reply": "Yes | all six checks pass."},
     {"ts": "2026-10-21T15:05:00+00:00", "event": "user_msg", "session": "b", "student_id": "s_freshman",
@@ -31,8 +33,8 @@ def write_log(tmp_path: Path) -> Path:
 
 def test_read_filters_and_skips_partial_line(tmp_path):
     path = write_log(tmp_path)
-    assert len(tracing.read(path)) == 5
-    assert len(tracing.read(path, session="a")) == 4
+    assert len(tracing.read(path)) == 6
+    assert len(tracing.read(path, session="a")) == 5
     assert len(tracing.read(path, student_id="s_freshman")) == 1
     assert len(tracing.read(path, since="2026-10-21T15:01")) == 1
 
@@ -44,7 +46,7 @@ def test_group_turns():
     assert turn["message"] == "Can I take CSE 4344?"
     assert turn["intent"] == "exact_query"
     assert turn["reply"].startswith("Yes")
-    assert len(turn["events"]) == 3
+    assert len(turn["events"]) == 4
     assert tracing.duration_ms(turn) == 500
     assert groups[2]["reply"] is None  # no assistant_msg logged yet
 
