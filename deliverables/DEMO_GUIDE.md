@@ -28,9 +28,9 @@ Each step names the spec requirement it shows. Say the input, then what the outp
 |---|---|---|---|
 | 1 | Top bar | Pick Sam Martinez | Web UI; the student is already signed in (req 1) |
 | 2 | Hero + Plan | Point at credit progress and the requirement rings | Structured data from SQLite: completed (green) and in-progress (blue) credits per area |
-| 3 | Plan | **Build plan**, then switch Timeline / Years | Semester-by-semester degree plan for his career interest (req 2) |
+| 3 | Plan | **Build plan**, then switch Timeline / Years | Semester-by-semester plan to graduation (Spring 2029) for the student's career interest (req 2) |
 | 4 | Plan | **Add** a course: the dialog runs the six checks before the button enables. Then **Drop**, then **Undo** | Dialog boxes (req 1) and changing a plan (req 5a) |
-| 5 | Check a course | CSE 4344, Spring 2027, **Run checks** | The six verification checks (a)-(f) with reasons (req 4) |
+| 5 | Check a course | CSE 3320, Spring 2027, **Run checks** (all six pass) | The six verification checks (a)-(f) with reasons (req 4) |
 | 6 | Ask | "What are the prerequisites for CSE 3310?" | Exact query, answered from SQL (req 3) |
 | 7 | Ask | "Which courses cover machine learning or AI topics?" | Semantic query, answered by RAG over Chroma (req 3, 7, 8) |
 | 8 | Ask | "Generate my degree plan", then "What about taking only 3 classes next semester instead?" | Conversation state: the follow-up uses the earlier turn (req 6) |
@@ -48,6 +48,10 @@ Highlights for Sam:
 - Cybersecurity certificate: CSE 4344 (or 4352), CSE 4380, CSE 4381, CSE 4382 (12 credits).
 
 ## If something goes wrong
+
+- **Don't add or drop courses by chat** ("Drop CSE 3310 ..."): the chat currently fails with
+  "An explicit term is required". Use the Plan screen's Add / Drop dialogs. Write terms in chat
+  as codes ("in S2027"): "next semester" is read as the current term.
 
 - **An answer takes long**: the spinner is the local model working. Keep talking
   through what the step shows; don't click again.

@@ -37,12 +37,13 @@ Due: Sun 10/25/2026. See `PLAN.md` §6–§9 for the team plan.
 - [x] `scripts/run_demo.py` replays the 7 prompts from `PLAN.md` §9, captures traces
       (tested 10/23 on all branches merged: 7/7 run; step 7 hits Kyle's term bug)
 - [x] Presenter guide: `deliverables/DEMO_GUIDE.md` (walk-through, warm-up, fallbacks)
-- [ ] Final run on merged main -> commit `demo_transcript.md` + `execution_trace_log.md`
+- [x] Final run on merged main (10/24, session `demo-final`): `demo_transcript.md` + `execution_trace_log.md`
+      (chat add/drop step removed: orchestrator fails with "explicit term is required")
 
 ## Step 4 — Screenshots
 - [x] `scripts/take_screenshots.py`: headless Chrome walks DEMO_GUIDE, 11 PNGs
       (draft set taken 10/23 on all branches merged)
-- [ ] Final set on merged main -> `deliverables/screenshots/`
+- [x] Final set on merged main -> `deliverables/screenshots/` (10/24)
 
 ## Step 5 — PPT (30 min incl. Q&A)
 - [x] `scripts/build_slides.py` -> `deliverables/AI_Advisor_Presentation.pptx` (23 slides, speaker notes)
@@ -50,7 +51,8 @@ Due: Sun 10/25/2026. See `PLAN.md` §6–§9 for the team plan.
 - [x] Design decisions considered and why we chose ours
 - [x] Code segments per component (what it does + why needed)
 - [x] Demo screenshots (what is the input, what the output means)
-- [ ] Rebuild from final screenshots; update "Limitations" slide; teammates review their code slides
+- [x] Rebuilt from final screenshots, following the professor's TA2 template outline (30 slides)
+- [ ] Full names for Miguel and Kyle on the title slide; teammates review their code slides
 
 ## Step 6 — Zip packaging
 - [x] `scripts/package_submission.py` -> `dist/CSE4392_TA2_AI_Advisor.zip` (HEAD + traces + SUBMISSION.md)

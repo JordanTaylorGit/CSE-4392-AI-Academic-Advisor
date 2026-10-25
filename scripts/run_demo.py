@@ -35,10 +35,12 @@ STEPS = [
      "I'm a sophomore CS major interested in cybersecurity. Generate my degree plan."),
     ("Req 3: exact query (SQL)", "What are the prerequisites for CSE 3310?"),
     ("Req 3: semantic query (RAG)", "Which courses cover machine learning or AI topics?"),
-    ("Req 4: six verification checks", "Can I take CSE 4344 next semester?"),
+    # Term as a code: the orchestrator reads "next semester" as the current term (F2026).
+    ("Req 4: six verification checks", "Can I take CSE 4344 in S2027?"),
     ("Req 6: conversation state", "What about taking only 3 classes next semester instead?"),
     ("Req 5: switch major + comparison", "I'm thinking about switching to Software Engineering."),
-    ("Req 5: modify plan", "Drop CSE 3310 from next semester and add CSE 3302."),
+    # Add / drop by chat fails ("An explicit term is required"); the demo shows it on
+    # the Plan screen's dialogs instead. Restore once orchestrator passes the term.
 ]
 
 

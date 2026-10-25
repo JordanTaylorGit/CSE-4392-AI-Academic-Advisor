@@ -307,7 +307,7 @@ and a specific demo moment, so the rest of the talk follows this table.
             ("Schedule:", " a conflict-free set of real sections must exist for the term"),
             ("No repeats:", " a passed or already-planned course can\u2019t be added again"),
             ("Local only:", " runs offline on a laptop: Ollama, SQLite, Chroma; no accounts or API keys"),
-            ("Horizon:", " sections are published for three terms (Fall 2026 \u2013 Summer 2027)")]),
+            ("Horizon:", " sections exist for Fall 2026 \u2013 Summer 2027; later terms are projected from catalog offering patterns")]),
     ]):
         x = MARGIN + i * (col + Inches(0.5))
         rect(s, x, Inches(1.65), col, Inches(5.1), fill=fill, radius=0.05)
@@ -415,7 +415,7 @@ pieces merged with few conflicts.
     for i, (title, fill, line, items) in enumerate([
         ("SQLite: structural data", GREEN_TINT, GREEN, [
             ("106 courses", " with real catalog credit hours"),
-            ("132 prerequisite rules", " (OR groups, minimum grades, same-term allowed)"),
+            ("141 prerequisite rules", " (OR groups, minimum grades; 21 may be taken the same term)"),
             ("165 class sections", " for Fall 2026, Spring 2027, Summer 2027"),
             ("4 student personas", " with transcripts and current enrollment"),
             ("83 requirement slots", " for 2 programs (123 and 127 credits)"),
@@ -669,16 +669,16 @@ def trace(event: str, **fields) -> None:   # one JSON line per step
         ("01_overview_rings.png", "Demo · Req 1, 7: the student’s record at a glance",
          "Pick a student", "Credits done, in progress, and per-area requirement rings from SQLite",
          "Sam has 32 of 123 credits; blue is this fall’s 4 classes. The certificate ring is empty: still to plan."),
-        ("03_plan_years.png", "Demo · Req 2: a degree plan",
+        ("03_plan_years.png", "Demo · Req 2: a multi-year plan to graduation",
          "Plan → Build plan (auto load, no summer) → Years",
          "Completed terms (green), then planned semesters (blue), year by year",
-         "The planner fills semesters in prerequisite order within the 15-credit cap; the rings show what each area still needs."),
+         "Graduation in Spring 2029, in prerequisite order within the 15-credit cap; terms after Summer 2027 are projected."),
         ("05_six_checks.png", "Demo · Req 4: six checks before recommending",
-         "Check a course: CSE 4344, Spring 2027", "Checks (a)–(f), each with pass/fail and the reason",
-         "A course is only recommended if all six pass; the reasons tell the student exactly what to fix."),
+         "Check a course: CSE 3320, Spring 2027", "Checks (a)–(f), each with pass/fail and the reason",
+         "All six pass for the course the planner chose for Spring 2027; any failure blocks a recommendation and says what to fix."),
         ("04_add_dialog_checks.png", "Demo \u00b7 Constraints: a course the system refuses",
          "Plan \u2192 Add a course: BIOL 1441, Fall 2026",
-         "Five checks pass; (e) fails at 17 of 15 semester credits, so Add stays disabled",
+         "Three checks fail: it doesn\u2019t count toward the degree, 17 of 15 semester credits, 124 of 123 degree credits. Add stays disabled",
          "Constraints are enforced, not just reported: the advisor won\u2019t add a course that breaks one."),
         ("07_ask_semantic_rag.png", "Demo · Req 3: exact vs. semantic questions",
          "“Prerequisites for CSE 3310?” then “Which courses cover machine learning?”",
@@ -720,7 +720,7 @@ def trace(event: str, **fields) -> None:   # one JSON line per step
     bullets(s, MARGIN, Inches(1.9), Inches(6.2), Inches(4.8), [
         ("1  ", "Pick Sam Martinez; show progress and requirement rings"),
         ("2  ", "Plan \u2192 Build plan; open Add a course to show the checks"),
-        ("3  ", "Check a course: CSE 4344, Spring 2027"),
+        ("3  ", "Check a course: CSE 3320, Spring 2027"),
         ("4  ", "Ask: prerequisites for CSE 3310, then machine learning courses"),
         ("5  ", "Switch major \u2192 Compare plans"),
         ("6  ", "Traces: the turns just asked, step by step")], size=17)
@@ -762,7 +762,7 @@ def trace(event: str, **fields) -> None:   # one JSON line per step
     s = new()
     header(s, "How we know it works")
     bullets(s, MARGIN, Inches(1.8), Inches(6.0), Inches(4.8), [
-        ("89 automated tests", " across planner, router, RAG retrieval, data schema, UI services, and tracing"),
+        ("82 automated tests", " across planner, router, RAG retrieval, data schema, UI services, and tracing; run with a linter on every pull request"),
         ("Scripted demo", " (scripts/run_demo.py) replays the 7 demo questions end to end and renders the trace log"),
         ("Scripted screenshots", " (scripts/take_screenshots.py) drive the real app in a browser"),
         ("All five branches tested together", " in one combined copy, plus a fresh-unzip install test"),
@@ -784,7 +784,7 @@ def trace(event: str, **fields) -> None:   # one JSON line per step
     header(s, "Conclusions and Future Work")
     cols = [("Teamwork", BLUE_TINT, BLUE, [
                 "Five workstreams on five branches, joined through agreed interfaces",
-                "Every branch tested together before the final merge",
+                "Every branch tested together before the final merge; tests and lint run on every pull request",
                 "Work merged into main through pull requests"]),
             ("Achievements", GREEN_TINT, GREEN, [
                 "All eight functional requirements implemented",
@@ -792,7 +792,8 @@ def trace(event: str, **fields) -> None:   # one JSON line per step
                 "Exact and semantic answers over two databases",
                 "A full execution trace for every turn"]),
             ("If the project continues", AMBER_TINT, AMBER, [
-                "Plan past the published schedule using each course\u2019s usual terms",
+                "Chat: add / drop by message, \u201cnext semester\u201d as the next term, progress questions",
+                "Make exploring a switch read-only until the student confirms",
                 "Prompts in template files (Jinja); split the code into layer folders",
                 "Faster answers: a GPU or the OpenAI switch",
                 "Real records from the registrar instead of personas"])]

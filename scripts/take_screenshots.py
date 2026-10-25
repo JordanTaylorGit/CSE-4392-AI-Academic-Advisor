@@ -129,7 +129,7 @@ def run(url: str, out: Path, scheme: str, student: str, skip_chat: bool) -> None
             settle(page)
 
         section(page, "Check a course")
-        choose(page, "check_course", "CSE 4344")
+        choose(page, "check_course", "CSE 3320")
         choose(page, "check_term", "Spring 2027")
         page.get_by_role("button", name="Run checks").click()
         settle(page, 2)
