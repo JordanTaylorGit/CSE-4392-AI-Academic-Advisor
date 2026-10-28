@@ -221,7 +221,11 @@ def _extract_modify_args(message: str) -> dict:
 
 
 def _wants_summer(message: str) -> bool:
-    return "summer" in message.lower()
+    q = message.lower()
+    return "summer" in q and not any(
+        p in q for p in ("no summer", "not summer", "without summer",
+                         "exclude summer", "skip summer", "avoid summer",
+                         "don't want summer", "dont want summer"))
 
 
 def _format_plan(plan: dict) -> str:
