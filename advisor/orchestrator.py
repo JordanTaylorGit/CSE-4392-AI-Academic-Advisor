@@ -221,11 +221,21 @@ def _extract_modify_args(message: str) -> dict:
 
 
 def _wants_summer(message: str) -> bool:
-    q = message.lower()
-    return "summer" in q and not any(
-        p in q for p in ("no summer", "not summer", "without summer",
-                         "exclude summer", "skip summer", "avoid summer",
-                         "don't want summer", "dont want summer"))
+    """Let the small router model judge whether summer terms are wanted."""
+    from .config import get_router_model
+    from .tracing import trace
+    try:
+        resp = get_router_model().invoke(
+            "Answer with only 'yes' or 'no'. Does the student want summer "
+            "semesters included in their degree plan?\n\n"
+            f"Student message: {message}")
+        text = router._strip_think(
+            resp.content if hasattr(resp, "content") else str(resp)).lower()
+        trace("summer_intent", reply=text[:40])
+        return text.startswith("yes")
+    except Exception as e:
+        trace("summer_intent_error", error=str(e))
+        return False
 
 
 def _format_plan(plan: dict) -> str:
