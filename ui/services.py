@@ -11,7 +11,6 @@ raised and the UI shows a "not implemented yet" message instead.
 
 import csv
 import io
-import json
 from dataclasses import asdict
 
 from advisor import compare, db, orchestrator, planner, tracing
@@ -169,31 +168,11 @@ def diff_plans(old: dict, new: dict, use_preview: bool):
 # ------------------------------------------------------- requirement progress
 
 def _requirements_live(student_id: str, program_id: str, plan: dict | None) -> list[dict]:
-    """Credits completed / planned per requirement category, from requirement_slots
-    (schema.sql). Each course fills at most one slot; completed courses fill first.
-    Current-term enrollments count as planned (in progress) even before a plan is built."""
-    slots = db.query("SELECT category, course_id, options, credits FROM requirement_slots"
-                     " WHERE program_id = :p ORDER BY slot_id", {"p": program_id})
-    if not slots:
+    progress = planner.requirement_progress(
+        student_id, program_id, plan_from_dict(plan) if plan else None)
+    if not progress:
         raise NotImplementedError("TODO Person A: seed requirement_slots for " + program_id)
-    done = {r["course_id"] for r in db.query(
-        "SELECT course_id FROM completed_courses WHERE student_id = :sid", {"sid": student_id})}
-    planned = {c["course_id"] for s in (plan or {}).get("semesters", []) for c in s["courses"]}
-    planned |= {r["course_id"] for r in current_courses(student_id)}
-    out: dict[str, dict] = {}
-    used: set[str] = set()
-    for slot in slots:
-        row = out.setdefault(slot["category"], {"category": slot["category"], "required": 0,
-                                                "completed": 0, "planned": 0})
-        row["required"] += slot["credits"]
-        options = [slot["course_id"]] if slot["course_id"] else json.loads(slot["options"] or "[]")
-        for pool, key in ((done, "completed"), (planned, "planned")):
-            match = next((c for c in options if c in pool and c not in used), None)
-            if match:
-                used.add(match)
-                row[key] += slot["credits"]
-                break
-    return list(out.values())
+    return progress
 
 
 def requirement_progress(student_id: str, program_id: str, plan: dict | None, use_preview: bool):
